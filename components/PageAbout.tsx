@@ -101,9 +101,9 @@ export default function PageAbout() {
           <div style={{display:'flex',gap:'1.4rem',alignItems:'flex-start'}}>
             <img style={{width:'80px',height:'80px',objectFit:'cover',flexShrink:0}} src="https://cdn.gamma.app/jeat3ncrixcj8f5/uploaded-images/3heChMZZrjsFX6LfVlbdA.jpg" alt="Ryan Koo" onError={(e) => { (e.target as HTMLImageElement).style.background = 'rgba(37,99,235,.1)'; }} />
             <div>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.6rem',color:'var(--blue2)',letterSpacing:'.14em',marginBottom:'.4rem'}}>FOUNDER · AI-JAM ASSOCIATION</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--blue2)',letterSpacing:'.14em',marginBottom:'.4rem'}}>FOUNDER · AI-JAM ASSOCIATION</div>
               <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'1.5rem',letterSpacing:'.04em',marginBottom:'.5rem'}}>Mr. Rayn Koo</div>
-              <div style={{fontSize:'.85rem',color:'var(--lgray)',lineHeight:1.7,fontStyle:'italic'}}>&quot;Under the leadership of Mr. Rayn Koo, the AI-JAM Association has expanded globally, creating opportunities for AI innovators across multiple countries and continents. The vision of AI-JAM continues to inspire new generations of AI developers, researchers, and entrepreneurs worldwide.&quot;</div>
+              <div style={{fontSize:'1rem',color:'var(--lgray)',lineHeight:1.8,fontStyle:'italic'}}>&quot;Under the leadership of Mr. Rayn Koo, the AI-JAM Association has expanded globally, creating opportunities for AI innovators across multiple countries and continents. The vision of AI-JAM continues to inspire new generations of AI developers, researchers, and entrepreneurs worldwide.&quot;</div>
             </div>
           </div>
         </div>

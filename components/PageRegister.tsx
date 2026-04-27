@@ -63,12 +63,12 @@ export default function PageRegister({ onDlGuide }: PageRegisterProps) {
             </div>
 
             <div style={{background:'var(--dark)',border:'1px solid var(--border)',padding:'1.2rem',marginTop:'1rem'}}>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.58rem',color:'var(--gray)',letterSpacing:'.1em',marginBottom:'.8rem'}}>📅 KEY DATES</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--gray)',letterSpacing:'.1em',marginBottom:'.8rem'}}>📅 KEY DATES</div>
               <div style={{display:'flex',flexDirection:'column',gap:'.5rem'}}>
-                <div style={{display:'flex',justifyContent:'space-between',fontSize:'.82rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--green)'}}>Registration</span><span style={{color:'var(--gray)'}}>Now Open</span></div>
-                <div style={{display:'flex',justifyContent:'space-between',fontSize:'.82rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--amber)'}}>Shadow Season</span><span style={{color:'var(--gray)'}}>Jan–Jun 2026</span></div>
-                <div style={{display:'flex',justifyContent:'space-between',fontSize:'.82rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--red)',fontWeight:700}}>⚠ Submission Deadline</span><span style={{color:'var(--red)',fontWeight:700}}>Aug 30, 2026</span></div>
-                <div style={{display:'flex',justifyContent:'space-between',fontSize:'.82rem',padding:'.4rem 0'}}><span style={{color:'var(--blue2)'}}>Results Online</span><span style={{color:'var(--gray)'}}>Sep 6, 2026</span></div>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--green)'}}>Registration</span><span style={{color:'var(--gray)'}}>Now Open</span></div>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--amber)'}}>Shadow Season</span><span style={{color:'var(--gray)'}}>Jan–Jun 2026</span></div>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--red)',fontWeight:700}}>⚠ Submission Deadline</span><span style={{color:'var(--red)',fontWeight:700}}>Aug 30, 2026</span></div>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0'}}><span style={{color:'var(--blue2)'}}>Results Online</span><span style={{color:'var(--gray)'}}>Sep 6, 2026</span></div>
               </div>
             </div>
           </div>

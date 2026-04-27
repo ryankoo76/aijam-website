@@ -113,7 +113,7 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
               <div key={item.title} style={{background:'var(--dark)',padding:'2rem',borderTop:`3px solid ${item.color}`}}>
                 <div style={{fontSize:'2.2rem',marginBottom:'.8rem'}}>{item.icon}</div>
                 <div style={{fontSize:'1rem',fontWeight:700,marginBottom:'.6rem'}}>{item.title}</div>
-                <div style={{fontSize:'.84rem',color:'var(--gray)',lineHeight:1.75}}>{item.desc}</div>
+                <div style={{fontSize:'1rem',color:'var(--gray)',lineHeight:1.8}}>{item.desc}</div>
               </div>
             ))}
           </div>
@@ -130,32 +130,32 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'1rem',marginBottom:'2rem'}}>
             <div style={{background:'var(--dark2)',border:'1px solid rgba(59,130,246,.18)',padding:'1.8rem',textAlign:'center'}}>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.6rem',color:'var(--blue2)',letterSpacing:'.15em',marginBottom:'.6rem'}}>SLIDE 1 OF 3</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--blue2)',letterSpacing:'.15em',marginBottom:'.6rem'}}>SLIDE 1 OF 3</div>
               <div style={{fontSize:'2.5rem',marginBottom:'.5rem'}}>💡</div>
               <div style={{fontSize:'1.05rem',fontWeight:700,marginBottom:'.8rem'}}>The Problem</div>
               <ul style={{listStyle:'none',textAlign:'left',display:'flex',flexDirection:'column',gap:'.4rem'}}>
                 {['What problem are you solving?','Who is affected?','Why does this problem matter?','Include 1 key statistic','Make it visual — use images'].map(i => (
-                  <li key={i} style={{fontSize:'.8rem',color:'var(--lgray)',display:'flex',gap:'.5rem'}}><span style={{color:'var(--blue2)'}}>·</span>{i}</li>
+                  <li key={i} style={{fontSize:'.95rem',color:'var(--lgray)',display:'flex',gap:'.5rem'}}><span style={{color:'var(--blue2)'}}>·</span>{i}</li>
                 ))}
               </ul>
             </div>
             <div style={{background:'var(--dark2)',border:'1px solid rgba(245,158,11,.25)',padding:'1.8rem',textAlign:'center'}}>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.6rem',color:'var(--amber)',letterSpacing:'.15em',marginBottom:'.6rem'}}>SLIDE 2 OF 3</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--amber)',letterSpacing:'.15em',marginBottom:'.6rem'}}>SLIDE 2 OF 3</div>
               <div style={{fontSize:'2.5rem',marginBottom:'.5rem'}}>🤖</div>
               <div style={{fontSize:'1.05rem',fontWeight:700,marginBottom:'.8rem'}}>Your AI Solution</div>
               <ul style={{listStyle:'none',textAlign:'left',display:'flex',flexDirection:'column',gap:'.4rem'}}>
                 {['How does your AI solution work?','What AI technology are you using?','Simple diagram or flow','Show prototype if available','No coding required!'].map(i => (
-                  <li key={i} style={{fontSize:'.8rem',color:'var(--lgray)',display:'flex',gap:'.5rem'}}><span style={{color:'var(--amber)'}}>·</span>{i}</li>
+                  <li key={i} style={{fontSize:'.95rem',color:'var(--lgray)',display:'flex',gap:'.5rem'}}><span style={{color:'var(--amber)'}}>·</span>{i}</li>
                 ))}
               </ul>
             </div>
             <div style={{background:'var(--dark2)',border:'1px solid rgba(16,185,129,.25)',padding:'1.8rem',textAlign:'center'}}>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.6rem',color:'var(--green)',letterSpacing:'.15em',marginBottom:'.6rem'}}>SLIDE 3 OF 3</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--green)',letterSpacing:'.15em',marginBottom:'.6rem'}}>SLIDE 3 OF 3</div>
               <div style={{fontSize:'2.5rem',marginBottom:'.5rem'}}>📊</div>
               <div style={{fontSize:'1.05rem',fontWeight:700,marginBottom:'.8rem'}}>Impact & Vision</div>
               <ul style={{listStyle:'none',textAlign:'left',display:'flex',flexDirection:'column',gap:'.4rem'}}>
                 {['How many people will this help?','Quantify impact with numbers','Is it feasible? What are costs?','Next step to make it real','Your vision for the future'].map(i => (
-                  <li key={i} style={{fontSize:'.8rem',color:'var(--lgray)',display:'flex',gap:'.5rem'}}><span style={{color:'var(--green)'}}>·</span>{i}</li>
+                  <li key={i} style={{fontSize:'.95rem',color:'var(--lgray)',display:'flex',gap:'.5rem'}}><span style={{color:'var(--green)'}}>·</span>{i}</li>
                 ))}
               </ul>
             </div>
@@ -164,10 +164,10 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
             <div style={{fontSize:'2rem',flexShrink:0}}>🎥</div>
             <div>
               <div style={{fontSize:'1rem',fontWeight:700,marginBottom:'.5rem'}}>30-Second Video Presentation</div>
-              <div style={{fontSize:'.84rem',color:'var(--gray)',lineHeight:1.7}}>Record yourself presenting your project in <strong style={{color:'var(--white)'}}>exactly 30 seconds or less</strong>. Speak clearly. Introduce yourself, describe the problem, explain your AI solution, and state the impact. Any language accepted — English captions recommended. Smartphone video is perfectly acceptable.</div>
+              <div style={{fontSize:'1rem',color:'var(--gray)',lineHeight:1.8}}>Record yourself presenting your project in <strong style={{color:'var(--white)'}}>exactly 30 seconds or less</strong>. Speak clearly. Introduce yourself, describe the problem, explain your AI solution, and state the impact. Any language accepted — English captions recommended. Smartphone video is perfectly acceptable.</div>
               <div style={{display:'flex',gap:'.5rem',flexWrap:'wrap',marginTop:'.7rem'}}>
                 {['MAX 30 SECONDS','ANY LANGUAGE','MP4 / MOV','SMARTPHONE OK'].map(tag => (
-                  <span key={tag} style={{fontSize:'.65rem',padding:'.2rem .6rem',background:'rgba(245,158,11,.08)',color:'var(--amber)',border:'1px solid rgba(245,158,11,.2)',fontFamily:"'Space Mono',monospace"}}>{tag}</span>
+                  <span key={tag} style={{fontSize:'.75rem',padding:'.2rem .6rem',background:'rgba(245,158,11,.08)',color:'var(--amber)',border:'1px solid rgba(245,158,11,.2)',fontFamily:"'Space Mono',monospace"}}>{tag}</span>
                 ))}
               </div>
             </div>
@@ -185,10 +185,10 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1rem',marginBottom:'2rem'}}>
             <div style={{background:'var(--dark)',border:'1px solid rgba(245,158,11,.3)',padding:'1.4rem',position:'relative'}}>
-              <div style={{position:'absolute',top:'.8rem',right:'.8rem',fontSize:'.58rem',padding:'.15rem .45rem',background:'rgba(16,185,129,.08)',color:'var(--green)',border:'1px solid rgba(16,185,129,.2)',fontFamily:"'Space Mono',monospace"}}>OPEN NOW</div>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.6rem',color:'var(--amber)',letterSpacing:'.12em',marginBottom:'.5rem'}}>JAN 2026</div>
-              <div style={{fontSize:'.9rem',fontWeight:700,marginBottom:'.4rem'}}>Visual Impact Challenge</div>
-              <div style={{fontSize:'.78rem',color:'var(--gray)',lineHeight:1.6}}>Create a single slide that communicates your AI concept instantly to a stranger.</div>
+              <div style={{position:'absolute',top:'.8rem',right:'.8rem',fontSize:'.7rem',padding:'.15rem .45rem',background:'rgba(16,185,129,.08)',color:'var(--green)',border:'1px solid rgba(16,185,129,.2)',fontFamily:"'Space Mono',monospace"}}>OPEN NOW</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--amber)',letterSpacing:'.12em',marginBottom:'.5rem'}}>JAN 2026</div>
+              <div style={{fontSize:'1rem',fontWeight:700,marginBottom:'.4rem'}}>Visual Impact Challenge</div>
+              <div style={{fontSize:'.92rem',color:'var(--gray)',lineHeight:1.8}}>Create a single slide that communicates your AI concept instantly to a stranger.</div>
             </div>
             {[
               {month:'FEB 2026',title:'30-Second Pitch',desc:'Record a 30-second verbal explanation — the core skill for the final competition.'},
@@ -196,9 +196,9 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
               {month:'JUN 2026',title:'Full Mock Submission',desc:'Complete 3-slide + 30-second practice with expert feedback before Aug 30.'},
             ].map(item => (
               <div key={item.month} style={{background:'var(--dark)',border:'1px solid var(--border)',padding:'1.4rem'}}>
-                <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.6rem',color:'var(--amber)',letterSpacing:'.12em',marginBottom:'.5rem'}}>{item.month}</div>
-                <div style={{fontSize:'.9rem',fontWeight:700,marginBottom:'.4rem'}}>{item.title}</div>
-                <div style={{fontSize:'.78rem',color:'var(--gray)',lineHeight:1.6}}>{item.desc}</div>
+                <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--amber)',letterSpacing:'.12em',marginBottom:'.5rem'}}>{item.month}</div>
+                <div style={{fontSize:'1rem',fontWeight:700,marginBottom:'.4rem'}}>{item.title}</div>
+                <div style={{fontSize:'.92rem',color:'var(--gray)',lineHeight:1.8}}>{item.desc}</div>
               </div>
             ))}
           </div>
@@ -222,8 +222,8 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
             ].map(item => (
               <div key={item.flag} style={{background:'var(--dark2)',border:'1px solid var(--border)',padding:'1.6rem',borderLeft:`3px solid ${item.color}`}}>
                 <div style={{fontSize:'1.2rem',marginBottom:'.5rem'}}>{item.flag}</div>
-                <div style={{fontSize:'.92rem',fontWeight:700,marginBottom:'.5rem'}}>{item.title}</div>
-                <div style={{fontSize:'.82rem',color:'var(--gray)',lineHeight:1.7}}>{item.desc}</div>
+                <div style={{fontSize:'1rem',fontWeight:700,marginBottom:'.5rem'}}>{item.title}</div>
+                <div style={{fontSize:'1rem',color:'var(--gray)',lineHeight:1.8}}>{item.desc}</div>
               </div>
             ))}
           </div>
@@ -248,11 +248,11 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
               <div key={award.label} style={{background:'var(--dark)',padding:'1.6rem',textAlign:'center',borderTop:`3px solid ${award.color}`}}>
                 <div style={{fontSize:'2.2rem',marginBottom:'.5rem'}}>{award.icon}</div>
                 <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'1.3rem',letterSpacing:'.04em',color:award.color,marginBottom:'.4rem'}}>{award.label}</div>
-                <div style={{fontSize:'.78rem',color:'var(--gray)',lineHeight:1.5}}>{award.desc}</div>
+                <div style={{fontSize:'.92rem',color:'var(--gray)',lineHeight:1.75}}>{award.desc}</div>
               </div>
             ))}
           </div>
-          <div style={{background:'rgba(37,99,235,.05)',border:'1px solid rgba(59,130,246,.15)',padding:'1.4rem',fontSize:'.84rem',color:'var(--gray)',lineHeight:1.8}}>
+          <div style={{background:'rgba(37,99,235,.05)',border:'1px solid rgba(59,130,246,.15)',padding:'1.4rem',fontSize:'1rem',color:'var(--gray)',lineHeight:1.8}}>
             🎁 <strong style={{color:'var(--white)'}}>All participants receive:</strong> Digital certificate of participation · AI-enhanced project poster · Social media content package (TikTok, Instagram, LinkedIn formats) · Access to the AI-JAM US global community of 10,000+ innovators
           </div>
         </div>
@@ -270,21 +270,21 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
             <div style={{background:'var(--dark2)',padding:'1.5rem',display:'flex',gap:'.9rem'}}>
               <div style={{fontSize:'1.8rem',flexShrink:0,marginTop:'2px'}}>🏆</div>
               <div>
-                <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.57rem',color:'var(--amber)',letterSpacing:'.1em',marginBottom:'.25rem'}}>GRAND PRIX · 2025</div>
-                <div style={{fontSize:'.9rem',fontWeight:700,marginBottom:'.22rem'}}>AI-Powered Drone Medical Delivery</div>
-                <div style={{fontSize:'.73rem',color:'var(--blue2)',marginBottom:'.25rem',fontFamily:"'Space Mono',monospace"}}>Team MedAir</div>
-                <div style={{fontSize:'.77rem',color:'var(--gray)',lineHeight:1.5}}>Drone-based medical supply delivery for remote communities using AI route optimization.</div>
-                <div style={{fontSize:'.7rem',color:'var(--lgray)',marginTop:'.3rem'}}>🇻🇳 Vietnam</div>
+                <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--amber)',letterSpacing:'.1em',marginBottom:'.25rem'}}>GRAND PRIX · 2025</div>
+                <div style={{fontSize:'1rem',fontWeight:700,marginBottom:'.22rem'}}>AI-Powered Drone Medical Delivery</div>
+                <div style={{fontSize:'.88rem',color:'var(--blue2)',marginBottom:'.25rem',fontFamily:"'Space Mono',monospace"}}>Team MedAir</div>
+                <div style={{fontSize:'.9rem',color:'var(--gray)',lineHeight:1.75}}>Drone-based medical supply delivery for remote communities using AI route optimization.</div>
+                <div style={{fontSize:'.82rem',color:'var(--lgray)',marginTop:'.3rem'}}>🇻🇳 Vietnam</div>
               </div>
             </div>
             <div style={{background:'var(--dark2)',padding:'1.5rem',display:'flex',gap:'.9rem'}}>
               <div style={{fontSize:'1.8rem',flexShrink:0,marginTop:'2px'}}>🥇</div>
               <div>
-                <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.57rem',color:'#FFD700',letterSpacing:'.1em',marginBottom:'.25rem'}}>GOLD AWARD · 2025</div>
-                <div style={{fontSize:'.9rem',fontWeight:700,marginBottom:'.22rem'}}>Wildfire Early Detection System</div>
-                <div style={{fontSize:'.73rem',color:'var(--blue2)',marginBottom:'.25rem',fontFamily:"'Space Mono',monospace"}}>Team EcoSense</div>
-                <div style={{fontSize:'.77rem',color:'var(--gray)',lineHeight:1.5}}>Smart AI sensor network reducing wildfire response time by 73%.</div>
-                <div style={{fontSize:'.7rem',color:'var(--lgray)',marginTop:'.3rem'}}>🇮🇩 Indonesia</div>
+                <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'#FFD700',letterSpacing:'.1em',marginBottom:'.25rem'}}>GOLD AWARD · 2025</div>
+                <div style={{fontSize:'1rem',fontWeight:700,marginBottom:'.22rem'}}>Wildfire Early Detection System</div>
+                <div style={{fontSize:'.88rem',color:'var(--blue2)',marginBottom:'.25rem',fontFamily:"'Space Mono',monospace"}}>Team EcoSense</div>
+                <div style={{fontSize:'.9rem',color:'var(--gray)',lineHeight:1.75}}>Smart AI sensor network reducing wildfire response time by 73%.</div>
+                <div style={{fontSize:'.82rem',color:'var(--lgray)',marginTop:'.3rem'}}>🇮🇩 Indonesia</div>
               </div>
             </div>
           </div>
@@ -309,9 +309,9 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
             ].map(t => (
               <div key={t.name} style={{background:'var(--dark)',border:'1px solid var(--border)',padding:'1.5rem'}}>
                 <div style={{fontSize:'1.6rem',marginBottom:'.6rem'}}>{t.icon}</div>
-                <div style={{fontSize:'.82rem',color:'var(--lgray)',lineHeight:1.7,fontStyle:'italic',marginBottom:'.8rem'}}>{t.quote}</div>
-                <div style={{fontSize:'.8rem',fontWeight:700}}>{t.name}</div>
-                <div style={{fontSize:'.68rem',color:'var(--amber)',fontFamily:"'Space Mono',monospace"}}>{t.role}</div>
+                <div style={{fontSize:'1rem',color:'var(--lgray)',lineHeight:1.8,fontStyle:'italic',marginBottom:'.8rem'}}>{t.quote}</div>
+                <div style={{fontSize:'.95rem',fontWeight:700}}>{t.name}</div>
+                <div style={{fontSize:'.78rem',color:'var(--amber)',fontFamily:"'Space Mono',monospace"}}>{t.role}</div>
               </div>
             ))}
           </div>
@@ -325,7 +325,7 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
             <div>
               <div className="eye">FOR TEACHERS & SCHOOLS</div>
               <h2 className="pg-h2" style={{textAlign:'left',fontSize:'clamp(1.8rem,3vw,2.5rem)'}}>BRING AI-JAM US<br />TO YOUR CLASS.</h2>
-              <p style={{fontSize:'.88rem',color:'var(--gray)',lineHeight:1.8,marginBottom:'1.5rem'}}>Transform your classroom into an AI innovation hub. 50+ schools used our Class Pack in 2025, with 92% reporting high student engagement.</p>
+              <p style={{fontSize:'1rem',color:'var(--gray)',lineHeight:1.8,marginBottom:'1.5rem'}}>Transform your classroom into an AI innovation hub. 50+ schools used our Class Pack in 2025, with 92% reporting high student engagement.</p>
               <div style={{display:'flex',flexDirection:'column',gap:'.8rem'}}>
                 {[
                   {icon:'📋',title:'90-Minute Lesson Plan',desc:'Step-by-step guide aligned with STEM/STEAM curricula for grades 7–12.'},
@@ -335,8 +335,8 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
                   <div key={item.title} style={{background:'var(--dark2)',border:'1px solid var(--border)',padding:'1rem',display:'flex',gap:'.8rem'}}>
                     <div style={{fontSize:'1.3rem',flexShrink:0}}>{item.icon}</div>
                     <div>
-                      <div style={{fontSize:'.88rem',fontWeight:600,marginBottom:'.2rem'}}>{item.title}</div>
-                      <div style={{fontSize:'.78rem',color:'var(--gray)'}}>{item.desc}</div>
+                      <div style={{fontSize:'1rem',fontWeight:600,marginBottom:'.2rem'}}>{item.title}</div>
+                      <div style={{fontSize:'.92rem',color:'var(--gray)'}}>{item.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -344,15 +344,15 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
             </div>
             <div style={{background:'var(--black)',border:'1px solid rgba(59,130,246,.18)',padding:'2rem',position:'relative'}}>
               <div style={{position:'absolute',top:0,left:0,right:0,height:'3px',background:'linear-gradient(90deg,var(--blue),var(--cyan))'}}></div>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.6rem',color:'var(--blue2)',letterSpacing:'.15em',marginBottom:'.7rem'}}>THE CLASS PACK INCLUDES</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--blue2)',letterSpacing:'.15em',marginBottom:'.7rem'}}>THE CLASS PACK INCLUDES</div>
               <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'1.6rem',letterSpacing:'.04em',marginBottom:'.7rem'}}>GET THE CLASS PACK</div>
               <div style={{display:'flex',flexDirection:'column',gap:'.4rem',marginBottom:'1.2rem'}}>
                 {['Printable lesson plan (PDF)','Student submission guide','Bulk registration portal','CPD certificate upon completion','Certificate of Appreciation for school','Example winning submissions from 2025'].map(item => (
-                  <div key={item} style={{fontSize:'.82rem',color:'var(--lgray)',display:'flex',gap:'.5rem',alignItems:'center'}}><span style={{color:'var(--green)'}}>✓</span>{item}</div>
+                  <div key={item} style={{fontSize:'1rem',color:'var(--lgray)',display:'flex',gap:'.5rem',alignItems:'center'}}><span style={{color:'var(--green)'}}>✓</span>{item}</div>
                 ))}
               </div>
               <button className="btn-main" style={{width:'100%'}} onClick={() => onSwitch('register')}>Request Class Pack →</button>
-              <p style={{fontSize:'.72rem',color:'var(--gray)',marginTop:'.7rem',textAlign:'center'}}>Check the teacher box when registering</p>
+              <p style={{fontSize:'.82rem',color:'var(--gray)',marginTop:'.7rem',textAlign:'center'}}>Check the teacher box when registering</p>
             </div>
           </div>
         </div>
@@ -362,15 +362,15 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
       <div style={{padding:'7rem 5vw',background:'var(--dark2)',textAlign:'center',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse 60% 50% at 50% 50%,rgba(37,99,235,.07) 0%,transparent 70%)',pointerEvents:'none'}}></div>
         <div style={{position:'relative',zIndex:1,maxWidth:'700px',margin:'0 auto'}}>
-          <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.68rem',color:'var(--blue2)',letterSpacing:'.22em',marginBottom:'1rem'}}>AI-JAM US 2026 · 11TH EVENT</div>
+          <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.78rem',color:'var(--blue2)',letterSpacing:'.22em',marginBottom:'1rem'}}>AI-JAM US 2026 · 11TH EVENT</div>
           <h2 style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'clamp(2.2rem,4.5vw,4rem)',letterSpacing:'.04em',lineHeight:1,marginBottom:'1rem'}}>2025 WAS ONLY<br /><span style={{background:'linear-gradient(135deg,var(--blue2),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>THE BEGINNING.</span></h2>
-          <p style={{fontSize:'.93rem',color:'var(--gray)',marginBottom:'1.5rem',lineHeight:1.8}}>In 2026, the stage belongs to you. 3 slides. 30 seconds. Global recognition. Join hundreds of visionary students from around the world.</p>
-          <div style={{display:'inline-flex',alignItems:'center',gap:'.6rem',background:'rgba(239,68,68,.07)',border:'1px solid rgba(239,68,68,.18)',padding:'.65rem 1.3rem',marginBottom:'1.8rem',fontSize:'.84rem'}}>🔴&nbsp;<span>Final Deadline: <strong style={{color:'var(--red)'}}>August 30, 2026</strong> · Results: <strong style={{color:'var(--green)'}}>September 6, 2026</strong></span></div>
+          <p style={{fontSize:'1rem',color:'var(--gray)',marginBottom:'1.5rem',lineHeight:1.8}}>In 2026, the stage belongs to you. 3 slides. 30 seconds. Global recognition. Join hundreds of visionary students from around the world.</p>
+          <div style={{display:'inline-flex',alignItems:'center',gap:'.6rem',background:'rgba(239,68,68,.07)',border:'1px solid rgba(239,68,68,.18)',padding:'.65rem 1.3rem',marginBottom:'1.8rem',fontSize:'1rem'}}>🔴&nbsp;<span>Final Deadline: <strong style={{color:'var(--red)'}}>August 30, 2026</strong> · Results: <strong style={{color:'var(--green)'}}>September 6, 2026</strong></span></div>
           <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap'}}>
             <button className="btn-main" onClick={() => onSwitch('register')}>🚀 Register Now</button>
             <button className="btn-sec" onClick={onDlGuide}>📄 Download Guidebook</button>
           </div>
-          <p style={{marginTop:'1.2rem',fontSize:'.72rem',color:'rgba(148,163,184,.4)'}}>📍 855 Maude Avenue, Mountain View, CA · ✉ Team@aijam.org</p>
+          <p style={{marginTop:'1.2rem',fontSize:'.82rem',color:'rgba(148,163,184,.4)'}}>📍 855 Maude Avenue, Mountain View, CA · ✉ Team@aijam.org</p>
         </div>
       </div>
     </div>

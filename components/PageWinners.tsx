@@ -27,7 +27,7 @@ export default function PageWinners({ onSwitch }: PageWinnersProps) {
         </div>
         <div className="stat-row" style={{marginTop:'1px'}}>
           <div className="stat-block"><div className="sb-n">527</div><div className="sb-l">Awards Given</div><div className="sb-d">Recognizing excellence across multiple categories</div></div>
-          <div className="stat-block" style={{gridColumn:'span 2'}}><div style={{fontSize:'.78rem',color:'var(--gray)',lineHeight:1.8,paddingTop:'.5rem'}}>Grand Prix, Gold, Silver, and Bronze Awards recognizing outstanding achievement across multiple categories. Each award represents exceptional innovation, presentation skills, and potential real-world impact.<br /><br />All participants receive digital certificates and badges that can be shared across professional networks.</div></div>
+          <div className="stat-block" style={{gridColumn:'span 2'}}><div style={{fontSize:'.92rem',color:'var(--gray)',lineHeight:1.8,paddingTop:'.5rem'}}>Grand Prix, Gold, Silver, and Bronze Awards recognizing outstanding achievement across multiple categories. Each award represents exceptional innovation, presentation skills, and potential real-world impact.<br /><br />All participants receive digital certificates and badges that can be shared across professional networks.</div></div>
         </div>
 
         <div className="div-line"></div>
@@ -87,7 +87,7 @@ export default function PageWinners({ onSwitch }: PageWinnersProps) {
         </div>
         <div style={{background:'rgba(37,99,235,.05)',border:'1px solid rgba(59,130,246,.18)',padding:'1.2rem',marginTop:'1rem'}}>
           <strong style={{color:'var(--amber)'}}>💡 Tip for 2026 participants:</strong><br />
-          <span style={{fontSize:'.84rem',color:'var(--lgray)'}}>Show your Impact with numbers! Quantify how many people your solution helps, the percentage improvement over existing solutions, or the potential cost savings. Specific metrics make your impact instantly clear to judges.</span>
+          <span style={{fontSize:'1rem',color:'var(--lgray)'}}>Show your Impact with numbers! Quantify how many people your solution helps, the percentage improvement over existing solutions, or the potential cost savings. Specific metrics make your impact instantly clear to judges.</span>
         </div>
 
         <div className="div-line"></div>
@@ -100,8 +100,8 @@ export default function PageWinners({ onSwitch }: PageWinnersProps) {
 
         <div className="div-line"></div>
         <div style={{textAlign:'center',padding:'1.5rem',background:'var(--dark)',border:'1px solid var(--border)'}}>
-          <p style={{fontSize:'.85rem',color:'var(--gray)',marginBottom:'1rem'}}>2024 and previous year award lists available upon request</p>
-          <a href="mailto:Team@aijam.org" style={{color:'var(--blue2)',fontSize:'.85rem'}}>Team@aijam.org</a>
+          <p style={{fontSize:'1rem',color:'var(--gray)',marginBottom:'1rem'}}>2024 and previous year award lists available upon request</p>
+          <a href="mailto:Team@aijam.org" style={{color:'var(--blue2)',fontSize:'1rem'}}>Team@aijam.org</a>
           <div style={{marginTop:'1.2rem'}}>
             <button className="btn-main" onClick={() => onSwitch('register')}>🚀 Register for 2026 →</button>
           </div>
