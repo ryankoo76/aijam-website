@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 
 interface PageHomeProps {
   onSwitch: (page: string) => void;
-  onDlGuide: () => void;
 }
 
-export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
+export default function PageHome({ onSwitch }: PageHomeProps) {
   const [countdown, setCountdown] = useState({ d: '--', h: '--', m: '--', s: '--' });
 
   useEffect(() => {
@@ -48,7 +47,7 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
           </div>
           <div className="hero-btns">
             <button className="btn-main" onClick={() => onSwitch('register')}>🚀 Register for 2026</button>
-            <button className="btn-sec" onClick={onDlGuide}>📄 Download Guidebook</button>
+            <a className="btn-sec" href="/AIJAM_Guidebook_2026.pdf" download="AIJAM_Guidebook_2026.pdf" target="_blank" rel="noopener noreferrer">📥 Download Official Guidebook (PDF)</a>
             <button className="btn-sec" onClick={() => onSwitch('winners')}>🏆 See 2025 Winners</button>
           </div>
           <div className="hero-stats">
@@ -368,7 +367,7 @@ export default function PageHome({ onSwitch, onDlGuide }: PageHomeProps) {
           <div style={{display:'inline-flex',alignItems:'center',gap:'.6rem',background:'rgba(239,68,68,.07)',border:'1px solid rgba(239,68,68,.18)',padding:'.65rem 1.3rem',marginBottom:'1.8rem',fontSize:'1rem'}}>🔴&nbsp;<span>Final Deadline: <strong style={{color:'var(--red)'}}>August 30, 2026</strong> · Results: <strong style={{color:'var(--green)'}}>September 6, 2026</strong></span></div>
           <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap'}}>
             <button className="btn-main" onClick={() => onSwitch('register')}>🚀 Register Now</button>
-            <button className="btn-sec" onClick={onDlGuide}>📄 Download Guidebook</button>
+            <a className="btn-sec" href="/AIJAM_Guidebook_2026.pdf" download="AIJAM_Guidebook_2026.pdf" target="_blank" rel="noopener noreferrer">📥 Download Official Guidebook (PDF)</a>
           </div>
           <p style={{marginTop:'1.2rem',fontSize:'.82rem',color:'rgba(148,163,184,.4)'}}>📍 855 Maude Avenue, Mountain View, CA · ✉ Team@aijam.org</p>
         </div>

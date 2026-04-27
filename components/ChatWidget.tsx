@@ -14,7 +14,7 @@ const faqs: Record<string, string> = {
   result: 'Results are announced online on September 6, 2026. Online announcement only.',
   about: 'AI-JAM US was founded in 2015 by Mr. Rayn Koo. Now in its 11th year with 10,000+ participants from 72+ countries, based in Mountain View, CA.',
   winner: 'Download the full 2025 Award List PDF from the Winners page. For 2024 and earlier: Team@aijam.org',
-  guide: 'Click "Download Official Guidebook" button. Registered participants get it automatically by email.',
+  guide: 'Download the Official Guidebook PDF here: /AIJAM_Guidebook_2026.pdf — Registered participants also get it automatically by email.',
 };
 
 const toasts = [

@@ -2,11 +2,7 @@
 
 import { useState } from 'react';
 
-interface PageRegisterProps {
-  onDlGuide: () => void;
-}
-
-export default function PageRegister({ onDlGuide }: PageRegisterProps) {
+export default function PageRegister() {
   const [fn, setFn] = useState('');
   const [ln, setLn] = useState('');
   const [em, setEm] = useState('');
@@ -50,7 +46,7 @@ export default function PageRegister({ onDlGuide }: PageRegisterProps) {
                 <li>Submission checklist</li>
                 <li>Key dates and FAQ</li>
               </ul>
-              <button className="btn-dl" onClick={onDlGuide}>📥 Download Official Guidebook (PDF)</button>
+              <a className="btn-dl" href="/AIJAM_Guidebook_2026.pdf" download="AIJAM_Guidebook_2026.pdf" target="_blank" rel="noopener noreferrer">📥 Download Official Guidebook (PDF)</a>
             </div>
 
             <div className="wyg">
