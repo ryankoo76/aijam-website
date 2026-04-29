@@ -1,19 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 // ── Shared style tokens ───────────────────────────────────────────────────────
 const mono = "'Space Mono', monospace";
 const sans = "'Outfit', sans-serif";
-
-const labelSt: React.CSSProperties = {
-  display: 'block',
-  fontSize: '.72rem',
-  letterSpacing: '.1em',
-  color: '#475569',
-  fontFamily: mono,
-  marginBottom: '.4rem',
-};
 
 const inputSt: React.CSSProperties = {
   width: '100%',
@@ -30,7 +21,6 @@ const inputSt: React.CSSProperties = {
 const textareaSt: React.CSSProperties = {
   ...inputSt,
   resize: 'vertical' as const,
-  minHeight: '90px',
   lineHeight: 1.6,
 };
 
@@ -79,17 +69,49 @@ const CATEGORIES = [
   'Other',
 ];
 
-// ── Field components ──────────────────────────────────────────────────────────
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+// ── Field wrapper ─────────────────────────────────────────────────────────────
+function Field({
+  label,
+  hint,
+  required,
+  optional,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  required?: boolean;
+  optional?: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <div style={fieldSt}>
-      <label style={labelSt}>{label}</label>
+      <label style={{
+        display: 'block',
+        fontSize: '.72rem',
+        letterSpacing: '.1em',
+        color: '#475569',
+        fontFamily: mono,
+        marginBottom: '.4rem',
+      }}>
+        {label}
+        {required && (
+          <span style={{ color: '#ef4444', marginLeft: '.3rem' }}>*</span>
+        )}
+        {optional && (
+          <span style={{ color: '#334155', marginLeft: '.5rem', fontSize: '.68rem', letterSpacing: '.05em' }}>
+            (optional)
+          </span>
+        )}
+      </label>
       {children}
-      {hint && <div style={{ marginTop: '.3rem', fontSize: '.75rem', color: '#475569' }}>{hint}</div>}
+      {hint && (
+        <div style={{ marginTop: '.3rem', fontSize: '.75rem', color: '#475569' }}>{hint}</div>
+      )}
     </div>
   );
 }
 
+// ── Reusable input ────────────────────────────────────────────────────────────
 function Input({
   value, onChange, placeholder, type = 'text', disabled,
 }: {
@@ -111,6 +133,7 @@ function Input({
   );
 }
 
+// ── Reusable textarea ─────────────────────────────────────────────────────────
 function Textarea({
   value, onChange, placeholder, rows = 3, maxLen, disabled,
 }: {
@@ -129,7 +152,11 @@ function Textarea({
         placeholder={placeholder}
         rows={rows}
         disabled={disabled}
-        style={{ ...textareaSt, minHeight: `${rows * 24 + 24}px`, opacity: disabled ? 0.5 : 1 }}
+        style={{
+          ...textareaSt,
+          minHeight: `${rows * 24 + 24}px`,
+          opacity: disabled ? 0.5 : 1,
+        }}
       />
       {maxLen && (
         <div style={{
@@ -147,19 +174,13 @@ function Textarea({
 }
 
 // ── Main form ─────────────────────────────────────────────────────────────────
-export default function SubmitForm({
-  email: initialEmail,
-}: {
-  email: string;
-}) {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState('');
-  const [success, setSuccess]   = useState(false);
-  const [fileName, setFileName] = useState('');
+export default function SubmitForm({ email: initialEmail }: { email: string }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState('');
+  const [success, setSuccess] = useState(false);
 
-  // ── Form state ──────────────────────────────────────────────────────────
-  const [email, setEmail]       = useState(initialEmail);
+  // Email
+  const [email, setEmail] = useState(initialEmail);
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   // Section A
@@ -172,7 +193,8 @@ export default function SubmitForm({
   const [marketability, setMarketability] = useState('');
 
   // Section B
-  const [videoUrl, setVideoUrl] = useState('');
+  const [videoUrl,    setVideoUrl]    = useState('');
+  const [slidesLink,  setSlidesLink]  = useState('');
 
   // Section C
   const [inspiration,      setInspiration]      = useState('');
@@ -187,40 +209,43 @@ export default function SubmitForm({
   const [country,       setCountry]       = useState('');
   const [postalCode,    setPostalCode]    = useState('');
 
-  const canSubmit = emailValid && !!category && !!projectTitle && !!abstract && !loading;
+  // Required: email, category, projectTitle, abstract, videoUrl
+  const canSubmit = emailValid && !!category && !!projectTitle && !!abstract && !!videoUrl && !loading;
 
-  // ── Submit handler ──────────────────────────────────────────────────────
+  // ── Submit ──────────────────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit) return;
     setLoading(true);
     setError('');
 
-    const fd = new FormData();
-    fd.append('email',          email.trim().toLowerCase());
-    fd.append('category',       category);
-    fd.append('projectTitle',   projectTitle);
-    fd.append('teamMembers',    teamMembers);
-    fd.append('abstract',       abstract);
-    fd.append('keyFeatures',    keyFeatures);
-    fd.append('socialImpact',   socialImpact);
-    fd.append('marketability',  marketability);
-    fd.append('videoUrl',       videoUrl);
-    fd.append('inspiration',    inspiration);
-    fd.append('biggestChallenge', biggestChallenge);
-    fd.append('aiRole',         aiRole);
-    fd.append('futurePlans',    futurePlans);
-    fd.append('recipientName',  recipientName);
-    fd.append('address',        address);
-    fd.append('city',           city);
-    fd.append('country',        country);
-    fd.append('postalCode',     postalCode);
-
-    const file = fileRef.current?.files?.[0];
-    if (file) fd.append('slidesFile', file);
-
     try {
-      const res  = await fetch('/api/submit', { method: 'POST', body: fd });
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email:            email.trim().toLowerCase(),
+          category,
+          projectTitle,
+          teamMembers,
+          abstract,
+          keyFeatures,
+          socialImpact,
+          marketability,
+          videoUrl,
+          slidesLink,
+          inspiration,
+          biggestChallenge,
+          aiRole,
+          futurePlans,
+          recipientName,
+          address,
+          city,
+          country,
+          postalCode,
+        }),
+      });
+
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? 'Submission failed. Please try again.');
@@ -234,7 +259,7 @@ export default function SubmitForm({
     }
   }
 
-  // ── Success screen ──────────────────────────────────────────────────────
+  // ── Success screen ──────────────────────────────────────────────────────────
   if (success) {
     return (
       <div style={{
@@ -335,14 +360,9 @@ export default function SubmitForm({
     );
   }
 
-  // ── Form ────────────────────────────────────────────────────────────────
+  // ── Form ────────────────────────────────────────────────────────────────────
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#0a0a0f',
-      padding: '2rem 1rem',
-      fontFamily: sans,
-    }}>
+    <div style={{ minHeight: '100vh', background: '#0a0a0f', padding: '2rem 1rem', fontFamily: sans }}>
       <div style={{ maxWidth: '680px', margin: '0 auto' }}>
 
         {/* Page header */}
@@ -355,12 +375,8 @@ export default function SubmitForm({
           </div>
         </div>
 
-        {/* Form title bar */}
-        <div style={{
-          background: 'linear-gradient(135deg,#1e40af,#7c3aed)',
-          padding: '1.2rem 2rem',
-          marginBottom: '0',
-        }}>
+        {/* Title bar */}
+        <div style={{ background: 'linear-gradient(135deg,#1e40af,#7c3aed)', padding: '1.2rem 2rem' }}>
           <div style={{ fontSize: '.68rem', letterSpacing: '.15em', color: 'rgba(255,255,255,.6)', fontFamily: mono, marginBottom: '.3rem' }}>
             PROJECT SUBMISSION FORM
           </div>
@@ -370,7 +386,8 @@ export default function SubmitForm({
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* ── Email field ─────────────────────────────────────────────── */}
+
+          {/* ── Email ──────────────────────────────────────────────────────── */}
           <div style={{
             background: '#111118',
             border: '1px solid rgba(255,255,255,.1)',
@@ -378,12 +395,12 @@ export default function SubmitForm({
             padding: '1.5rem 2rem',
             marginBottom: '1.5rem',
           }}>
-            <Field label="REGISTERED EMAIL">
+            <Field label="REGISTERED EMAIL" required>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="Your registration email"
+                placeholder="Required"
                 disabled={loading}
                 style={{
                   ...inputSt,
@@ -399,7 +416,7 @@ export default function SubmitForm({
             </Field>
           </div>
 
-          {/* ══ Section A — Basic Information ══════════════════════════════ */}
+          {/* ══ Section A — Basic Information ══════════════════════════════════ */}
           <div style={{
             background: '#111118',
             border: '1px solid rgba(255,255,255,.1)',
@@ -411,12 +428,13 @@ export default function SubmitForm({
               <div>
                 <div style={sectionTitleSt}>BASIC INFORMATION</div>
                 <div style={{ fontSize: '.8rem', color: '#475569', marginTop: '.2rem' }}>
-                  Required · Category, title, team, and project overview
+                  Category, title, and project overview
                 </div>
               </div>
             </div>
 
-            <Field label="CATEGORY *">
+            {/* Category — required */}
+            <Field label="CATEGORY" required>
               <select
                 value={category}
                 onChange={e => setCategory(e.target.value)}
@@ -428,23 +446,29 @@ export default function SubmitForm({
                   opacity: loading ? 0.5 : 1,
                 }}
               >
-                <option value="">Select a category…</option>
+                <option value="">Required — select a category…</option>
                 {CATEGORIES.map(c => (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
             </Field>
 
-            <Field label="PROJECT TITLE *">
+            {/* Project title — required */}
+            <Field label="PROJECT TITLE" required>
               <Input
                 value={projectTitle}
                 onChange={setProjectTitle}
-                placeholder="The name of your AI project"
+                placeholder="Required"
                 disabled={loading}
               />
             </Field>
 
-            <Field label="TEAM MEMBERS" hint="Full names of all team members, one per line">
+            {/* Team members — optional */}
+            <Field
+              label="TEAM MEMBERS"
+              optional
+              hint="Full names of all team members, one per line"
+            >
               <Textarea
                 value={teamMembers}
                 onChange={setTeamMembers}
@@ -454,18 +478,20 @@ export default function SubmitForm({
               />
             </Field>
 
-            <Field label="ABSTRACT *" hint="Summarize your project in 500 characters or less">
+            {/* Abstract — required, 500 char */}
+            <Field label="ABSTRACT" required hint="Summarize your project in 500 characters or less">
               <Textarea
                 value={abstract}
                 onChange={setAbstract}
-                placeholder="A concise summary of your project, its goal, and how AI plays a role…"
+                placeholder="Required — a concise summary of your project, its goal, and how AI plays a role…"
                 rows={4}
                 maxLen={500}
                 disabled={loading}
               />
             </Field>
 
-            <Field label="KEY FEATURES" hint="What makes your project unique?">
+            {/* Key features — optional */}
+            <Field label="KEY FEATURES" optional hint="What makes your project unique?">
               <Textarea
                 value={keyFeatures}
                 onChange={setKeyFeatures}
@@ -475,7 +501,8 @@ export default function SubmitForm({
               />
             </Field>
 
-            <Field label="SOCIAL IMPACT" hint="How does your project benefit society?">
+            {/* Social impact — optional */}
+            <Field label="SOCIAL IMPACT" optional hint="How does your project benefit society?">
               <Textarea
                 value={socialImpact}
                 onChange={setSocialImpact}
@@ -485,7 +512,8 @@ export default function SubmitForm({
               />
             </Field>
 
-            <Field label="MARKETABILITY" hint="Who are the target users? What is the potential market?">
+            {/* Marketability — optional */}
+            <Field label="MARKETABILITY" optional hint="Who are the target users? What is the potential market?">
               <Textarea
                 value={marketability}
                 onChange={setMarketability}
@@ -496,7 +524,7 @@ export default function SubmitForm({
             </Field>
           </div>
 
-          {/* ══ Section B — Media ════════════════════════════════════════════ */}
+          {/* ══ Section B — Media ════════════════════════════════════════════════ */}
           <div style={{
             background: '#111118',
             border: '1px solid rgba(255,255,255,.1)',
@@ -508,62 +536,62 @@ export default function SubmitForm({
               <div>
                 <div style={sectionTitleSt}>MEDIA</div>
                 <div style={{ fontSize: '.8rem', color: '#475569', marginTop: '.2rem' }}>
-                  Video demo link and 3-slide PDF presentation
+                  Demo video link and slides presentation
                 </div>
               </div>
             </div>
 
-            <Field label="VIDEO URL" hint="YouTube or Vimeo link to your 30-second demo video">
+            {/* Video URL — required */}
+            <Field
+              label="VIDEO URL"
+              required
+              hint="YouTube or Vimeo link to your 30-second demo video"
+            >
               <Input
                 value={videoUrl}
                 onChange={setVideoUrl}
-                placeholder="https://www.youtube.com/watch?v=..."
+                placeholder="Required — https://www.youtube.com/watch?v=..."
                 type="url"
                 disabled={loading}
               />
             </Field>
 
-            <Field label="SLIDES PDF" hint="Upload your 3-slide presentation (PDF, max 20 MB)">
-              <div
-                onClick={() => !loading && fileRef.current?.click()}
-                style={{
-                  border: '1px dashed rgba(255,255,255,.2)',
-                  padding: '1.5rem',
-                  textAlign: 'center',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  opacity: loading ? 0.5 : 1,
-                  background: 'rgba(255,255,255,.02)',
-                  transition: 'border-color .2s',
-                }}
-              >
-                {fileName ? (
-                  <div>
-                    <div style={{ fontSize: '1.5rem', marginBottom: '.4rem' }}>📄</div>
-                    <div style={{ fontSize: '.88rem', color: '#10b981', fontWeight: 600 }}>{fileName}</div>
-                    <div style={{ fontSize: '.75rem', color: '#475569', marginTop: '.2rem' }}>Click to change file</div>
-                  </div>
-                ) : (
-                  <div>
-                    <div style={{ fontSize: '1.8rem', marginBottom: '.4rem' }}>📎</div>
-                    <div style={{ fontSize: '.88rem', color: '#94a3b8' }}>Click to select PDF file</div>
-                    <div style={{ fontSize: '.75rem', color: '#475569', marginTop: '.2rem' }}>PDF only · Max 20 MB</div>
-                  </div>
-                )}
-              </div>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="application/pdf"
-                style={{ display: 'none' }}
-                onChange={e => {
-                  const f = e.target.files?.[0];
-                  setFileName(f ? f.name : '');
-                }}
+            {/* Slides link — optional */}
+            <Field
+              label="SLIDES LINK"
+              optional
+              hint="Upload your slides to Google Drive or Dropbox and paste the shareable link here"
+            >
+              <Input
+                value={slidesLink}
+                onChange={setSlidesLink}
+                placeholder="https://drive.google.com/... or https://dropbox.com/..."
+                type="url"
+                disabled={loading}
               />
             </Field>
+
+            {/* Email alternative */}
+            <div style={{
+              background: 'rgba(255,255,255,.02)',
+              border: '1px solid rgba(255,255,255,.06)',
+              padding: '.8rem 1rem',
+              fontSize: '.78rem',
+              color: '#475569',
+              lineHeight: 1.7,
+            }}>
+              Or email your slides to{' '}
+              <a href="mailto:team@aijam.org" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                team@aijam.org
+              </a>
+              {' '}with subject:{' '}
+              <span style={{ color: '#94a3b8', fontFamily: mono, fontSize: '.72rem' }}>
+                [Your Project Title] Slides
+              </span>
+            </div>
           </div>
 
-          {/* ══ Section C — Team Story ════════════════════════════════════════ */}
+          {/* ══ Section C — Team Story ════════════════════════════════════════════ */}
           <div style={{
             background: '#111118',
             border: '1px solid rgba(255,255,255,.1)',
@@ -575,12 +603,12 @@ export default function SubmitForm({
               <div>
                 <div style={sectionTitleSt}>TEAM STORY</div>
                 <div style={{ fontSize: '.8rem', color: '#475569', marginTop: '.2rem' }}>
-                  Tell the story behind your project
+                  All fields optional — tell the story behind your project
                 </div>
               </div>
             </div>
 
-            <Field label="INSPIRATION" hint="What problem or idea inspired this project?">
+            <Field label="INSPIRATION" optional hint="What problem or idea inspired this project?">
               <Textarea
                 value={inspiration}
                 onChange={setInspiration}
@@ -590,7 +618,7 @@ export default function SubmitForm({
               />
             </Field>
 
-            <Field label="BIGGEST CHALLENGE" hint="What was the hardest part of building this?">
+            <Field label="BIGGEST CHALLENGE" optional hint="What was the hardest part of building this?">
               <Textarea
                 value={biggestChallenge}
                 onChange={setBiggestChallenge}
@@ -600,7 +628,7 @@ export default function SubmitForm({
               />
             </Field>
 
-            <Field label="ROLE OF AI" hint="How is artificial intelligence used in your project?">
+            <Field label="ROLE OF AI" optional hint="How is artificial intelligence used in your project?">
               <Textarea
                 value={aiRole}
                 onChange={setAiRole}
@@ -610,7 +638,7 @@ export default function SubmitForm({
               />
             </Field>
 
-            <Field label="FUTURE PLANS" hint="Where do you see this project going?">
+            <Field label="FUTURE PLANS" optional hint="Where do you see this project going?">
               <Textarea
                 value={futurePlans}
                 onChange={setFuturePlans}
@@ -621,7 +649,7 @@ export default function SubmitForm({
             </Field>
           </div>
 
-          {/* ══ Section D — Shipping Address ════════════════════════════════ */}
+          {/* ══ Section D — Shipping Address ══════════════════════════════════════ */}
           <div style={{
             background: '#111118',
             border: '1px solid rgba(255,255,255,.1)',
@@ -633,12 +661,12 @@ export default function SubmitForm({
               <div>
                 <div style={sectionTitleSt}>SHIPPING ADDRESS</div>
                 <div style={{ fontSize: '.8rem', color: '#475569', marginTop: '.2rem' }}>
-                  For award delivery · Optional but required to receive physical prizes
+                  All fields optional — required only to receive physical awards
                 </div>
               </div>
             </div>
 
-            <Field label="RECIPIENT NAME">
+            <Field label="RECIPIENT NAME" optional>
               <Input
                 value={recipientName}
                 onChange={setRecipientName}
@@ -647,7 +675,7 @@ export default function SubmitForm({
               />
             </Field>
 
-            <Field label="STREET ADDRESS">
+            <Field label="STREET ADDRESS" optional>
               <Input
                 value={address}
                 onChange={setAddress}
@@ -657,20 +685,20 @@ export default function SubmitForm({
             </Field>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <Field label="CITY">
+              <Field label="CITY" optional>
                 <Input value={city} onChange={setCity} placeholder="City" disabled={loading} />
               </Field>
-              <Field label="POSTAL CODE">
+              <Field label="POSTAL CODE" optional>
                 <Input value={postalCode} onChange={setPostalCode} placeholder="ZIP / Postal code" disabled={loading} />
               </Field>
             </div>
 
-            <Field label="COUNTRY">
+            <Field label="COUNTRY" optional>
               <Input value={country} onChange={setCountry} placeholder="Country" disabled={loading} />
             </Field>
           </div>
 
-          {/* ── Error ──────────────────────────────────────────────────────── */}
+          {/* ── Error ────────────────────────────────────────────────────────── */}
           {error && (
             <div style={{
               background: 'rgba(239,68,68,.06)',
@@ -684,7 +712,7 @@ export default function SubmitForm({
             </div>
           )}
 
-          {/* ── Submit button ───────────────────────────────────────────────── */}
+          {/* ── Submit button ─────────────────────────────────────────────────── */}
           <button
             type="submit"
             disabled={!canSubmit}
@@ -708,18 +736,31 @@ export default function SubmitForm({
             {loading ? '⏳ Submitting...' : '🚀 Submit Project'}
           </button>
 
+          {/* Hint when button is disabled */}
           {!canSubmit && !loading && (
             <div style={{ textAlign: 'center', fontSize: '.78rem', color: '#475569', marginBottom: '1.5rem' }}>
               {!emailValid
-                ? 'Enter a valid email to continue.'
-                : !category || !projectTitle || !abstract
-                  ? 'Category, Project Title, and Abstract are required (marked *).'
-                  : ''}
+                ? 'Enter a valid email address to continue.'
+                : !category
+                  ? 'Select a category (Section A) to continue.'
+                  : !projectTitle
+                    ? 'Enter a project title (Section A) to continue.'
+                    : !abstract
+                      ? 'Enter an abstract (Section A) to continue.'
+                      : !videoUrl
+                        ? 'Enter a video URL (Section B) to continue.'
+                        : ''}
             </div>
           )}
 
+          {/* Required fields legend */}
+          <div style={{ textAlign: 'center', fontSize: '.75rem', color: '#334155', marginBottom: '.6rem' }}>
+            <span style={{ color: '#ef4444' }}>*</span> Required fields
+          </div>
+
           <div style={{ textAlign: 'center', fontSize: '.78rem', color: '#334155', marginBottom: '1.5rem' }}>
-            Submission deadline: <span style={{ color: '#ef4444', fontWeight: 600 }}>August 30, 2026 · 11:59 PM PT</span>
+            Submission deadline:{' '}
+            <span style={{ color: '#ef4444', fontWeight: 600 }}>August 30, 2026 · 11:59 PM PT</span>
           </div>
         </form>
 
