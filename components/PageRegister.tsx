@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+type Status = 'idle' | 'loading' | 'success' | 'error';
+
 export default function PageRegister() {
   const [fn, setFn] = useState('');
   const [ln, setLn] = useState('');
@@ -11,19 +13,48 @@ export default function PageRegister() {
   const [sc, setSc] = useState('');
   const [ch1, setCh1] = useState(false);
   const [ch2, setCh2] = useState(true);
-  const [submitted, setSubmitted] = useState(false);
-  const [btnText, setBtnText] = useState('🚀 COMPLETE REGISTRATION');
-  const [btnStyle, setBtnStyle] = useState({});
+  const [status, setStatus] = useState<Status>('idle');
 
-  function submitForm() {
+  async function submitForm() {
     if (!fn || !em || !co || !pt || !sc) {
       alert('Please fill in all required fields (*)');
       return;
     }
-    setSubmitted(true);
-    setBtnText('✅ Registered!');
-    setBtnStyle({ background: 'var(--green)' });
+    if (!ch2) {
+      alert('Please agree to the Terms and Conditions to proceed.');
+      return;
+    }
+
+    setStatus('loading');
+
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: fn,
+          lastName: ln,
+          email: em,
+          country: co,
+          participantType: pt,
+          school: sc,
+          isTeacher: ch1,
+        }),
+      });
+
+      if (res.ok) {
+        setStatus('success');
+      } else {
+        console.error('[register] API error:', await res.text());
+        setStatus('error');
+      }
+    } catch (err) {
+      console.error('[register] Network error:', err);
+      setStatus('error');
+    }
   }
+
+  const isLoading = status === 'loading';
 
   return (
     <div id="page-register" className="page active">
@@ -73,14 +104,14 @@ export default function PageRegister() {
             <div className="fh">REGISTER NOW</div>
             <div className="fs">11th International AI Invention Challenge · Deadline: August 30, 2026 · Results: September 6, 2026<br />Participation fee details will be sent to your email after registration.</div>
             <div className="fr">
-              <div><label className="fl">First Name *</label><input type="text" className="fi" placeholder="Sarah" value={fn} onChange={e => setFn(e.target.value)} /></div>
-              <div><label className="fl">Last Name *</label><input type="text" className="fi" placeholder="Kim" value={ln} onChange={e => setLn(e.target.value)} /></div>
+              <div><label className="fl">First Name *</label><input type="text" className="fi" placeholder="Sarah" value={fn} onChange={e => setFn(e.target.value)} disabled={isLoading || status === 'success'} /></div>
+              <div><label className="fl">Last Name</label><input type="text" className="fi" placeholder="Kim" value={ln} onChange={e => setLn(e.target.value)} disabled={isLoading || status === 'success'} /></div>
             </div>
-            <div className="fg"><label className="fl">Email Address *</label><input type="email" className="fi" placeholder="sarah@school.edu" value={em} onChange={e => setEm(e.target.value)} /></div>
+            <div className="fg"><label className="fl">Email Address *</label><input type="email" className="fi" placeholder="sarah@school.edu" value={em} onChange={e => setEm(e.target.value)} disabled={isLoading || status === 'success'} /></div>
             <div className="fr">
               <div>
                 <label className="fl">Country *</label>
-                <select className="fi" value={co} onChange={e => setCo(e.target.value)}>
+                <select className="fi" value={co} onChange={e => setCo(e.target.value)} disabled={isLoading || status === 'success'}>
                   <option value="">Select Country</option>
                   <option>Vietnam</option><option>Indonesia</option><option>Malaysia</option>
                   <option>Korea</option><option>United States</option><option>Japan</option>
@@ -89,7 +120,7 @@ export default function PageRegister() {
               </div>
               <div>
                 <label className="fl">I am a *</label>
-                <select className="fi" value={pt} onChange={e => setPt(e.target.value)}>
+                <select className="fi" value={pt} onChange={e => setPt(e.target.value)} disabled={isLoading || status === 'success'}>
                   <option value="">Select</option>
                   <option>Student — Individual</option>
                   <option>Student Team (2–5 members)</option>
@@ -97,14 +128,30 @@ export default function PageRegister() {
                 </select>
               </div>
             </div>
-            <div className="fg"><label className="fl">School / University *</label><input type="text" className="fi" placeholder="Your school name" value={sc} onChange={e => setSc(e.target.value)} /></div>
-            <div className="fck"><input type="checkbox" id="ch1" checked={ch1} onChange={e => setCh1(e.target.checked)} /><label htmlFor="ch1">I am a teacher — please send the Class Pack (90-min lesson plan + CPD credit)</label></div>
-            <div className="fck"><input type="checkbox" id="ch2" checked={ch2} onChange={e => setCh2(e.target.checked)} /><label htmlFor="ch2">I agree to the Terms and Conditions. Submission deadline is August 30, 2026.</label></div>
-            <button className="btn-sub" style={btnStyle} onClick={submitForm}>{btnText}</button>
-            {submitted && (
+            <div className="fg"><label className="fl">School / University *</label><input type="text" className="fi" placeholder="Your school name" value={sc} onChange={e => setSc(e.target.value)} disabled={isLoading || status === 'success'} /></div>
+            <div className="fck"><input type="checkbox" id="ch1" checked={ch1} onChange={e => setCh1(e.target.checked)} disabled={isLoading || status === 'success'} /><label htmlFor="ch1">I am a teacher — please send the Class Pack (90-min lesson plan + CPD credit)</label></div>
+            <div className="fck"><input type="checkbox" id="ch2" checked={ch2} onChange={e => setCh2(e.target.checked)} disabled={isLoading || status === 'success'} /><label htmlFor="ch2">I agree to the Terms and Conditions. Submission deadline is August 30, 2026.</label></div>
+
+            <button
+              className="btn-sub"
+              onClick={submitForm}
+              disabled={isLoading || status === 'success'}
+              style={status === 'success' ? { background: 'var(--green)' } : {}}
+            >
+              {isLoading ? 'Submitting...' : status === 'success' ? '✅ Registered!' : '🚀 COMPLETE REGISTRATION'}
+            </button>
+
+            {status === 'success' && (
               <div className="suc">
                 <h4>✅ Registration Complete!</h4>
                 <p>Confirmation email sent with participation details and Guidebook link.<br />Welcome to AI-JAM US 2026!</p>
+              </div>
+            )}
+
+            {status === 'error' && (
+              <div className="suc" style={{borderColor:'var(--red)',background:'rgba(239,68,68,.06)'}}>
+                <h4 style={{color:'var(--red)'}}>⚠ Something went wrong.</h4>
+                <p>Please email <a href="mailto:team@aijam.org" style={{color:'var(--blue2)'}}>team@aijam.org</a> to complete your registration.</p>
               </div>
             )}
           </div>
