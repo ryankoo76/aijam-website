@@ -6,24 +6,80 @@ import { sendPaymentConfirmation } from '@/lib/email';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+// ── Helper: log Supabase error with full detail ───────────────────────────────
+function logSupabaseError(tag: string, err: unknown) {
+  if (err && typeof err === 'object') {
+    const e = err as Record<string, unknown>;
+    console.error(`[success] ${tag} error:`, {
+      message: e.message,
+      code:    e.code,
+      details: e.details,
+      hint:    e.hint,
+      status:  e.status,
+      raw:     JSON.stringify(err),
+    });
+  } else {
+    console.error(`[success] ${tag} error (raw):`, err);
+  }
+}
+
 async function SuccessContent({ sessionId }: { sessionId: string }) {
-  // ── Retrieve Stripe session ───────────────────────────────────────────────
+  // ── 1. Env diagnostics ────────────────────────────────────────────────────
+  const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL  ?? '';
+  const supabaseKey  = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+  const stripeKey    = process.env.STRIPE_SECRET_KEY         ?? '';
+
+  console.log('[success] env check —', {
+    supabaseUrlPresent:  !!supabaseUrl,
+    supabaseUrlPrefix:   supabaseUrl  ? supabaseUrl.slice(0, 30)  + '...' : 'MISSING',
+    supabaseKeyPresent:  !!supabaseKey,
+    supabaseKeyPrefix:   supabaseKey  ? supabaseKey.slice(0, 10)  + '...' : 'MISSING',
+    stripeKeyPresent:    !!stripeKey,
+    sessionId,
+  });
+
+  // ── 2. Retrieve Stripe session ────────────────────────────────────────────
   let session: Stripe.Checkout.Session;
   try {
     session = await stripe.checkout.sessions.retrieve(sessionId);
-  } catch {
+    console.log('[success] Stripe session retrieved —', {
+      id:              session.id,
+      payment_status:  session.payment_status,
+      customer_email:  session.customer_email,
+      metadata:        session.metadata,
+      amount_total:    session.amount_total,
+      currency:        session.currency,
+    });
+  } catch (err) {
+    console.error('[success] Failed to retrieve Stripe session:', err);
     return <ErrorCard message="Could not verify payment. Please contact team@aijam.org." />;
   }
 
   if (session.payment_status !== 'paid') {
+    console.warn('[success] payment_status is not "paid":', session.payment_status);
     return <ErrorCard message="Payment not completed. Please try again." />;
   }
 
-  const email = (session.metadata?.email ?? session.customer_email ?? '').toLowerCase();
+  // ── 3. Extract email ──────────────────────────────────────────────────────
+  const emailRaw = session.metadata?.email ?? session.customer_email ?? '';
+  const email    = emailRaw.trim().toLowerCase();
+
+  console.log('[success] email resolved —', {
+    fromMetadata:      session.metadata?.email    ?? '(none)',
+    fromCustomerEmail: session.customer_email      ?? '(none)',
+    resolved:          email || '(EMPTY — this will cause registration update to match 0 rows)',
+  });
+
+  if (!email) {
+    console.error('[success] email is empty — cannot update records');
+    // Continue anyway so user sees success UI; admin must reconcile manually
+  }
+
   const amountTotal = session.amount_total ?? 3000;
 
-  // ── Upsert into aijam_payments ────────────────────────────────────────────
-  const { error: payError } = await supabaseAdmin
+  // ── 4. Upsert into aijam_payments ─────────────────────────────────────────
+  console.log('[success] upserting aijam_payments for:', email);
+  const { data: payData, error: payError } = await supabaseAdmin
     .from('aijam_payments')
     .upsert(
       {
@@ -34,29 +90,44 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
         status: 'completed',
       },
       { onConflict: 'stripe_session_id' }
-    );
+    )
+    .select('id');
 
   if (payError) {
-    console.error('[success] aijam_payments upsert error:', payError);
+    logSupabaseError('aijam_payments upsert', payError);
+  } else {
+    console.log('[success] aijam_payments upsert OK — id:', payData?.[0]?.id ?? '(no id returned)');
   }
 
-  // ── Update registration submission_status → 'paid' ───────────────────────
-  const { error: regError } = await supabaseAdmin
+  // ── 5. Update aijam_registrations.submission_status → 'paid' ─────────────
+  console.log('[success] updating aijam_registrations for email:', email);
+  const { data: regData, error: regError, count } = await supabaseAdmin
     .from('aijam_registrations')
     .update({ submission_status: 'paid' })
-    .eq('email', email);
+    .eq('email', email)
+    .select('id, submission_status');
 
   if (regError) {
-    console.error('[success] aijam_registrations update error:', regError);
+    logSupabaseError('aijam_registrations update', regError);
+  } else {
+    console.log('[success] aijam_registrations update OK —', {
+      rowsUpdated: regData?.length ?? 0,
+      count,
+      rows: regData,
+    });
+    if (!regData || regData.length === 0) {
+      console.warn('[success] WARNING: 0 rows updated in aijam_registrations — email may not match any record:', email);
+    }
   }
 
-  // ── Send confirmation email (non-blocking) ───────────────────────────────
+  // ── 6. Send confirmation email (non-blocking) ─────────────────────────────
   sendPaymentConfirmation({ to: email, amount: amountTotal }).catch((err) =>
-    console.error('[success] email error:', err)
+    console.error('[success] email send error:', err)
   );
 
   const displayAmount = `$${(amountTotal / 100).toFixed(2)}`;
 
+  // ── 7. Render success UI ──────────────────────────────────────────────────
   return (
     <div style={{
       minHeight: '100vh',
@@ -125,7 +196,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
             <strong style={{ color: '#e2e8f0' }}>{email}</strong>
           </p>
 
-          {/* Details */}
+          {/* Next steps */}
           <div style={{
             background: '#1a1a2e',
             border: '1px solid rgba(255,255,255,.08)',
