@@ -141,11 +141,11 @@ export async function POST(req: NextRequest) {
       biggest_challenge:  biggestChallenge,
       ai_role:            aiRole,
       future_plans:       futurePlans,
-      recipient_name:     recipientName,
-      address,
-      city,
-      country,
-      postal_code:        postalCode,
+      shipping_name:      recipientName,
+      shipping_address:   address,
+      shipping_city:      city,
+      shipping_country:   country,
+      shipping_postal:    postalCode,
     })
     .select('id')
     .single();

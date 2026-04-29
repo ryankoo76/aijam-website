@@ -209,8 +209,12 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
   const [country,       setCountry]       = useState('');
   const [postalCode,    setPostalCode]    = useState('');
 
-  // Required: email, category, projectTitle, abstract, videoUrl
-  const canSubmit = emailValid && !!category && !!projectTitle && !!abstract && !!videoUrl && !loading;
+  // Required: email, category, projectTitle, abstract, videoUrl + all Section D
+  const canSubmit =
+    emailValid &&
+    !!category && !!projectTitle && !!abstract && !!videoUrl &&
+    !!recipientName && !!address && !!city && !!country && !!postalCode &&
+    !loading;
 
   // ── Submit ──────────────────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
@@ -661,40 +665,40 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               <div>
                 <div style={sectionTitleSt}>SHIPPING ADDRESS</div>
                 <div style={{ fontSize: '.8rem', color: '#475569', marginTop: '.2rem' }}>
-                  All fields optional — required only to receive physical awards
+                  Required for award delivery
                 </div>
               </div>
             </div>
 
-            <Field label="RECIPIENT NAME" optional>
+            <Field label="RECIPIENT NAME" required>
               <Input
                 value={recipientName}
                 onChange={setRecipientName}
-                placeholder="Full name of award recipient"
+                placeholder="Required — full name of award recipient"
                 disabled={loading}
               />
             </Field>
 
-            <Field label="STREET ADDRESS" optional>
+            <Field label="STREET ADDRESS" required>
               <Input
                 value={address}
                 onChange={setAddress}
-                placeholder="123 Main Street, Apt 4B"
+                placeholder="Required — 123 Main Street, Apt 4B"
                 disabled={loading}
               />
             </Field>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <Field label="CITY" optional>
-                <Input value={city} onChange={setCity} placeholder="City" disabled={loading} />
+              <Field label="CITY" required>
+                <Input value={city} onChange={setCity} placeholder="Required" disabled={loading} />
               </Field>
-              <Field label="POSTAL CODE" optional>
-                <Input value={postalCode} onChange={setPostalCode} placeholder="ZIP / Postal code" disabled={loading} />
+              <Field label="POSTAL CODE" required>
+                <Input value={postalCode} onChange={setPostalCode} placeholder="Required" disabled={loading} />
               </Field>
             </div>
 
-            <Field label="COUNTRY" optional>
-              <Input value={country} onChange={setCountry} placeholder="Country" disabled={loading} />
+            <Field label="COUNTRY" required>
+              <Input value={country} onChange={setCountry} placeholder="Required" disabled={loading} />
             </Field>
           </div>
 
@@ -749,7 +753,17 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
                       ? 'Enter an abstract (Section A) to continue.'
                       : !videoUrl
                         ? 'Enter a video URL (Section B) to continue.'
-                        : ''}
+                        : !recipientName
+                          ? 'Enter a recipient name (Section D) to continue.'
+                          : !address
+                            ? 'Enter a street address (Section D) to continue.'
+                            : !city
+                              ? 'Enter a city (Section D) to continue.'
+                              : !country
+                                ? 'Enter a country (Section D) to continue.'
+                                : !postalCode
+                                  ? 'Enter a postal code (Section D) to continue.'
+                                  : ''}
             </div>
           )}
 
