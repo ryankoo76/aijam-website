@@ -5,22 +5,22 @@ import { useSearchParams } from 'next/navigation';
 
 function PayContent() {
   const params = useSearchParams();
-  const email = params.get('email') ?? '';
+  const [email, setEmail] = useState(params.get('email') ?? '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const canPay = emailValid && !loading;
+
   async function handlePay() {
-    if (!email) {
-      setError('Missing email. Please register first.');
-      return;
-    }
+    if (!canPay) return;
     setLoading(true);
     setError('');
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
       const data = await res.json();
       if (!res.ok || !data.url) {
@@ -35,6 +35,8 @@ function PayContent() {
     }
   }
 
+  const showValidationHint = email.length > 0 && !emailValid;
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -46,6 +48,7 @@ function PayContent() {
       fontFamily: "'Outfit', sans-serif",
     }}>
       <div style={{ maxWidth: '480px', width: '100%' }}>
+
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <div style={{
@@ -77,7 +80,7 @@ function PayContent() {
             fontFamily: "'Space Mono', monospace",
           }}>PARTICIPATION FEE</div>
 
-          {/* Price display */}
+          {/* Price */}
           <div style={{
             display: 'flex',
             alignItems: 'flex-end',
@@ -107,34 +110,45 @@ function PayContent() {
             ))}
           </div>
 
-          {/* Email info */}
-          {email && (
-            <div style={{
-              background: 'rgba(59,130,246,.06)',
-              border: '1px solid rgba(59,130,246,.2)',
-              padding: '1rem 1.2rem',
-              marginBottom: '1.5rem',
-              fontSize: '.88rem',
+          {/* Email input */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '.72rem',
+              letterSpacing: '.1em',
+              color: '#475569',
+              fontFamily: "'Space Mono', monospace",
+              marginBottom: '.5rem',
             }}>
-              <div style={{ color: '#64748b', fontSize: '.72rem', letterSpacing: '.1em', fontFamily: "'Space Mono', monospace", marginBottom: '.4rem' }}>PAYING FOR</div>
-              <div style={{ color: '#e2e8f0', fontWeight: 600 }}>{email}</div>
-            </div>
-          )}
+              REGISTERED EMAIL
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={e => { setEmail(e.target.value); setError(''); }}
+              placeholder="Enter your registration email"
+              disabled={loading}
+              style={{
+                width: '100%',
+                boxSizing: 'border-box',
+                background: '#0a0a0f',
+                border: `1px solid ${showValidationHint ? 'rgba(239,68,68,.5)' : 'rgba(255,255,255,.12)'}`,
+                color: '#e2e8f0',
+                padding: '.75rem 1rem',
+                fontSize: '.95rem',
+                fontFamily: "'Outfit', sans-serif",
+                outline: 'none',
+                opacity: loading ? 0.5 : 1,
+              }}
+            />
+            {showValidationHint && (
+              <div style={{ marginTop: '.4rem', fontSize: '.78rem', color: '#ef4444' }}>
+                Please enter a valid email address.
+              </div>
+            )}
+          </div>
 
-          {!email && (
-            <div style={{
-              background: 'rgba(239,68,68,.06)',
-              border: '1px solid rgba(239,68,68,.2)',
-              padding: '1rem 1.2rem',
-              marginBottom: '1.5rem',
-              fontSize: '.88rem',
-              color: '#ef4444',
-            }}>
-              No email provided. Please <a href="/#register" style={{ color: '#3b82f6' }}>register first</a>.
-            </div>
-          )}
-
-          {/* Error */}
+          {/* API error */}
           {error && (
             <div style={{
               background: 'rgba(239,68,68,.06)',
@@ -149,20 +163,21 @@ function PayContent() {
           {/* Pay button */}
           <button
             onClick={handlePay}
-            disabled={loading || !email}
+            disabled={!canPay}
             style={{
               width: '100%',
               padding: '1rem',
-              background: loading || !email
-                ? 'rgba(59,130,246,.3)'
-                : 'linear-gradient(135deg,#1e40af,#0891b2)',
-              color: '#fff',
+              background: canPay
+                ? 'linear-gradient(135deg,#1e40af,#0891b2)'
+                : 'rgba(59,130,246,.2)',
+              color: canPay ? '#fff' : '#64748b',
               border: 'none',
               fontSize: '1rem',
               fontWeight: 700,
               letterSpacing: '.06em',
-              cursor: loading || !email ? 'not-allowed' : 'pointer',
+              cursor: canPay ? 'pointer' : 'not-allowed',
               fontFamily: "'Outfit', sans-serif",
+              transition: 'background .2s',
             }}
           >
             {loading ? 'Redirecting to Stripe...' : '💳 Pay $30 Now'}
