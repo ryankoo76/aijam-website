@@ -6,13 +6,19 @@ export async function POST(req: NextRequest) {
   console.log('[submit] POST called');
 
   // ── 1. Env diagnostics ────────────────────────────────────────────────────
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+  const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL  ?? '';
+  const supabaseKey  = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+  const resendKey    = process.env.RESEND_API_KEY            ?? '';
+  const fromEmail    = process.env.FROM_EMAIL                ?? '';
   console.log('[submit] env check —', {
     supabaseUrlPresent: !!supabaseUrl,
-    supabaseUrlPrefix:  supabaseUrl  ? supabaseUrl.slice(0, 30)  + '...' : 'MISSING',
+    supabaseUrlPrefix:  supabaseUrl ? supabaseUrl.slice(0, 30) + '...' : 'MISSING',
     supabaseKeyPresent: !!supabaseKey,
-    supabaseKeyPrefix:  supabaseKey  ? supabaseKey.slice(0, 10)  + '...' : 'MISSING',
+    supabaseKeyPrefix:  supabaseKey ? supabaseKey.slice(0, 10) + '...' : 'MISSING',
+    resendKeyPresent:   !!resendKey,
+    resendKeyPrefix:    resendKey   ? resendKey.slice(0, 10)   + '...' : 'MISSING',
+    fromEmailPresent:   !!fromEmail,
+    fromEmail:          fromEmail   || '(not set — will fall back to team@aijam.org)',
   });
 
   // ── 2. Parse JSON body ────────────────────────────────────────────────────
@@ -231,11 +237,23 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 8. Send confirmation email (non-blocking) ─────────────────────────────
-  sendSubmissionConfirmation({
-    to: email,
-    firstName: reg.first_name ?? 'Participant',
-    projectTitle,
-  }).catch((err) => console.error('[submit] Confirmation email error:', err));
+  void (async () => {
+    try {
+      console.log('[submit] Sending confirmation email to:', email);
+      const result = await sendSubmissionConfirmation({
+        to:           email,
+        firstName:    reg.first_name ?? 'Participant',
+        projectTitle,
+      });
+      if (result.error) {
+        console.error('[submit] Confirmation email — Resend API error:', JSON.stringify(result.error));
+      } else {
+        console.log('[submit] Confirmation email sent — Resend id:', result.data?.id);
+      }
+    } catch (err) {
+      console.error('[submit] Confirmation email threw exception:', err);
+    }
+  })();
 
   console.log('[submit] Done — returning success for:', email);
   return NextResponse.json({ success: true, id: submission.id });

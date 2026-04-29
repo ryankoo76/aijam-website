@@ -3,6 +3,13 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.FROM_EMAIL ?? 'team@aijam.org';
 
+// Module-level env check (shows up in Vercel function logs on cold start)
+console.log('[email] module init —', {
+  resendKeyPresent: !!process.env.RESEND_API_KEY,
+  resendKeyPrefix:  process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.slice(0, 10) + '...' : 'MISSING',
+  fromEmail:        FROM,
+});
+
 // ─── Email 1: Participant confirmation ───────────────────────────────────────
 export async function sendRegistrationConfirmed({
   to,
@@ -223,6 +230,7 @@ export async function sendSubmissionConfirmation({
   firstName: string;
   projectTitle: string;
 }) {
+  console.log('[email] sendSubmissionConfirmation — to:', to, '| from:', FROM, '| project:', projectTitle.slice(0, 40));
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -300,12 +308,20 @@ export async function sendSubmissionConfirmation({
 </body>
 </html>`;
 
-  return resend.emails.send({
+  const result = await resend.emails.send({
     from: FROM,
     to,
     subject: `Submission Received — AI-JAM US 2026: ${projectTitle}`,
     html,
   });
+
+  if (result.error) {
+    console.error('[email] sendSubmissionConfirmation — Resend error:', JSON.stringify(result.error));
+  } else {
+    console.log('[email] sendSubmissionConfirmation — sent OK, id:', result.data?.id);
+  }
+
+  return result;
 }
 
 // ─── Email 2: Admin notification ─────────────────────────────────────────────
