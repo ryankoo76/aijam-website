@@ -111,6 +111,108 @@ export async function sendRegistrationConfirmed({
   });
 }
 
+// ─── Email 3: Payment confirmation (participant) ──────────────────────────────
+export async function sendPaymentConfirmation({
+  to,
+  amount,
+}: {
+  to: string;
+  amount: number; // in cents
+}) {
+  const displayAmount = `$${(amount / 100).toFixed(2)}`;
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Confirmed — AI-JAM US 2026</title>
+  <style>
+    body { margin:0; padding:0; background:#0a0a0f; font-family:'Helvetica Neue',Arial,sans-serif; color:#e2e8f0; }
+    .wrap { max-width:600px; margin:0 auto; background:#111118; }
+    .header { background:linear-gradient(135deg,#065f46,#0891b2); padding:2rem 2.5rem; text-align:center; }
+    .header h1 { margin:0; font-size:2rem; letter-spacing:.06em; color:#fff; font-weight:900; }
+    .header p { margin:.4rem 0 0; font-size:.85rem; color:rgba(255,255,255,.7); letter-spacing:.1em; }
+    .body { padding:2.5rem; }
+    .confirm-badge { display:inline-block; background:rgba(16,185,129,.1); border:1px solid rgba(16,185,129,.3); color:#10b981; padding:.5rem 1.2rem; border-radius:2px; font-size:.8rem; letter-spacing:.12em; font-weight:700; margin-bottom:1.5rem; }
+    .amount-box { background:rgba(16,185,129,.05); border:1px solid rgba(16,185,129,.2); padding:1.5rem; text-align:center; margin:1.5rem 0; }
+    .amount-label { font-size:.72rem; letter-spacing:.12em; color:#475569; margin-bottom:.5rem; }
+    .amount-value { font-size:2.5rem; font-weight:900; color:#10b981; line-height:1; }
+    .info-box { background:#1a1a2e; border:1px solid rgba(255,255,255,.08); border-left:3px solid #10b981; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+    .section-title { font-size:.7rem; letter-spacing:.15em; color:#475569; margin:1.5rem 0 .6rem; font-weight:700; }
+    .info-row { display:flex; gap:.5rem; margin:.35rem 0; font-size:.9rem; }
+    .info-label { color:#64748b; min-width:90px; }
+    .info-val { color:#e2e8f0; font-weight:600; }
+    .step-row { display:flex; gap:.8rem; align-items:flex-start; margin:.5rem 0; font-size:.88rem; color:#94a3b8; line-height:1.6; }
+    .step-num { color:#10b981; font-weight:700; flex-shrink:0; }
+    .cta-btn { display:block; background:linear-gradient(135deg,#065f46,#0891b2); color:#fff; text-align:center; padding:1rem; text-decoration:none; font-weight:700; font-size:.95rem; letter-spacing:.06em; margin:1.8rem 0; }
+    .footer { background:#0a0a0f; padding:1.5rem 2.5rem; text-align:center; border-top:1px solid rgba(255,255,255,.06); }
+    .footer p { margin:.3rem 0; font-size:.75rem; color:#475569; }
+    .footer a { color:#3b82f6; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>AI·JAM US 2026</h1>
+    <p>11TH INTERNATIONAL AI INVENTION CHALLENGE</p>
+  </div>
+  <div class="body">
+    <div class="confirm-badge">✅ PAYMENT CONFIRMED</div>
+    <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">You&apos;re officially registered!</p>
+    <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
+      Your participation fee has been successfully processed.
+      Welcome to the 11th International AI Invention Challenge.
+    </p>
+
+    <div class="amount-box">
+      <div class="amount-label">AMOUNT PAID</div>
+      <div class="amount-value">${displayAmount}</div>
+      <div style="font-size:.8rem;color:#64748b;margin-top:.4rem">USD · One-time participation fee</div>
+    </div>
+
+    <div class="section-title">NEXT STEPS</div>
+    <div class="info-box">
+      <div class="step-row"><span class="step-num">1.</span><span>Download the Official Guidebook and review the submission format</span></div>
+      <div class="step-row"><span class="step-num">2.</span><span>Prepare your 3-slide presentation and 30-second video</span></div>
+      <div class="step-row"><span class="step-num">3.</span><span>Submit your project before <strong style="color:#ef4444">August 30, 2026 · 11:59 PM PT</strong></span></div>
+      <div class="step-row"><span class="step-num">4.</span><span>Results announced online: September 6, 2026</span></div>
+    </div>
+
+    <a class="cta-btn" href="https://www.aijam-us.com/AIJAM_Guidebook_2026.pdf">
+      📥 Download Official Guidebook (PDF)
+    </a>
+
+    <div class="section-title">KEY DATES</div>
+    <div class="info-box">
+      <div class="info-row"><span class="info-label">Shadow Season</span><span class="info-val">Jan – Jun 2026</span></div>
+      <div class="info-row"><span class="info-label">Deadline</span><span class="info-val" style="color:#ef4444">August 30, 2026 · 11:59 PM PT</span></div>
+      <div class="info-row"><span class="info-label">Results</span><span class="info-val" style="color:#3b82f6">September 6, 2026</span></div>
+    </div>
+
+    <p style="font-size:.85rem;color:#64748b;line-height:1.7;margin-top:1.5rem">
+      Questions? Reply to this email or contact us at
+      <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
+    </p>
+  </div>
+  <div class="footer">
+    <p><strong style="color:#94a3b8">AI-JAM US · PAIAX</strong></p>
+    <p>855 Maude Avenue, Mountain View, CA</p>
+    <p><a href="mailto:team@aijam.org">team@aijam.org</a> · <a href="https://www.aijam-us.com">www.aijam-us.com</a></p>
+    <p style="margin-top:.8rem">©2016–2026 AI-JAM US. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+  return resend.emails.send({
+    from: FROM,
+    to,
+    subject: `Payment Confirmed — AI-JAM US 2026 (${displayAmount})`,
+    html,
+  });
+}
+
 // ─── Email 2: Admin notification ─────────────────────────────────────────────
 export async function sendAdminNotification({
   firstName,
