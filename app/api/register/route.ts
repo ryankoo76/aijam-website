@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     // ── Supabase insert ───────────────────────────────────────────────────────
     const { data, error: dbError } = await supabaseAdmin
-      .from('registrations')
+      .from('aijam_registrations')
       .insert({
         first_name: firstName.trim(),
         last_name: (lastName ?? '').trim(),
