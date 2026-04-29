@@ -381,3 +381,468 @@ export async function sendAdminNotification({
     html,
   });
 }
+
+// ─── Sequence Day 1: Guidebook download ──────────────────────────────────────
+export async function sendSequenceDay1({
+  to,
+  firstName,
+}: {
+  to: string;
+  firstName: string;
+}) {
+  console.log('[email] sendSequenceDay1 — to:', to);
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Official Guidebook — AI-JAM US 2026</title>
+  <style>
+    body { margin:0; padding:0; background:#0a0a0f; font-family:'Helvetica Neue',Arial,sans-serif; color:#e2e8f0; }
+    .wrap { max-width:600px; margin:0 auto; background:#111118; }
+    .header { background:linear-gradient(135deg,#1e40af,#0891b2); padding:2rem 2.5rem; text-align:center; }
+    .header h1 { margin:0; font-size:2rem; letter-spacing:.06em; color:#fff; font-weight:900; }
+    .header p { margin:.4rem 0 0; font-size:.85rem; color:rgba(255,255,255,.7); letter-spacing:.1em; }
+    .body { padding:2.5rem; }
+    .section-title { font-size:.7rem; letter-spacing:.15em; color:#475569; margin:1.5rem 0 .6rem; font-weight:700; }
+    .info-box { background:#1a1a2e; border:1px solid rgba(255,255,255,.08); border-left:3px solid #3b82f6; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+    .dl-btn { display:block; background:linear-gradient(135deg,#1e40af,#0891b2); color:#fff; text-align:center; padding:1rem; text-decoration:none; font-weight:700; font-size:.95rem; letter-spacing:.06em; margin:1.8rem 0; }
+    .checklist-row { display:flex; gap:.8rem; align-items:flex-start; margin:.5rem 0; font-size:.88rem; color:#94a3b8; line-height:1.6; }
+    .check { color:#10b981; font-weight:700; flex-shrink:0; }
+    .footer { background:#0a0a0f; padding:1.5rem 2.5rem; text-align:center; border-top:1px solid rgba(255,255,255,.06); }
+    .footer p { margin:.3rem 0; font-size:.75rem; color:#475569; }
+    .footer a { color:#3b82f6; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>AI·JAM US 2026</h1>
+    <p>11TH INTERNATIONAL AI INVENTION CHALLENGE</p>
+  </div>
+  <div class="body">
+    <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">Hi ${firstName}! 👋 Day 1 resource inside.</p>
+    <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
+      Here's your first resource to get started strong: the Official AI-JAM US 2026 Guidebook.
+      It covers everything you need to prepare a winning submission.
+    </p>
+
+    <a class="dl-btn" href="https://www.aijam-us.com/AIJAM_Guidebook_2026.pdf">
+      📥 Download Official Guidebook (PDF)
+    </a>
+
+    <div class="section-title">WHAT'S INSIDE THE GUIDEBOOK</div>
+    <div class="info-box">
+      <div class="checklist-row"><span class="check">✓</span><span>3-slide presentation format with exact specs</span></div>
+      <div class="checklist-row"><span class="check">✓</span><span>30-second video guidelines and upload instructions</span></div>
+      <div class="checklist-row"><span class="check">✓</span><span>Full judging criteria and scoring rubric</span></div>
+      <div class="checklist-row"><span class="check">✓</span><span>Category descriptions and eligibility requirements</span></div>
+      <div class="checklist-row"><span class="check">✓</span><span>Key dates and submission portal walkthrough</span></div>
+    </div>
+
+    <div class="section-title">KEY DATES</div>
+    <div class="info-box">
+      <div style="display:flex;gap:.5rem;margin:.35rem 0;font-size:.9rem"><span style="color:#64748b;min-width:90px">Deadline</span><span style="color:#ef4444;font-weight:600">August 30, 2026 · 11:59 PM PT</span></div>
+      <div style="display:flex;gap:.5rem;margin:.35rem 0;font-size:.9rem"><span style="color:#64748b;min-width:90px">Results</span><span style="color:#3b82f6;font-weight:600">September 6, 2026</span></div>
+    </div>
+
+    <p style="font-size:.85rem;color:#64748b;line-height:1.7;margin-top:1.5rem">
+      Questions? Reply to this email or contact us at
+      <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
+    </p>
+  </div>
+  <div class="footer">
+    <p><strong style="color:#94a3b8">AI-JAM US · PAIAX</strong></p>
+    <p>855 Maude Avenue, Mountain View, CA</p>
+    <p><a href="mailto:team@aijam.org">team@aijam.org</a> · <a href="https://www.aijam-us.com">www.aijam-us.com</a></p>
+    <p style="margin-top:.8rem">©2016–2026 AI-JAM US. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+  const result = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '📥 Your AI-JAM US 2026 Official Guidebook — Day 1',
+    html,
+  });
+  if (result.error) console.error('[email] sendSequenceDay1 — Resend error:', JSON.stringify(result.error));
+  else console.log('[email] sendSequenceDay1 — sent OK, id:', result.data?.id);
+  return result;
+}
+
+// ─── Sequence Day 2: Submission form + tips ───────────────────────────────────
+export async function sendSequenceDay2({
+  to,
+  firstName,
+}: {
+  to: string;
+  firstName: string;
+}) {
+  console.log('[email] sendSequenceDay2 — to:', to);
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Submit Your Project — AI-JAM US 2026</title>
+  <style>
+    body { margin:0; padding:0; background:#0a0a0f; font-family:'Helvetica Neue',Arial,sans-serif; color:#e2e8f0; }
+    .wrap { max-width:600px; margin:0 auto; background:#111118; }
+    .header { background:linear-gradient(135deg,#1e40af,#7c3aed); padding:2rem 2.5rem; text-align:center; }
+    .header h1 { margin:0; font-size:2rem; letter-spacing:.06em; color:#fff; font-weight:900; }
+    .header p { margin:.4rem 0 0; font-size:.85rem; color:rgba(255,255,255,.7); letter-spacing:.1em; }
+    .body { padding:2.5rem; }
+    .section-title { font-size:.7rem; letter-spacing:.15em; color:#475569; margin:1.5rem 0 .6rem; font-weight:700; }
+    .info-box { background:#1a1a2e; border:1px solid rgba(255,255,255,.08); border-left:3px solid #7c3aed; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+    .tip-row { display:flex; gap:.8rem; align-items:flex-start; margin:.6rem 0; font-size:.88rem; color:#94a3b8; line-height:1.6; }
+    .tip-num { color:#a78bfa; font-weight:700; flex-shrink:0; min-width:20px; }
+    .cta-btn { display:block; background:linear-gradient(135deg,#1e40af,#7c3aed); color:#fff; text-align:center; padding:1rem; text-decoration:none; font-weight:700; font-size:.95rem; letter-spacing:.06em; margin:1.8rem 0; }
+    .footer { background:#0a0a0f; padding:1.5rem 2.5rem; text-align:center; border-top:1px solid rgba(255,255,255,.06); }
+    .footer p { margin:.3rem 0; font-size:.75rem; color:#475569; }
+    .footer a { color:#3b82f6; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>AI·JAM US 2026</h1>
+    <p>11TH INTERNATIONAL AI INVENTION CHALLENGE</p>
+  </div>
+  <div class="body">
+    <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">Hi ${firstName}! Day 2 — How to Submit 🚀</p>
+    <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
+      Ready to submit your project? The submission form is live. Here's everything you need to know.
+    </p>
+
+    <a class="cta-btn" href="https://www.aijam-us.com/submit">
+      🖊 Open the Submission Form
+    </a>
+
+    <div class="section-title">WHAT YOU'LL NEED TO SUBMIT</div>
+    <div class="info-box">
+      <div class="tip-row"><span class="tip-num">1.</span><span><strong style="color:#e2e8f0">Project Title & Abstract</strong> — Clear, concise description of your AI innovation</span></div>
+      <div class="tip-row"><span class="tip-num">2.</span><span><strong style="color:#e2e8f0">3-Slide Presentation</strong> — Upload to Google Slides or Canva, paste the share link</span></div>
+      <div class="tip-row"><span class="tip-num">3.</span><span><strong style="color:#e2e8f0">30-Second Video</strong> — Demo or pitch uploaded to YouTube or Google Drive</span></div>
+      <div class="tip-row"><span class="tip-num">4.</span><span><strong style="color:#e2e8f0">Team Members</strong> — Full names of all team members (up to 4)</span></div>
+      <div class="tip-row"><span class="tip-num">5.</span><span><strong style="color:#e2e8f0">Shipping Address</strong> — Required for award certificate delivery</span></div>
+    </div>
+
+    <div class="section-title">PRO TIPS</div>
+    <div class="info-box" style="border-left-color:#10b981">
+      <div class="tip-row"><span class="tip-num" style="color:#10b981">💡</span><span>Keep your abstract under 150 words — clarity beats length every time</span></div>
+      <div class="tip-row"><span class="tip-num" style="color:#10b981">💡</span><span>Your 30-second video is the most important element — practice it 10 times</span></div>
+      <div class="tip-row"><span class="tip-num" style="color:#10b981">💡</span><span>You can re-submit as many times as you want before August 30 — don't wait for perfection</span></div>
+    </div>
+
+    <p style="font-size:.85rem;color:#64748b;line-height:1.7;margin-top:1.5rem">
+      Questions? Reply to this email or contact us at
+      <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
+    </p>
+  </div>
+  <div class="footer">
+    <p><strong style="color:#94a3b8">AI-JAM US · PAIAX</strong></p>
+    <p>855 Maude Avenue, Mountain View, CA</p>
+    <p><a href="mailto:team@aijam.org">team@aijam.org</a> · <a href="https://www.aijam-us.com">www.aijam-us.com</a></p>
+    <p style="margin-top:.8rem">©2016–2026 AI-JAM US. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+  const result = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '🚀 How to Submit Your Project — AI-JAM US 2026 Day 2',
+    html,
+  });
+  if (result.error) console.error('[email] sendSequenceDay2 — Resend error:', JSON.stringify(result.error));
+  else console.log('[email] sendSequenceDay2 — sent OK, id:', result.data?.id);
+  return result;
+}
+
+// ─── Sequence Day 3: Category examples ───────────────────────────────────────
+export async function sendSequenceDay3({
+  to,
+  firstName,
+}: {
+  to: string;
+  firstName: string;
+}) {
+  console.log('[email] sendSequenceDay3 — to:', to);
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inspiring Project Ideas by Category — AI-JAM US 2026</title>
+  <style>
+    body { margin:0; padding:0; background:#0a0a0f; font-family:'Helvetica Neue',Arial,sans-serif; color:#e2e8f0; }
+    .wrap { max-width:600px; margin:0 auto; background:#111118; }
+    .header { background:linear-gradient(135deg,#0f766e,#0891b2); padding:2rem 2.5rem; text-align:center; }
+    .header h1 { margin:0; font-size:2rem; letter-spacing:.06em; color:#fff; font-weight:900; }
+    .header p { margin:.4rem 0 0; font-size:.85rem; color:rgba(255,255,255,.7); letter-spacing:.1em; }
+    .body { padding:2.5rem; }
+    .section-title { font-size:.7rem; letter-spacing:.15em; color:#475569; margin:1.5rem 0 .6rem; font-weight:700; }
+    .cat-card { background:#1a1a2e; border:1px solid rgba(255,255,255,.08); padding:1rem 1.2rem; margin:.8rem 0; }
+    .cat-label { font-size:.72rem; letter-spacing:.12em; color:#0891b2; font-weight:700; margin-bottom:.4rem; }
+    .cat-example { font-size:.9rem; color:#e2e8f0; font-weight:600; margin-bottom:.3rem; }
+    .cat-desc { font-size:.82rem; color:#94a3b8; line-height:1.6; }
+    .cta-btn { display:block; background:linear-gradient(135deg,#0f766e,#0891b2); color:#fff; text-align:center; padding:1rem; text-decoration:none; font-weight:700; font-size:.95rem; letter-spacing:.06em; margin:1.8rem 0; }
+    .footer { background:#0a0a0f; padding:1.5rem 2.5rem; text-align:center; border-top:1px solid rgba(255,255,255,.06); }
+    .footer p { margin:.3rem 0; font-size:.75rem; color:#475569; }
+    .footer a { color:#3b82f6; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>AI·JAM US 2026</h1>
+    <p>11TH INTERNATIONAL AI INVENTION CHALLENGE</p>
+  </div>
+  <div class="body">
+    <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">Hi ${firstName}! Day 3 — Project inspiration 💡</p>
+    <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
+      Wondering what kind of projects win at AI-JAM? Here are example projects across our key categories to spark your creativity.
+    </p>
+
+    <div class="section-title">EXAMPLE WINNING PROJECTS BY CATEGORY</div>
+
+    <div class="cat-card">
+      <div class="cat-label">🏥 AI IN HEALTH &amp; MEDICINE</div>
+      <div class="cat-example">EarlyVision — AI-Powered Early Diabetic Retinopathy Detection</div>
+      <div class="cat-desc">A mobile app using a CNN trained on 80,000 retinal images to screen for diabetic retinopathy in under 10 seconds, targeting rural clinics without ophthalmologists.</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-label">🌿 AI IN ENVIRONMENT &amp; SUSTAINABILITY</div>
+      <div class="cat-example">AquaGuard — Real-Time River Pollution Detection via Satellite + AI</div>
+      <div class="cat-desc">Combines Sentinel-2 satellite imagery with an LSTM model to detect and predict industrial discharge events in river systems, alerting local authorities 48 hours in advance.</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-label">📚 AI IN EDUCATION</div>
+      <div class="cat-example">MathMind — Adaptive AI Tutor for Underserved Students</div>
+      <div class="cat-desc">A personalized math tutoring system that identifies each student's knowledge gaps using IRT models and generates customized exercises, achieving 40% improvement in test scores in a 3-month pilot.</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-label">🏙 AI IN SMART CITIES</div>
+      <div class="cat-example">FlowSync — AI Traffic Signal Optimization for Urban Intersections</div>
+      <div class="cat-desc">Reinforcement learning agent that dynamically adjusts signal timing based on real-time vehicle density, reducing average wait times by 31% in simulation.</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-label">🔒 AI IN SAFETY &amp; SECURITY</div>
+      <div class="cat-example">SafeWalk — AI-Powered Nighttime Pedestrian Safety Alert System</div>
+      <div class="cat-desc">Uses computer vision on dashboard cameras to detect pedestrians in low-visibility conditions and alert drivers 2 seconds earlier than standard sensors.</div>
+    </div>
+
+    <a class="cta-btn" href="https://www.aijam-us.com/submit">
+      Start Your Submission →
+    </a>
+
+    <p style="font-size:.85rem;color:#64748b;line-height:1.7;margin-top:.5rem">
+      Questions? Reply to this email or contact us at
+      <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
+    </p>
+  </div>
+  <div class="footer">
+    <p><strong style="color:#94a3b8">AI-JAM US · PAIAX</strong></p>
+    <p>855 Maude Avenue, Mountain View, CA</p>
+    <p><a href="mailto:team@aijam.org">team@aijam.org</a> · <a href="https://www.aijam-us.com">www.aijam-us.com</a></p>
+    <p style="margin-top:.8rem">©2016–2026 AI-JAM US. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+  const result = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '💡 Inspiring Project Examples by Category — AI-JAM US 2026 Day 3',
+    html,
+  });
+  if (result.error) console.error('[email] sendSequenceDay3 — Resend error:', JSON.stringify(result.error));
+  else console.log('[email] sendSequenceDay3 — sent OK, id:', result.data?.id);
+  return result;
+}
+
+// ─── Sequence Day 5: Deadline reminder ───────────────────────────────────────
+export async function sendSequenceDay5({
+  to,
+  firstName,
+}: {
+  to: string;
+  firstName: string;
+}) {
+  console.log('[email] sendSequenceDay5 — to:', to);
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submission Deadline Reminder — AI-JAM US 2026</title>
+  <style>
+    body { margin:0; padding:0; background:#0a0a0f; font-family:'Helvetica Neue',Arial,sans-serif; color:#e2e8f0; }
+    .wrap { max-width:600px; margin:0 auto; background:#111118; }
+    .header { background:linear-gradient(135deg,#7c2d12,#dc2626); padding:2rem 2.5rem; text-align:center; }
+    .header h1 { margin:0; font-size:2rem; letter-spacing:.06em; color:#fff; font-weight:900; }
+    .header p { margin:.4rem 0 0; font-size:.85rem; color:rgba(255,255,255,.7); letter-spacing:.1em; }
+    .body { padding:2.5rem; }
+    .deadline-box { background:rgba(239,68,68,.07); border:1px solid rgba(239,68,68,.3); padding:1.5rem; text-align:center; margin:1.5rem 0; }
+    .deadline-label { font-size:.72rem; letter-spacing:.12em; color:#475569; margin-bottom:.5rem; }
+    .deadline-date { font-size:1.4rem; font-weight:900; color:#ef4444; }
+    .deadline-sub { font-size:.82rem; color:#94a3b8; margin-top:.3rem; }
+    .section-title { font-size:.7rem; letter-spacing:.15em; color:#475569; margin:1.5rem 0 .6rem; font-weight:700; }
+    .info-box { background:#1a1a2e; border:1px solid rgba(255,255,255,.08); border-left:3px solid #ef4444; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+    .step-row { display:flex; gap:.8rem; align-items:flex-start; margin:.5rem 0; font-size:.88rem; color:#94a3b8; line-height:1.6; }
+    .step-num { color:#ef4444; font-weight:700; flex-shrink:0; }
+    .cta-btn { display:block; background:linear-gradient(135deg,#7c2d12,#dc2626); color:#fff; text-align:center; padding:1rem; text-decoration:none; font-weight:700; font-size:.95rem; letter-spacing:.06em; margin:1.8rem 0; }
+    .footer { background:#0a0a0f; padding:1.5rem 2.5rem; text-align:center; border-top:1px solid rgba(255,255,255,.06); }
+    .footer p { margin:.3rem 0; font-size:.75rem; color:#475569; }
+    .footer a { color:#3b82f6; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>AI·JAM US 2026</h1>
+    <p>11TH INTERNATIONAL AI INVENTION CHALLENGE</p>
+  </div>
+  <div class="body">
+    <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">Hi ${firstName}! ⏰ Deadline reminder</p>
+    <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
+      Don't let your hard work go to waste — the submission deadline is approaching. Make sure your project is in before it closes.
+    </p>
+
+    <div class="deadline-box">
+      <div class="deadline-label">SUBMISSION DEADLINE</div>
+      <div class="deadline-date">August 30, 2026</div>
+      <div class="deadline-sub">11:59 PM Pacific Time · No extensions</div>
+    </div>
+
+    <div class="section-title">SUBMISSION CHECKLIST</div>
+    <div class="info-box">
+      <div class="step-row"><span class="step-num">□</span><span>Project title, abstract, and team members filled in</span></div>
+      <div class="step-row"><span class="step-num">□</span><span>3-slide presentation link (Google Slides or Canva)</span></div>
+      <div class="step-row"><span class="step-num">□</span><span>30-second video URL (YouTube or Google Drive)</span></div>
+      <div class="step-row"><span class="step-num">□</span><span>Key features, social impact, and marketability sections completed</span></div>
+      <div class="step-row"><span class="step-num">□</span><span>Shipping address for award delivery</span></div>
+    </div>
+
+    <a class="cta-btn" href="https://www.aijam-us.com/submit">
+      ✅ Submit My Project Now
+    </a>
+
+    <p style="font-size:.82rem;color:#64748b;line-height:1.7;margin-top:.5rem">
+      Already submitted? You can still re-submit to update your project before the deadline.<br />
+      Questions? Reply to this email or contact <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
+    </p>
+  </div>
+  <div class="footer">
+    <p><strong style="color:#94a3b8">AI-JAM US · PAIAX</strong></p>
+    <p>855 Maude Avenue, Mountain View, CA</p>
+    <p><a href="mailto:team@aijam.org">team@aijam.org</a> · <a href="https://www.aijam-us.com">www.aijam-us.com</a></p>
+    <p style="margin-top:.8rem">©2016–2026 AI-JAM US. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+  const result = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '⏰ Deadline Reminder — Submit by August 30 · AI-JAM US 2026',
+    html,
+  });
+  if (result.error) console.error('[email] sendSequenceDay5 — Resend error:', JSON.stringify(result.error));
+  else console.log('[email] sendSequenceDay5 — sent OK, id:', result.data?.id);
+  return result;
+}
+
+// ─── Sequence Day 7: Payment nudge (unpaid only) ──────────────────────────────
+export async function sendSequenceDay7({
+  to,
+  firstName,
+}: {
+  to: string;
+  firstName: string;
+}) {
+  console.log('[email] sendSequenceDay7 — to:', to);
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complete Your Registration — AI-JAM US 2026</title>
+  <style>
+    body { margin:0; padding:0; background:#0a0a0f; font-family:'Helvetica Neue',Arial,sans-serif; color:#e2e8f0; }
+    .wrap { max-width:600px; margin:0 auto; background:#111118; }
+    .header { background:linear-gradient(135deg,#78350f,#d97706); padding:2rem 2.5rem; text-align:center; }
+    .header h1 { margin:0; font-size:2rem; letter-spacing:.06em; color:#fff; font-weight:900; }
+    .header p { margin:.4rem 0 0; font-size:.85rem; color:rgba(255,255,255,.7); letter-spacing:.1em; }
+    .body { padding:2.5rem; }
+    .warning-badge { display:inline-block; background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3); color:#f59e0b; padding:.5rem 1.2rem; border-radius:2px; font-size:.8rem; letter-spacing:.12em; font-weight:700; margin-bottom:1.5rem; }
+    .section-title { font-size:.7rem; letter-spacing:.15em; color:#475569; margin:1.5rem 0 .6rem; font-weight:700; }
+    .info-box { background:#1a1a2e; border:1px solid rgba(255,255,255,.08); border-left:3px solid #f59e0b; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+    .step-row { display:flex; gap:.8rem; align-items:flex-start; margin:.5rem 0; font-size:.88rem; color:#94a3b8; line-height:1.6; }
+    .step-num { color:#f59e0b; font-weight:700; flex-shrink:0; }
+    .cta-btn { display:block; background:linear-gradient(135deg,#78350f,#d97706); color:#fff; text-align:center; padding:1rem; text-decoration:none; font-weight:700; font-size:.95rem; letter-spacing:.06em; margin:1.8rem 0; }
+    .footer { background:#0a0a0f; padding:1.5rem 2.5rem; text-align:center; border-top:1px solid rgba(255,255,255,.06); }
+    .footer p { margin:.3rem 0; font-size:.75rem; color:#475569; }
+    .footer a { color:#3b82f6; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>AI·JAM US 2026</h1>
+    <p>11TH INTERNATIONAL AI INVENTION CHALLENGE</p>
+  </div>
+  <div class="body">
+    <div class="warning-badge">⚠ ACTION REQUIRED</div>
+    <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">Hi ${firstName}, your registration is incomplete.</p>
+    <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
+      You've registered for AI-JAM US 2026 but haven't completed your participation fee payment yet.
+      Without payment, you won't be able to submit your project.
+    </p>
+
+    <div class="section-title">WHY COMPLETE PAYMENT?</div>
+    <div class="info-box">
+      <div class="step-row"><span class="step-num">✓</span><span>Unlock access to the project submission portal</span></div>
+      <div class="step-row"><span class="step-num">✓</span><span>Compete for Gold, Silver, and Bronze awards + certificates</span></div>
+      <div class="step-row"><span class="step-num">✓</span><span>Join innovators from 72+ countries on a global stage</span></div>
+      <div class="step-row"><span class="step-num">✓</span><span>Submission deadline: <strong style="color:#ef4444">August 30, 2026</strong></span></div>
+    </div>
+
+    <a class="cta-btn" href="https://www.aijam-us.com/pay">
+      💳 Complete Payment Now
+    </a>
+
+    <p style="font-size:.82rem;color:#64748b;line-height:1.7;margin-top:.5rem">
+      If you've already paid, please disregard this email or reply and we'll verify your status.<br />
+      Questions? Contact us at <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
+    </p>
+  </div>
+  <div class="footer">
+    <p><strong style="color:#94a3b8">AI-JAM US · PAIAX</strong></p>
+    <p>855 Maude Avenue, Mountain View, CA</p>
+    <p><a href="mailto:team@aijam.org">team@aijam.org</a> · <a href="https://www.aijam-us.com">www.aijam-us.com</a></p>
+    <p style="margin-top:.8rem">©2016–2026 AI-JAM US. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+  const result = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: '⚠ Complete Your AI-JAM US 2026 Registration — Payment Pending',
+    html,
+  });
+  if (result.error) console.error('[email] sendSequenceDay7 — Resend error:', JSON.stringify(result.error));
+  else console.log('[email] sendSequenceDay7 — sent OK, id:', result.data?.id);
+  return result;
+}
