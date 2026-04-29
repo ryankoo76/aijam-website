@@ -9,10 +9,10 @@ export async function POST(req: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
   console.log('[submit] env check —', {
-    supabaseUrlPresent:  !!supabaseUrl,
-    supabaseUrlPrefix:   supabaseUrl  ? supabaseUrl.slice(0, 30)  + '...' : 'MISSING',
-    supabaseKeyPresent:  !!supabaseKey,
-    supabaseKeyPrefix:   supabaseKey  ? supabaseKey.slice(0, 10)  + '...' : 'MISSING',
+    supabaseUrlPresent: !!supabaseUrl,
+    supabaseUrlPrefix:  supabaseUrl  ? supabaseUrl.slice(0, 30)  + '...' : 'MISSING',
+    supabaseKeyPresent: !!supabaseKey,
+    supabaseKeyPrefix:  supabaseKey  ? supabaseKey.slice(0, 10)  + '...' : 'MISSING',
   });
 
   // ── 2. Parse JSON body ────────────────────────────────────────────────────
@@ -41,10 +41,12 @@ export async function POST(req: NextRequest) {
   const aiRole           =  body.aiRole           ?? '';
   const futurePlans      =  body.futurePlans      ?? '';
   const recipientName    =  body.recipientName    ?? '';
-  const address          =  body.address          ?? '';
+  const streetAddress    =  body.streetAddress    ?? '';
+  const apt              =  body.apt              ?? '';
   const city             =  body.city             ?? '';
-  const country          =  body.country          ?? '';
+  const shippingState    =  body.shippingState    ?? '';
   const postalCode       =  body.postalCode       ?? '';
+  const country          =  body.country          ?? '';
 
   console.log('[submit] fields —', {
     email:        email        || '(empty)',
@@ -53,6 +55,7 @@ export async function POST(req: NextRequest) {
     abstractLen:  abstract.length,
     videoUrl:     videoUrl     || '(empty)',
     slidesLink:   slidesLink   || '(none)',
+    shippingCity: city         || '(empty)',
   });
 
   // ── 4. Validate required fields ───────────────────────────────────────────
@@ -68,13 +71,53 @@ export async function POST(req: NextRequest) {
     console.warn('[submit] Validation failed: missing project title');
     return NextResponse.json({ error: 'Project title is required.' }, { status: 400 });
   }
+  if (!teamMembers) {
+    console.warn('[submit] Validation failed: missing team members');
+    return NextResponse.json({ error: 'Team members is required.' }, { status: 400 });
+  }
   if (!abstract) {
     console.warn('[submit] Validation failed: missing abstract');
     return NextResponse.json({ error: 'Abstract is required.' }, { status: 400 });
   }
+  if (!keyFeatures) {
+    console.warn('[submit] Validation failed: missing key features');
+    return NextResponse.json({ error: 'Key features is required.' }, { status: 400 });
+  }
+  if (!socialImpact) {
+    console.warn('[submit] Validation failed: missing social impact');
+    return NextResponse.json({ error: 'Social impact is required.' }, { status: 400 });
+  }
+  if (!marketability) {
+    console.warn('[submit] Validation failed: missing marketability');
+    return NextResponse.json({ error: 'Marketability is required.' }, { status: 400 });
+  }
   if (!videoUrl) {
     console.warn('[submit] Validation failed: missing video URL');
     return NextResponse.json({ error: 'Video URL is required.' }, { status: 400 });
+  }
+  if (!recipientName) {
+    console.warn('[submit] Validation failed: missing recipient name');
+    return NextResponse.json({ error: 'Recipient name is required.' }, { status: 400 });
+  }
+  if (!streetAddress) {
+    console.warn('[submit] Validation failed: missing street address');
+    return NextResponse.json({ error: 'Street address is required.' }, { status: 400 });
+  }
+  if (!city) {
+    console.warn('[submit] Validation failed: missing city');
+    return NextResponse.json({ error: 'City is required.' }, { status: 400 });
+  }
+  if (!shippingState) {
+    console.warn('[submit] Validation failed: missing state/province');
+    return NextResponse.json({ error: 'State / Province is required.' }, { status: 400 });
+  }
+  if (!postalCode) {
+    console.warn('[submit] Validation failed: missing postal code');
+    return NextResponse.json({ error: 'Postal code is required.' }, { status: 400 });
+  }
+  if (!country) {
+    console.warn('[submit] Validation failed: missing country');
+    return NextResponse.json({ error: 'Country is required.' }, { status: 400 });
   }
 
   // ── 5. Verify payment status ──────────────────────────────────────────────
@@ -110,7 +153,7 @@ export async function POST(req: NextRequest) {
   console.log('[submit] Registration found —', {
     email,
     submission_status: reg.submission_status,
-    first_name: reg.first_name,
+    first_name:        reg.first_name,
   });
 
   if (reg.submission_status !== 'paid' && reg.submission_status !== 'submitted') {
@@ -129,23 +172,25 @@ export async function POST(req: NextRequest) {
     .insert({
       email,
       category,
-      project_title:      projectTitle,
-      team_members:       teamMembers,
+      project_title:     projectTitle,
+      team_members:      teamMembers,
       abstract,
-      key_features:       keyFeatures,
-      social_impact:      socialImpact,
+      key_features:      keyFeatures,
+      social_impact:     socialImpact,
       marketability,
-      video_url:          videoUrl,
-      slides_url:         slidesLink,
+      video_url:         videoUrl,
+      slides_link:       slidesLink,
       inspiration,
-      biggest_challenge:  biggestChallenge,
-      ai_role:            aiRole,
-      future_plans:       futurePlans,
-      shipping_name:      recipientName,
-      shipping_address:   address,
-      shipping_city:      city,
-      shipping_country:   country,
-      shipping_postal:    postalCode,
+      biggest_challenge: biggestChallenge,
+      ai_role:           aiRole,
+      future_plans:      futurePlans,
+      shipping_name:     recipientName,
+      shipping_address:  streetAddress,
+      shipping_apt:      apt,
+      shipping_city:     city,
+      shipping_state:    shippingState,
+      shipping_postal:   postalCode,
+      shipping_country:  country,
     })
     .select('id')
     .single();

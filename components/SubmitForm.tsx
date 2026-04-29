@@ -183,7 +183,7 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
   const [email, setEmail] = useState(initialEmail);
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
-  // Section A
+  // Section A — all required
   const [category,      setCategory]      = useState('');
   const [projectTitle,  setProjectTitle]  = useState('');
   const [teamMembers,   setTeamMembers]   = useState('');
@@ -193,27 +193,31 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
   const [marketability, setMarketability] = useState('');
 
   // Section B
-  const [videoUrl,    setVideoUrl]    = useState('');
-  const [slidesLink,  setSlidesLink]  = useState('');
+  const [videoUrl,   setVideoUrl]   = useState('');
+  const [slidesLink, setSlidesLink] = useState('');
 
-  // Section C
+  // Section C — all optional
   const [inspiration,      setInspiration]      = useState('');
   const [biggestChallenge, setBiggestChallenge] = useState('');
   const [aiRole,           setAiRole]           = useState('');
   const [futurePlans,      setFuturePlans]      = useState('');
 
-  // Section D
-  const [recipientName, setRecipientName] = useState('');
-  const [address,       setAddress]       = useState('');
-  const [city,          setCity]          = useState('');
-  const [country,       setCountry]       = useState('');
-  const [postalCode,    setPostalCode]    = useState('');
+  // Section D — required (apt optional)
+  const [recipientName,  setRecipientName]  = useState('');
+  const [streetAddress,  setStreetAddress]  = useState('');
+  const [apt,            setApt]            = useState('');
+  const [city,           setCity]           = useState('');
+  const [shippingState,  setShippingState]  = useState('');
+  const [postalCode,     setPostalCode]     = useState('');
+  const [country,        setCountry]        = useState('');
 
-  // Required: email, category, projectTitle, abstract, videoUrl + all Section D
+  // Required: all Section A + videoUrl + all Section D except apt
   const canSubmit =
     emailValid &&
-    !!category && !!projectTitle && !!abstract && !!videoUrl &&
-    !!recipientName && !!address && !!city && !!country && !!postalCode &&
+    !!category && !!projectTitle && !!teamMembers && !!abstract &&
+    !!keyFeatures && !!socialImpact && !!marketability &&
+    !!videoUrl &&
+    !!recipientName && !!streetAddress && !!city && !!shippingState && !!postalCode && !!country &&
     !loading;
 
   // ── Submit ──────────────────────────────────────────────────────────────────
@@ -243,10 +247,12 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
           aiRole,
           futurePlans,
           recipientName,
-          address,
+          streetAddress,
+          apt,
           city,
-          country,
+          shippingState,
           postalCode,
+          country,
         }),
       });
 
@@ -432,12 +438,12 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               <div>
                 <div style={sectionTitleSt}>BASIC INFORMATION</div>
                 <div style={{ fontSize: '.8rem', color: '#475569', marginTop: '.2rem' }}>
-                  Category, title, and project overview
+                  All fields required
                 </div>
               </div>
             </div>
 
-            {/* Category — required */}
+            {/* Category */}
             <Field label="CATEGORY" required>
               <select
                 value={category}
@@ -457,7 +463,7 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               </select>
             </Field>
 
-            {/* Project title — required */}
+            {/* Project title */}
             <Field label="PROJECT TITLE" required>
               <Input
                 value={projectTitle}
@@ -467,22 +473,22 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               />
             </Field>
 
-            {/* Team members — optional */}
+            {/* Team members */}
             <Field
               label="TEAM MEMBERS"
-              optional
+              required
               hint="Full names of all team members, one per line"
             >
               <Textarea
                 value={teamMembers}
                 onChange={setTeamMembers}
-                placeholder={"Jane Smith\nJohn Doe\nAlex Kim"}
+                placeholder={"Required — e.g.\nJane Smith\nJohn Doe\nAlex Kim"}
                 rows={3}
                 disabled={loading}
               />
             </Field>
 
-            {/* Abstract — required, 500 char */}
+            {/* Abstract */}
             <Field label="ABSTRACT" required hint="Summarize your project in 500 characters or less">
               <Textarea
                 value={abstract}
@@ -494,34 +500,34 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               />
             </Field>
 
-            {/* Key features — optional */}
-            <Field label="KEY FEATURES" optional hint="What makes your project unique?">
+            {/* Key features */}
+            <Field label="KEY FEATURES" required hint="What makes your project unique?">
               <Textarea
                 value={keyFeatures}
                 onChange={setKeyFeatures}
-                placeholder="List the core features or capabilities of your AI solution…"
+                placeholder="Required — list the core features or capabilities of your AI solution…"
                 rows={3}
                 disabled={loading}
               />
             </Field>
 
-            {/* Social impact — optional */}
-            <Field label="SOCIAL IMPACT" optional hint="How does your project benefit society?">
+            {/* Social impact */}
+            <Field label="SOCIAL IMPACT" required hint="How does your project benefit society?">
               <Textarea
                 value={socialImpact}
                 onChange={setSocialImpact}
-                placeholder="Describe the positive impact your project has on people or the environment…"
+                placeholder="Required — describe the positive impact your project has on people or the environment…"
                 rows={3}
                 disabled={loading}
               />
             </Field>
 
-            {/* Marketability — optional */}
-            <Field label="MARKETABILITY" optional hint="Who are the target users? What is the potential market?">
+            {/* Marketability */}
+            <Field label="MARKETABILITY" required hint="Who are the target users? What is the potential market?">
               <Textarea
                 value={marketability}
                 onChange={setMarketability}
-                placeholder="Explain the target audience, potential business model, or scalability…"
+                placeholder="Required — explain the target audience, potential business model, or scalability…"
                 rows={3}
                 disabled={loading}
               />
@@ -540,12 +546,12 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               <div>
                 <div style={sectionTitleSt}>MEDIA</div>
                 <div style={{ fontSize: '.8rem', color: '#475569', marginTop: '.2rem' }}>
-                  Demo video link and slides presentation
+                  Demo video required · Slides optional
                 </div>
               </div>
             </div>
 
-            {/* Video URL — required */}
+            {/* Video URL */}
             <Field
               label="VIDEO URL"
               required
@@ -560,7 +566,7 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               />
             </Field>
 
-            {/* Slides link — optional */}
+            {/* Slides link */}
             <Field
               label="SLIDES LINK"
               optional
@@ -670,6 +676,7 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               </div>
             </div>
 
+            {/* Recipient Name — full width */}
             <Field label="RECIPIENT NAME" required>
               <Input
                 value={recipientName}
@@ -679,27 +686,65 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               />
             </Field>
 
+            {/* Street Address — full width */}
             <Field label="STREET ADDRESS" required>
               <Input
-                value={address}
-                onChange={setAddress}
-                placeholder="Required — 123 Main Street, Apt 4B"
+                value={streetAddress}
+                onChange={setStreetAddress}
+                placeholder="Required — 123 Main Street"
                 disabled={loading}
               />
             </Field>
 
+            {/* Apt/Suite/Unit — full width, optional */}
+            <Field label="APT / SUITE / UNIT" optional>
+              <Input
+                value={apt}
+                onChange={setApt}
+                placeholder="Apt 4B, Suite 200, Unit 3…"
+                disabled={loading}
+              />
+            </Field>
+
+            {/* City + State — 2 columns */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <Field label="CITY" required>
-                <Input value={city} onChange={setCity} placeholder="Required" disabled={loading} />
+                <Input
+                  value={city}
+                  onChange={setCity}
+                  placeholder="Required"
+                  disabled={loading}
+                />
               </Field>
-              <Field label="POSTAL CODE" required>
-                <Input value={postalCode} onChange={setPostalCode} placeholder="Required" disabled={loading} />
+              <Field label="STATE / PROVINCE" required>
+                <Input
+                  value={shippingState}
+                  onChange={setShippingState}
+                  placeholder="Required"
+                  disabled={loading}
+                />
               </Field>
             </div>
 
-            <Field label="COUNTRY" required>
-              <Input value={country} onChange={setCountry} placeholder="Required" disabled={loading} />
-            </Field>
+            {/* Postal Code + Country — 2 columns */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <Field label="POSTAL CODE" required>
+                <Input
+                  value={postalCode}
+                  onChange={setPostalCode}
+                  placeholder="Required"
+                  disabled={loading}
+                />
+              </Field>
+              <Field label="COUNTRY" required>
+                <Input
+                  value={country}
+                  onChange={setCountry}
+                  placeholder="Required"
+                  disabled={loading}
+                />
+              </Field>
+            </div>
           </div>
 
           {/* ── Error ────────────────────────────────────────────────────────── */}
@@ -749,21 +794,31 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
                   ? 'Select a category (Section A) to continue.'
                   : !projectTitle
                     ? 'Enter a project title (Section A) to continue.'
-                    : !abstract
-                      ? 'Enter an abstract (Section A) to continue.'
-                      : !videoUrl
-                        ? 'Enter a video URL (Section B) to continue.'
-                        : !recipientName
-                          ? 'Enter a recipient name (Section D) to continue.'
-                          : !address
-                            ? 'Enter a street address (Section D) to continue.'
-                            : !city
-                              ? 'Enter a city (Section D) to continue.'
-                              : !country
-                                ? 'Enter a country (Section D) to continue.'
-                                : !postalCode
-                                  ? 'Enter a postal code (Section D) to continue.'
-                                  : ''}
+                    : !teamMembers
+                      ? 'Enter team members (Section A) to continue.'
+                      : !abstract
+                        ? 'Enter an abstract (Section A) to continue.'
+                        : !keyFeatures
+                          ? 'Enter key features (Section A) to continue.'
+                          : !socialImpact
+                            ? 'Enter social impact (Section A) to continue.'
+                            : !marketability
+                              ? 'Enter marketability (Section A) to continue.'
+                              : !videoUrl
+                                ? 'Enter a video URL (Section B) to continue.'
+                                : !recipientName
+                                  ? 'Enter a recipient name (Section D) to continue.'
+                                  : !streetAddress
+                                    ? 'Enter a street address (Section D) to continue.'
+                                    : !city
+                                      ? 'Enter a city (Section D) to continue.'
+                                      : !shippingState
+                                        ? 'Enter a state / province (Section D) to continue.'
+                                        : !postalCode
+                                          ? 'Enter a postal code (Section D) to continue.'
+                                          : !country
+                                            ? 'Enter a country (Section D) to continue.'
+                                            : ''}
             </div>
           )}
 
