@@ -213,6 +213,101 @@ export async function sendPaymentConfirmation({
   });
 }
 
+// ─── Email 4: Submission confirmation ────────────────────────────────────────
+export async function sendSubmissionConfirmation({
+  to,
+  firstName,
+  projectTitle,
+}: {
+  to: string;
+  firstName: string;
+  projectTitle: string;
+}) {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submission Received — AI-JAM US 2026</title>
+  <style>
+    body { margin:0; padding:0; background:#0a0a0f; font-family:'Helvetica Neue',Arial,sans-serif; color:#e2e8f0; }
+    .wrap { max-width:600px; margin:0 auto; background:#111118; }
+    .header { background:linear-gradient(135deg,#1e40af,#7c3aed); padding:2rem 2.5rem; text-align:center; }
+    .header h1 { margin:0; font-size:2rem; letter-spacing:.06em; color:#fff; font-weight:900; }
+    .header p { margin:.4rem 0 0; font-size:.85rem; color:rgba(255,255,255,.7); letter-spacing:.1em; }
+    .body { padding:2.5rem; }
+    .confirm-badge { display:inline-block; background:rgba(124,58,237,.1); border:1px solid rgba(124,58,237,.3); color:#a78bfa; padding:.5rem 1.2rem; border-radius:2px; font-size:.8rem; letter-spacing:.12em; font-weight:700; margin-bottom:1.5rem; }
+    .project-box { background:rgba(124,58,237,.05); border:1px solid rgba(124,58,237,.2); padding:1.5rem; margin:1.5rem 0; }
+    .project-label { font-size:.72rem; letter-spacing:.12em; color:#475569; margin-bottom:.5rem; }
+    .project-title { font-size:1.2rem; font-weight:700; color:#f1f5f9; }
+    .info-box { background:#1a1a2e; border:1px solid rgba(255,255,255,.08); border-left:3px solid #7c3aed; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+    .section-title { font-size:.7rem; letter-spacing:.15em; color:#475569; margin:1.5rem 0 .6rem; font-weight:700; }
+    .info-row { display:flex; gap:.5rem; margin:.35rem 0; font-size:.9rem; }
+    .info-label { color:#64748b; min-width:90px; }
+    .info-val { color:#e2e8f0; font-weight:600; }
+    .step-row { display:flex; gap:.8rem; align-items:flex-start; margin:.5rem 0; font-size:.88rem; color:#94a3b8; line-height:1.6; }
+    .step-num { color:#a78bfa; font-weight:700; flex-shrink:0; }
+    .footer { background:#0a0a0f; padding:1.5rem 2.5rem; text-align:center; border-top:1px solid rgba(255,255,255,.06); }
+    .footer p { margin:.3rem 0; font-size:.75rem; color:#475569; }
+    .footer a { color:#3b82f6; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>AI·JAM US 2026</h1>
+    <p>11TH INTERNATIONAL AI INVENTION CHALLENGE</p>
+  </div>
+  <div class="body">
+    <div class="confirm-badge">📬 SUBMISSION RECEIVED</div>
+    <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">Hi ${firstName}, your project has been submitted!</p>
+    <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
+      We have received your project submission for AI-JAM US 2026.
+      Our judges will review your entry and announce results on September 6, 2026.
+    </p>
+
+    <div class="project-box">
+      <div class="project-label">SUBMITTED PROJECT</div>
+      <div class="project-title">${projectTitle}</div>
+    </div>
+
+    <div class="section-title">WHAT HAPPENS NEXT</div>
+    <div class="info-box">
+      <div class="step-row"><span class="step-num">1.</span><span>Your submission has been logged and will be reviewed by our judging panel</span></div>
+      <div class="step-row"><span class="step-num">2.</span><span>Results will be announced on <strong style="color:#f1f5f9">September 6, 2026</strong></span></div>
+      <div class="step-row"><span class="step-num">3.</span><span>Award winners will be contacted separately regarding certificates and prizes</span></div>
+      <div class="step-row"><span class="step-num">4.</span><span>You may re-submit before the deadline if you need to update your project</span></div>
+    </div>
+
+    <div class="section-title">KEY DATES</div>
+    <div class="info-box">
+      <div class="info-row"><span class="info-label">Deadline</span><span class="info-val" style="color:#ef4444">August 30, 2026 · 11:59 PM PT</span></div>
+      <div class="info-row"><span class="info-label">Results</span><span class="info-val" style="color:#3b82f6">September 6, 2026</span></div>
+    </div>
+
+    <p style="font-size:.85rem;color:#64748b;line-height:1.7;margin-top:1.5rem">
+      Questions? Reply to this email or contact us at
+      <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
+    </p>
+  </div>
+  <div class="footer">
+    <p><strong style="color:#94a3b8">AI-JAM US · PAIAX</strong></p>
+    <p>855 Maude Avenue, Mountain View, CA</p>
+    <p><a href="mailto:team@aijam.org">team@aijam.org</a> · <a href="https://www.aijam-us.com">www.aijam-us.com</a></p>
+    <p style="margin-top:.8rem">©2016–2026 AI-JAM US. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+  return resend.emails.send({
+    from: FROM,
+    to,
+    subject: `Submission Received — AI-JAM US 2026: ${projectTitle}`,
+    html,
+  });
+}
+
 // ─── Email 2: Admin notification ─────────────────────────────────────────────
 export async function sendAdminNotification({
   firstName,
