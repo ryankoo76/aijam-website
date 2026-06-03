@@ -75,7 +75,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
     // Continue anyway so user sees success UI; admin must reconcile manually
   }
 
-  const amountTotal = session.amount_total ?? 3000;
+  const amountTotal = session.amount_total ?? 35000;
 
   // ── 4. Upsert into aijam_payments ─────────────────────────────────────────
   console.log('[success] upserting aijam_payments for:', email);

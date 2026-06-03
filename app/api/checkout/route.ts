@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: 'usd',
-            unit_amount: 3000, // $30.00
+            unit_amount: 35000, // $350.00
             product_data: {
               name: 'AI-JAM US 2026 — Participation Fee',
               description: '11th International AI Invention Challenge · Submission Deadline: August 30, 2026',

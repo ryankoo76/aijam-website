@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     const email = (session.metadata?.email ?? session.customer_email ?? '').toLowerCase();
     const sessionId = session.id;
-    const amountTotal = session.amount_total ?? 3000;
+    const amountTotal = session.amount_total ?? 35000;
 
     // Upsert payment record
     const { error: payError } = await supabaseAdmin

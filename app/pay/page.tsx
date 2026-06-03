@@ -89,7 +89,7 @@ function PayContent() {
             paddingBottom: '1.5rem',
             borderBottom: '1px solid rgba(255,255,255,.08)',
           }}>
-            <div style={{ fontSize: '3rem', fontWeight: 900, color: '#f1f5f9', lineHeight: 1 }}>$30</div>
+            <div style={{ fontSize: '3rem', fontWeight: 900, color: '#f1f5f9', lineHeight: 1 }}>$350</div>
             <div style={{ fontSize: '1rem', color: '#64748b', paddingBottom: '.4rem' }}>USD · one-time</div>
           </div>
 
@@ -180,7 +180,7 @@ function PayContent() {
               transition: 'background .2s',
             }}
           >
-            {loading ? 'Redirecting to Stripe...' : '💳 Pay $30 Now'}
+            {loading ? 'Redirecting to Stripe...' : '💳 Pay $350 Now'}
           </button>
 
           <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '.78rem', color: '#475569' }}>
