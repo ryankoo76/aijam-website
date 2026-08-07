@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation';
-import { supabaseAdmin } from '@/lib/supabase';
 import SubmitForm from '@/components/SubmitForm';
 
 // ── Shared dark-theme card shell ──────────────────────────────────────────────
@@ -65,7 +63,8 @@ function EmailEntryCard() {
         </div>
 
         <p style={{ fontSize: '.95rem', color: '#94a3b8', lineHeight: 1.8, marginTop: 0, marginBottom: '1.5rem' }}>
-          Enter your registered email address to access the submission form.
+          Enter your email to start your project submission — no prior registration required.
+          After you submit, you&apos;ll complete the $350 participation fee to finalize your entry.
         </p>
 
         {/* Plain HTML GET form — no JS needed */}
@@ -78,13 +77,13 @@ function EmailEntryCard() {
             fontFamily: "'Space Mono', monospace",
             marginBottom: '.5rem',
           }}>
-            REGISTERED EMAIL
+            YOUR EMAIL
           </label>
           <input
             type="email"
             name="email"
             required
-            placeholder="Enter your registration email"
+            placeholder="Enter your email"
             style={{
               width: '100%',
               boxSizing: 'border-box',
@@ -121,135 +120,9 @@ function EmailEntryCard() {
   );
 }
 
-// ── Error card ────────────────────────────────────────────────────────────────
-function ErrorCard({ message, cta }: { message: string; cta?: React.ReactNode }) {
-  return (
-    <PageShell>
-      <div style={{
-        background: '#111118',
-        border: '1px solid rgba(239,68,68,.3)',
-        padding: '2.5rem',
-        textAlign: 'center',
-      }}>
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
-        <h2 style={{ color: '#ef4444', margin: '0 0 1rem', fontSize: '1.2rem' }}>Cannot Access Submission Form</h2>
-        <p style={{ color: '#94a3b8', fontSize: '.92rem', lineHeight: 1.7, margin: '0 0 1.5rem' }}>{message}</p>
-        {cta}
-      </div>
-    </PageShell>
-  );
-}
-
-// ── Already submitted card ────────────────────────────────────────────────────
-function AlreadySubmittedCard({ email }: { email: string }) {
-  return (
-    <PageShell>
-      <div style={{
-        background: '#111118',
-        border: '1px solid rgba(124,58,237,.3)',
-        padding: '2.5rem',
-        textAlign: 'center',
-      }}>
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
-
-        <div style={{
-          display: 'inline-block',
-          background: 'rgba(124,58,237,.1)',
-          border: '1px solid rgba(124,58,237,.3)',
-          color: '#a78bfa',
-          padding: '.5rem 1.2rem',
-          fontSize: '.78rem',
-          letterSpacing: '.12em',
-          fontWeight: 700,
-          marginBottom: '1.5rem',
-          fontFamily: "'Space Mono', monospace",
-        }}>
-          PROJECT SUBMITTED
-        </div>
-
-        <h2 style={{ color: '#f1f5f9', margin: '0 0 .8rem', fontSize: '1.3rem' }}>
-          You&apos;ve already submitted!
-        </h2>
-
-        <p style={{ color: '#94a3b8', fontSize: '.92rem', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
-          A submission has been received for<br />
-          <strong style={{ color: '#e2e8f0' }}>{email}</strong>.<br />
-          Results will be announced on September 6, 2026.
-        </p>
-
-        <p style={{ color: '#64748b', fontSize: '.82rem', lineHeight: 1.6, margin: '0 0 1.5rem' }}>
-          Need to update your project? You can re-submit before the deadline (August 30, 2026).
-        </p>
-
-        <a
-          href={`/submit/resubmit?email=${encodeURIComponent(email)}`}
-          style={{
-            display: 'inline-block',
-            background: 'rgba(124,58,237,.15)',
-            border: '1px solid rgba(124,58,237,.3)',
-            color: '#a78bfa',
-            padding: '.7rem 1.5rem',
-            textDecoration: 'none',
-            fontSize: '.88rem',
-            fontWeight: 600,
-            marginRight: '.8rem',
-          }}
-        >
-          Re-submit Project
-        </a>
-      </div>
-    </PageShell>
-  );
-}
-
-// ── Gate: checks DB and decides what to render ────────────────────────────────
-async function SubmitGate({ email }: { email: string }) {
-  console.log('[submit-page] Checking payment status for:', email);
-
-  const { data: reg, error } = await supabaseAdmin
-    .from('aijam_registrations')
-    .select('submission_status, first_name')
-    .eq('email', email)
-    .maybeSingle();
-
-  if (error) {
-    console.error('[submit-page] Supabase lookup error:', error);
-  }
-
-  if (!reg) {
-    console.warn('[submit-page] Email not found in registrations:', email);
-    return (
-      <ErrorCard
-        message={`The email "${email}" is not registered. Please complete registration first.`}
-        cta={
-          <a href="/#register" style={{ color: '#3b82f6', fontSize: '.9rem' }}>
-            Register Now →
-          </a>
-        }
-      />
-    );
-  }
-
-  const status = reg.submission_status;
-  console.log('[submit-page] submission_status for', email, ':', status);
-
-  // Not paid → redirect to payment page
-  if (status !== 'paid' && status !== 'submitted') {
-    console.log('[submit-page] Redirecting to /pay — status:', status);
-    redirect(`/pay?email=${encodeURIComponent(email)}`);
-  }
-
-  // Already submitted → show notice (with re-submit option)
-  if (status === 'submitted') {
-    return <AlreadySubmittedCard email={email} />;
-  }
-
-  // Paid and not yet submitted → show form
-  return <SubmitForm email={email} />;
-}
-
 // ── Page entry point ──────────────────────────────────────────────────────────
-export default async function SubmitPage({
+// Open submission: anyone can reach the form directly (submit first, pay later).
+export default function SubmitPage({
   searchParams,
 }: {
   searchParams: { email?: string };
@@ -260,5 +133,5 @@ export default async function SubmitPage({
     return <EmailEntryCard />;
   }
 
-  return <SubmitGate email={rawEmail} />;
+  return <SubmitForm email={rawEmail} />;
 }

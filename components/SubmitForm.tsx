@@ -178,6 +178,7 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
   const [success, setSuccess] = useState(false);
+  const [paymentRequired, setPaymentRequired] = useState(true);
 
   // Email
   const [email, setEmail] = useState(initialEmail);
@@ -262,6 +263,7 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
         setLoading(false);
         return;
       }
+      setPaymentRequired(data.paymentRequired !== false);
       setSuccess(true);
     } catch {
       setError('Network error. Please try again.');
@@ -315,47 +317,76 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
             </div>
 
             <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#f1f5f9', margin: '0 0 .8rem' }}>
-              Your project is submitted!
+              {paymentRequired ? 'Almost done — one step left' : 'Your project is submitted!'}
             </h1>
 
-            <p style={{ fontSize: '.95rem', color: '#94a3b8', lineHeight: 1.8, margin: '0 0 2rem' }}>
-              A confirmation email has been sent to<br />
-              <strong style={{ color: '#e2e8f0' }}>{email}</strong>.<br />
-              Results will be announced on September 6, 2026.
-            </p>
+            {paymentRequired ? (
+              <p style={{ fontSize: '.95rem', color: '#94a3b8', lineHeight: 1.8, margin: '0 0 1.8rem' }}>
+                Your project has been saved for<br />
+                <strong style={{ color: '#e2e8f0' }}>{email}</strong>.<br />
+                To finalize your entry and be eligible for judging, complete the{' '}
+                <strong style={{ color: '#e2e8f0' }}>$350</strong> participation fee.
+              </p>
+            ) : (
+              <p style={{ fontSize: '.95rem', color: '#94a3b8', lineHeight: 1.8, margin: '0 0 2rem' }}>
+                A confirmation email has been sent to<br />
+                <strong style={{ color: '#e2e8f0' }}>{email}</strong>.<br />
+                Results will be announced on September 6, 2026.
+              </p>
+            )}
 
-            <div style={{
-              background: '#1a1a2e',
-              border: '1px solid rgba(255,255,255,.08)',
-              borderLeft: '3px solid #7c3aed',
-              padding: '1.2rem 1.5rem',
-              textAlign: 'left',
-              marginBottom: '2rem',
-            }}>
-              <div style={{ fontSize: '.72rem', letterSpacing: '.1em', color: '#475569', marginBottom: '.6rem', fontFamily: mono }}>
-                WHAT HAPPENS NEXT
-              </div>
-              {[
-                'Our judges will review your submission',
-                'Results announced: September 6, 2026',
-                'Winners contacted regarding awards',
-                'You may re-submit before Aug 30 if needed',
-              ].map((s, i) => (
-                <div key={s} style={{ display: 'flex', gap: '.8rem', marginBottom: '.5rem', fontSize: '.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
-                  <span style={{ color: '#a78bfa', fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
-                  <span>{s}</span>
+            {paymentRequired && (
+              <a href={`/pay?email=${encodeURIComponent(email)}`} style={{
+                display: 'block',
+                background: 'linear-gradient(135deg,#1e40af,#0891b2)',
+                color: '#fff',
+                padding: '1rem',
+                textDecoration: 'none',
+                fontWeight: 800,
+                fontSize: '1.05rem',
+                letterSpacing: '.04em',
+                marginBottom: '1rem',
+                boxShadow: '0 10px 30px rgba(37,99,235,.35)',
+              }}>
+                💳 Pay $350 to Finalize →
+              </a>
+            )}
+
+            {!paymentRequired && (
+              <div style={{
+                background: '#1a1a2e',
+                border: '1px solid rgba(255,255,255,.08)',
+                borderLeft: '3px solid #7c3aed',
+                padding: '1.2rem 1.5rem',
+                textAlign: 'left',
+                marginBottom: '2rem',
+              }}>
+                <div style={{ fontSize: '.72rem', letterSpacing: '.1em', color: '#475569', marginBottom: '.6rem', fontFamily: mono }}>
+                  WHAT HAPPENS NEXT
                 </div>
-              ))}
-            </div>
+                {[
+                  'Our judges will review your submission',
+                  'Results announced: September 6, 2026',
+                  'Winners contacted regarding awards',
+                  'You may re-submit before Aug 30 if needed',
+                ].map((s, i) => (
+                  <div key={s} style={{ display: 'flex', gap: '.8rem', marginBottom: '.5rem', fontSize: '.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+                    <span style={{ color: '#a78bfa', fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
+                    <span>{s}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <a href="/" style={{
               display: 'block',
-              background: 'linear-gradient(135deg,#1e40af,#7c3aed)',
-              color: '#fff',
-              padding: '1rem',
+              background: paymentRequired ? 'transparent' : 'linear-gradient(135deg,#1e40af,#7c3aed)',
+              border: paymentRequired ? '1px solid rgba(255,255,255,.15)' : 'none',
+              color: paymentRequired ? '#94a3b8' : '#fff',
+              padding: paymentRequired ? '.8rem' : '1rem',
               textDecoration: 'none',
               fontWeight: 700,
-              fontSize: '1rem',
+              fontSize: paymentRequired ? '.9rem' : '1rem',
               letterSpacing: '.06em',
             }}>
               ← Back to AI-JAM US

@@ -65,6 +65,16 @@ export async function POST(req: NextRequest) {
       console.error('[webhook] aijam_registrations update error:', regError);
     }
 
+    // Mark any submissions for this email as paid (submit-first, pay-later flow)
+    const { error: subPayError } = await supabaseAdmin
+      .from('aijam_submissions')
+      .update({ payment_status: 'paid' })
+      .eq('email', email);
+
+    if (subPayError) {
+      console.error('[webhook] aijam_submissions payment_status update error:', subPayError);
+    }
+
     // Send confirmation email (non-blocking)
     sendPaymentConfirmation({ to: email, amount: amountTotal }).catch((err) =>
       console.error('[webhook] email error:', err)

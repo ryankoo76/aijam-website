@@ -126,49 +126,37 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Country is required.' }, { status: 400 });
   }
 
-  // ── 5. Verify payment status ──────────────────────────────────────────────
-  console.log('[submit] Looking up registration for:', email);
-  const { data: reg, error: regLookupErr } = await supabaseAdmin
+  // ── 5. Open submission (submit first, pay later) ──────────────────────────
+  // No registration or payment is required to SUBMIT. We only look up any
+  // existing registration to personalize the confirmation email, and check
+  // whether this email has already paid (to decide the post-submit CTA).
+  console.log('[submit] Open-submission mode — looking up optional context for:', email);
+
+  const { data: reg } = await supabaseAdmin
     .from('aijam_registrations')
     .select('submission_status, first_name')
     .eq('email', email)
     .maybeSingle();
 
-  if (regLookupErr) {
-    const e = regLookupErr as unknown as Record<string, unknown>;
-    console.error('[submit] Registration lookup error:', {
-      message: e.message,
-      code:    e.code,
-      details: e.details,
-      raw:     JSON.stringify(regLookupErr),
-    });
-    return NextResponse.json(
-      { error: `Database error during registration lookup: ${e.message ?? JSON.stringify(regLookupErr)}` },
-      { status: 500 }
-    );
-  }
+  let firstName = recipientName || 'Participant';
+  if (reg?.first_name) firstName = reg.first_name;
 
-  if (!reg) {
-    console.warn('[submit] Email not found in aijam_registrations:', email);
-    return NextResponse.json(
-      { error: 'Email not found in registrations. Please register at aijam-us.com first.' },
-      { status: 404 }
-    );
+  // Has this email already completed payment?
+  let hasPaid = reg?.submission_status === 'paid' || reg?.submission_status === 'submitted';
+  try {
+    const { data: paidRow } = await supabaseAdmin
+      .from('aijam_payments')
+      .select('id')
+      .eq('email', email)
+      .eq('status', 'completed')
+      .limit(1)
+      .maybeSingle();
+    if (paidRow) hasPaid = true;
+  } catch (payLookupErr) {
+    console.warn('[submit] payment lookup failed (non-fatal):', payLookupErr);
   }
-
-  console.log('[submit] Registration found —', {
-    email,
-    submission_status: reg.submission_status,
-    first_name:        reg.first_name,
-  });
-
-  if (reg.submission_status !== 'paid' && reg.submission_status !== 'submitted') {
-    console.warn('[submit] Payment not completed — status:', reg.submission_status);
-    return NextResponse.json(
-      { error: `Payment required before submitting. Current status: ${reg.submission_status}` },
-      { status: 403 }
-    );
-  }
+  const paymentRequired = !hasPaid;
+  console.log('[submit] hasPaid:', hasPaid, '— paymentRequired:', paymentRequired);
 
   // ── 6. Insert into aijam_submissions ──────────────────────────────────────
   console.log('[submit] Inserting into aijam_submissions for:', email);
@@ -197,6 +185,8 @@ export async function POST(req: NextRequest) {
       shipping_state:    shippingState,
       shipping_postal:   postalCode,
       shipping_country:  country,
+      submission_status: 'submitted',
+      payment_status:    hasPaid ? 'paid' : 'unpaid',
     })
     .select('id')
     .single();
@@ -218,22 +208,15 @@ export async function POST(req: NextRequest) {
 
   console.log('[submit] Submission saved — id:', submission.id);
 
-  // ── 7. Update registration status → 'submitted' ───────────────────────────
-  const { error: statusError } = await supabaseAdmin
-    .from('aijam_registrations')
-    .update({ submission_status: 'submitted' })
-    .eq('email', email);
-
-  if (statusError) {
-    const e = statusError as unknown as Record<string, unknown>;
-    console.error('[submit] Registration status update error:', {
-      message: e.message,
-      code:    e.code,
-      raw:     JSON.stringify(statusError),
-    });
-    // Non-fatal — submission was saved, just log the error
-  } else {
-    console.log('[submit] Registration status → submitted for:', email);
+  // ── 7. If already paid, keep registration status in sync (non-fatal) ───────
+  if (hasPaid) {
+    const { error: statusError } = await supabaseAdmin
+      .from('aijam_registrations')
+      .update({ submission_status: 'submitted' })
+      .eq('email', email);
+    if (statusError) {
+      console.error('[submit] Registration status update error (non-fatal):', JSON.stringify(statusError));
+    }
   }
 
   // ── 8. Send confirmation email (non-blocking) ─────────────────────────────
@@ -242,7 +225,7 @@ export async function POST(req: NextRequest) {
       console.log('[submit] Sending confirmation email to:', email);
       const result = await sendSubmissionConfirmation({
         to:           email,
-        firstName:    reg.first_name ?? 'Participant',
+        firstName,
         projectTitle,
       });
       if (result.error) {
@@ -255,6 +238,6 @@ export async function POST(req: NextRequest) {
     }
   })();
 
-  console.log('[submit] Done — returning success for:', email);
-  return NextResponse.json({ success: true, id: submission.id });
+  console.log('[submit] Done — returning success for:', email, '— paymentRequired:', paymentRequired);
+  return NextResponse.json({ success: true, id: submission.id, paymentRequired });
 }
