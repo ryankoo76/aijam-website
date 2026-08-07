@@ -197,6 +197,10 @@ export async function sendPaymentConfirmation({
       <div class="info-row"><span class="info-label">Results</span><span class="info-val" style="color:#3b82f6">September 6, 2026</span></div>
     </div>
 
+    <p style="font-size:.8rem;color:#64748b;line-height:1.7;margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.08)">
+      <strong style="color:#94a3b8">Refund policy:</strong> All participation fees are non-refundable.
+    </p>
+
     <p style="font-size:.85rem;color:#64748b;line-height:1.7;margin-top:1.5rem">
       Questions? Reply to this email or contact us at
       <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
@@ -820,6 +824,10 @@ export async function sendSequenceDay7({
     <a class="cta-btn" href="https://www.aijam-us.com/pay">
       💳 Complete Payment Now
     </a>
+
+    <p style="font-size:.8rem;color:#64748b;line-height:1.6;margin-top:.5rem">
+      <strong style="color:#94a3b8">Refund policy:</strong> All participation fees are non-refundable.
+    </p>
 
     <p style="font-size:.82rem;color:#64748b;line-height:1.7;margin-top:.5rem">
       If you've already paid, please disregard this email or reply and we'll verify your status.<br />

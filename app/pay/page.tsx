@@ -186,6 +186,9 @@ function PayContent() {
           <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '.78rem', color: '#475569' }}>
             Secured by Stripe · SSL encrypted
           </div>
+          <div style={{ textAlign: 'center', marginTop: '.6rem', fontSize: '.75rem', color: '#475569', lineHeight: 1.6 }}>
+            All participation fees are <strong style={{ color: '#64748b' }}>non-refundable</strong>.
+          </div>
         </div>
 
         {/* Back link */}
