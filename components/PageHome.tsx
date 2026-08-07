@@ -369,6 +369,27 @@ export default function PageHome({ onSwitch }: PageHomeProps) {
             <button className="btn-main" onClick={() => onSwitch('register')}>🚀 Register Now</button>
             <a className="btn-sec" href="/AIJAM_Guidebook_2026.pdf" download="AIJAM_Guidebook_2026.pdf" target="_blank" rel="noopener noreferrer">📥 Download Official Guidebook (PDF)</a>
           </div>
+          <div style={{marginTop:'1.6rem'}}>
+            <a href="/submit" style={{
+              display:'inline-flex',
+              alignItems:'center',
+              gap:'.55rem',
+              background:'linear-gradient(135deg,#7c3aed,#2563eb)',
+              color:'#fff',
+              padding:'1.05rem 2.6rem',
+              fontWeight:800,
+              fontSize:'1.05rem',
+              letterSpacing:'.03em',
+              textDecoration:'none',
+              boxShadow:'0 10px 34px rgba(124,58,237,.4)',
+              border:'1px solid rgba(255,255,255,.18)',
+            }}>
+              🖊 Already Registered? Submit Your Project →
+            </a>
+            <div style={{marginTop:'.7rem',fontSize:'.82rem',color:'rgba(148,163,184,.55)'}}>
+              For participants who have completed payment.
+            </div>
+          </div>
           <p style={{marginTop:'1.2rem',fontSize:'.82rem',color:'rgba(148,163,184,.4)'}}>📍 855 Maude Avenue, Mountain View, CA · ✉ Team@aijam.org</p>
         </div>
       </div>
