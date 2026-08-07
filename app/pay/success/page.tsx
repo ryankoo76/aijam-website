@@ -220,7 +220,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
           </div>
 
           <a
-            href="/"
+            href={email ? `/submit?email=${encodeURIComponent(email)}` : '/submit'}
             style={{
               display: 'block',
               background: 'linear-gradient(135deg,#1e40af,#0891b2)',
@@ -229,6 +229,24 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
               textDecoration: 'none',
               fontWeight: 700,
               fontSize: '1rem',
+              letterSpacing: '.06em',
+              marginBottom: '.8rem',
+            }}
+          >
+            🖊 Submit Your Project →
+          </a>
+
+          <a
+            href="/"
+            style={{
+              display: 'block',
+              background: 'transparent',
+              border: '1px solid rgba(255,255,255,.15)',
+              color: '#94a3b8',
+              padding: '.8rem',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '.9rem',
               letterSpacing: '.06em',
             }}
           >

@@ -23,6 +23,7 @@ export default function Nav({ activePage, onSwitch }: NavProps) {
         <button className={`ntab${activePage === 'asia' ? ' active' : ''}`} onClick={() => onSwitch('asia')}>AI-JAM ASIA Edition</button>
         <button className={`ntab${activePage === 'winners' ? ' active' : ''}`} onClick={() => onSwitch('winners')}>Winner 2025</button>
         <button className={`ntab${activePage === 'register' ? ' active' : ''}`} onClick={() => onSwitch('register')}>Register 2026</button>
+        <button className="ntab" onClick={() => { window.location.href = '/submit'; }}>🖊 Submit Project</button>
       </div>
     </nav>
   );

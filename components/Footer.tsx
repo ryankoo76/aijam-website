@@ -19,6 +19,7 @@ export default function Footer({ onSwitch }: FooterProps) {
           <a href="#" onClick={e => { e.preventDefault(); onSwitch('asia'); }}>Asia Edition</a>
           <a href="#" onClick={e => { e.preventDefault(); onSwitch('winners'); }}>2025 Winners</a>
           <a href="#" onClick={e => { e.preventDefault(); onSwitch('register'); }}>Register</a>
+          <a href="/submit">Submit Project</a>
           <a href="https://paiax.org" target="_blank" rel="noopener noreferrer">PAIAX</a>
         </div>
       </div>
