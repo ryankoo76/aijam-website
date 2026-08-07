@@ -57,7 +57,13 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      metadata: { email },
+      metadata: { email, project: 'aijam-us' },
+      payment_intent_data: {
+        // Shows on the customer's card statement as "<account prefix>* AIJAM"
+        // so AI-JAM charges are distinguishable from Axplaza in Stripe.
+        statement_descriptor_suffix: 'AIJAM',
+        metadata: { email, project: 'aijam-us' },
+      },
       success_url: `${BASE_URL}/pay/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${BASE_URL}/pay?email=${encodeURIComponent(email)}`,
     });
