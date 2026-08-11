@@ -18,10 +18,12 @@ export async function POST(req: NextRequest) {
 
   // ── Parse body ────────────────────────────────────────────────────────────
   let email: string;
+  let amount: number;
   try {
     const body = await req.json();
     email = body.email ?? '';
-    console.log('[checkout] email received:', email || '(empty)');
+    amount = typeof body.amount === 'number' ? body.amount : parseFloat(body.amount);
+    console.log('[checkout] email received:', email || '(empty)', '— amount:', amount);
   } catch (parseErr) {
     console.error('[checkout] Failed to parse request body:', parseErr);
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
@@ -30,6 +32,12 @@ export async function POST(req: NextRequest) {
   if (!email) {
     return NextResponse.json({ error: 'Missing email' }, { status: 400 });
   }
+
+  // Validate the user-entered amount (USD). Guardrails prevent $0 and typos.
+  if (!Number.isFinite(amount) || amount < 1 || amount > 10000) {
+    return NextResponse.json({ error: 'Invalid amount. Enter between $1 and $10,000.' }, { status: 400 });
+  }
+  const unitAmount = Math.round(amount * 100); // dollars → cents
 
   if (!stripeKey) {
     console.error('[checkout] STRIPE_SECRET_KEY is not set');
@@ -48,7 +56,7 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: 'usd',
-            unit_amount: 35000, // $350.00
+            unit_amount: unitAmount, // user-entered amount in cents
             product_data: {
               name: 'AI-JAM US 2026 — Participation Fee',
               description: '11th International AI Invention Challenge · Submission Deadline: August 30, 2026',

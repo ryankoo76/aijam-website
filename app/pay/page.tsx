@@ -6,11 +6,14 @@ import { useSearchParams } from 'next/navigation';
 function PayContent() {
   const params = useSearchParams();
   const [email, setEmail] = useState(params.get('email') ?? '');
+  const [amount, setAmount] = useState(params.get('amount') ?? '350');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const canPay = emailValid && !loading;
+  const amountNum = parseFloat(amount);
+  const amountValid = Number.isFinite(amountNum) && amountNum >= 1 && amountNum <= 10000;
+  const canPay = emailValid && amountValid && !loading;
 
   async function handlePay() {
     if (!canPay) return;
@@ -20,7 +23,7 @@ function PayContent() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        body: JSON.stringify({ email: email.trim().toLowerCase(), amount: amountNum }),
       });
       const data = await res.json();
       if (!res.ok || !data.url) {
@@ -80,17 +83,53 @@ function PayContent() {
             fontFamily: "'Space Mono', monospace",
           }}>PARTICIPATION FEE</div>
 
-          {/* Price */}
+          {/* Amount (editable) */}
           <div style={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            gap: '.5rem',
             marginBottom: '1.5rem',
             paddingBottom: '1.5rem',
             borderBottom: '1px solid rgba(255,255,255,.08)',
           }}>
-            <div style={{ fontSize: '3rem', fontWeight: 900, color: '#f1f5f9', lineHeight: 1 }}>$350</div>
-            <div style={{ fontSize: '1rem', color: '#64748b', paddingBottom: '.4rem' }}>USD · one-time</div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '.25rem',
+            }}>
+              <span style={{ fontSize: '3rem', fontWeight: 900, color: '#f1f5f9', lineHeight: 1 }}>$</span>
+              <input
+                type="number"
+                inputMode="decimal"
+                min="1"
+                max="10000"
+                step="1"
+                value={amount}
+                onChange={e => { setAmount(e.target.value); setError(''); }}
+                disabled={loading}
+                aria-label="Amount in USD"
+                style={{
+                  width: '160px',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: `2px solid ${amountValid ? 'rgba(255,255,255,.15)' : 'rgba(239,68,68,.5)'}`,
+                  color: '#f1f5f9',
+                  fontSize: '3rem',
+                  fontWeight: 900,
+                  lineHeight: 1,
+                  outline: 'none',
+                  fontFamily: "'Outfit', sans-serif",
+                  padding: 0,
+                  opacity: loading ? 0.5 : 1,
+                }}
+              />
+              <span style={{ fontSize: '1rem', color: '#64748b', alignSelf: 'flex-end', paddingBottom: '.4rem' }}>USD · one-time</span>
+            </div>
+            <div style={{ marginTop: '.7rem', fontSize: '.82rem', color: '#64748b', lineHeight: 1.6 }}>
+              Enter the fee that applies to you — <strong style={{ color: '#94a3b8' }}>Standard $350</strong> · <strong style={{ color: '#94a3b8' }}>Student $250</strong>.
+            </div>
+            {!amountValid && amount.length > 0 && (
+              <div style={{ marginTop: '.4rem', fontSize: '.78rem', color: '#ef4444' }}>
+                Please enter an amount between $1 and $10,000.
+              </div>
+            )}
           </div>
 
           {/* What's included */}
@@ -180,7 +219,7 @@ function PayContent() {
               transition: 'background .2s',
             }}
           >
-            {loading ? 'Redirecting to Stripe...' : '💳 Pay $350 Now'}
+            {loading ? 'Redirecting to Stripe...' : `💳 Pay $${amountValid ? amountNum.toLocaleString() : '—'} Now`}
           </button>
 
           <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '.78rem', color: '#475569' }}>
