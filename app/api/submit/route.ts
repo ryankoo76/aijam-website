@@ -158,58 +158,111 @@ export async function POST(req: NextRequest) {
   const paymentRequired = !hasPaid;
   console.log('[submit] hasPaid:', hasPaid, '— paymentRequired:', paymentRequired);
 
-  // ── 6. Insert into aijam_submissions ──────────────────────────────────────
-  console.log('[submit] Inserting into aijam_submissions for:', email);
-
-  const { data: submission, error: subError } = await supabaseAdmin
+  // ── 6. Save into aijam_submissions (update existing, else insert) ─────────
+  // One submission per email: if this email already has a submission, replace it
+  // in place so participants can come back and edit without creating a second
+  // entry — and without paying again.
+  const { data: existingRow, error: existingLookupErr } = await supabaseAdmin
     .from('aijam_submissions')
-    .insert({
-      email,
-      category,
-      project_title:     projectTitle,
-      team_members:      teamMembers,
-      abstract,
-      key_features:      keyFeatures,
-      social_impact:     socialImpact,
-      marketability,
-      video_url:         videoUrl,
-      slides_link:       slidesLink,
-      inspiration,
-      biggest_challenge: biggestChallenge,
-      ai_role:           aiRole,
-      future_plans:      futurePlans,
-      shipping_name:     recipientName,
-      shipping_address:  streetAddress,
-      shipping_apt:      apt,
-      shipping_city:     city,
-      shipping_state:    shippingState,
-      shipping_postal:   postalCode,
-      shipping_country:  country,
-      submission_status: 'submitted',
-      payment_status:    hasPaid ? 'paid' : 'unpaid',
-    })
-    .select('id')
-    .single();
+    .select('id, payment_status')
+    .eq('email', email)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
-  if (subError) {
-    const e = subError as unknown as Record<string, unknown>;
-    console.error('[submit] aijam_submissions insert error:', {
-      message: e.message,
-      code:    e.code,
-      details: e.details,
-      hint:    e.hint,
-      raw:     JSON.stringify(subError),
-    });
-    return NextResponse.json(
-      { error: `Failed to save submission: ${e.message ?? JSON.stringify(subError)}` },
-      { status: 500 }
-    );
+  if (existingLookupErr) {
+    console.warn('[submit] existing submission lookup failed (non-fatal):', JSON.stringify(existingLookupErr));
   }
 
-  console.log('[submit] Submission saved — id:', submission.id);
+  // Never downgrade an already-paid submission back to unpaid.
+  const alreadyPaid   = existingRow?.payment_status === 'paid';
+  const paymentStatus = hasPaid || alreadyPaid ? 'paid' : 'unpaid';
+
+  const payload = {
+    category,
+    project_title:     projectTitle,
+    team_members:      teamMembers,
+    abstract,
+    key_features:      keyFeatures,
+    social_impact:     socialImpact,
+    marketability,
+    video_url:         videoUrl,
+    slides_link:       slidesLink,
+    inspiration,
+    biggest_challenge: biggestChallenge,
+    ai_role:           aiRole,
+    future_plans:      futurePlans,
+    shipping_name:     recipientName,
+    shipping_address:  streetAddress,
+    shipping_apt:      apt,
+    shipping_city:     city,
+    shipping_state:    shippingState,
+    shipping_postal:   postalCode,
+    shipping_country:  country,
+    submission_status: 'submitted',
+    payment_status:    paymentStatus,
+  };
+
+  const existingId = existingRow?.id ?? '';
+  const isUpdate   = !!existingId;
+  let submissionId = '';
+
+  if (isUpdate) {
+    console.log('[submit] Updating existing submission —', existingId, 'for:', email);
+    const { data: updated, error: updError } = await supabaseAdmin
+      .from('aijam_submissions')
+      .update(payload)
+      .eq('id', existingId)
+      .select('id')
+      .single();
+
+    if (updError) {
+      const e = updError as unknown as Record<string, unknown>;
+      console.error('[submit] aijam_submissions update error:', {
+        message: e.message,
+        code:    e.code,
+        details: e.details,
+        hint:    e.hint,
+        raw:     JSON.stringify(updError),
+      });
+      return NextResponse.json(
+        { error: `Failed to update submission: ${e.message ?? JSON.stringify(updError)}` },
+        { status: 500 }
+      );
+    }
+    submissionId = updated.id;
+  } else {
+    console.log('[submit] Inserting new submission for:', email);
+    const { data: inserted, error: subError } = await supabaseAdmin
+      .from('aijam_submissions')
+      .insert({ email, ...payload })
+      .select('id')
+      .single();
+
+    if (subError) {
+      const e = subError as unknown as Record<string, unknown>;
+      console.error('[submit] aijam_submissions insert error:', {
+        message: e.message,
+        code:    e.code,
+        details: e.details,
+        hint:    e.hint,
+        raw:     JSON.stringify(subError),
+      });
+      return NextResponse.json(
+        { error: `Failed to save submission: ${e.message ?? JSON.stringify(subError)}` },
+        { status: 500 }
+      );
+    }
+    submissionId = inserted.id;
+  }
+
+  console.log('[submit] Submission saved — id:', submissionId, '— mode:', isUpdate ? 'update' : 'insert');
+
+  // A submission that was already marked paid still counts as paid.
+  const stillNeedsPayment = paymentStatus !== 'paid';
 
   // ── 7. If already paid, keep registration status in sync (non-fatal) ───────
-  if (hasPaid) {
+  if (!stillNeedsPayment) {
     const { error: statusError } = await supabaseAdmin
       .from('aijam_registrations')
       .update({ submission_status: 'submitted' })
@@ -238,6 +291,11 @@ export async function POST(req: NextRequest) {
     }
   })();
 
-  console.log('[submit] Done — returning success for:', email, '— paymentRequired:', paymentRequired);
-  return NextResponse.json({ success: true, id: submission.id, paymentRequired });
+  console.log('[submit] Done — returning success for:', email, '— paymentRequired:', stillNeedsPayment, '— updated:', isUpdate);
+  return NextResponse.json({
+    success: true,
+    id: submissionId,
+    paymentRequired: stillNeedsPayment,
+    updated: isUpdate,
+  });
 }

@@ -173,8 +173,51 @@ function Textarea({
   );
 }
 
+// ── Existing submission shape (passed in from the server component) ───────────
+export type ExistingSubmission = {
+  id: string;
+  category: string;
+  projectTitle: string;
+  teamMembers: string;
+  abstract: string;
+  keyFeatures: string;
+  socialImpact: string;
+  marketability: string;
+  videoUrl: string;
+  slidesLink: string;
+  inspiration: string;
+  biggestChallenge: string;
+  aiRole: string;
+  futurePlans: string;
+  recipientName: string;
+  streetAddress: string;
+  apt: string;
+  city: string;
+  shippingState: string;
+  postalCode: string;
+  country: string;
+  paymentStatus: string;
+  createdAt: string;
+};
+
+// Format an ISO timestamp as e.g. "August 19, 2026"
+function formatDate(iso: string): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
 // ── Main form ─────────────────────────────────────────────────────────────────
-export default function SubmitForm({ email: initialEmail }: { email: string }) {
+export default function SubmitForm({
+  email: initialEmail,
+  existing = null,
+}: {
+  email: string;
+  existing?: ExistingSubmission | null;
+}) {
+  const isEditing = !!existing;
+
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
   const [success, setSuccess] = useState(false);
@@ -185,32 +228,32 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   // Section A — all required
-  const [category,      setCategory]      = useState('');
-  const [projectTitle,  setProjectTitle]  = useState('');
-  const [teamMembers,   setTeamMembers]   = useState('');
-  const [abstract,      setAbstract]      = useState('');
-  const [keyFeatures,   setKeyFeatures]   = useState('');
-  const [socialImpact,  setSocialImpact]  = useState('');
-  const [marketability, setMarketability] = useState('');
+  const [category,      setCategory]      = useState(existing?.category      ?? '');
+  const [projectTitle,  setProjectTitle]  = useState(existing?.projectTitle  ?? '');
+  const [teamMembers,   setTeamMembers]   = useState(existing?.teamMembers   ?? '');
+  const [abstract,      setAbstract]      = useState(existing?.abstract      ?? '');
+  const [keyFeatures,   setKeyFeatures]   = useState(existing?.keyFeatures   ?? '');
+  const [socialImpact,  setSocialImpact]  = useState(existing?.socialImpact  ?? '');
+  const [marketability, setMarketability] = useState(existing?.marketability ?? '');
 
   // Section B
-  const [videoUrl,   setVideoUrl]   = useState('');
-  const [slidesLink, setSlidesLink] = useState('');
+  const [videoUrl,   setVideoUrl]   = useState(existing?.videoUrl   ?? '');
+  const [slidesLink, setSlidesLink] = useState(existing?.slidesLink ?? '');
 
   // Section C — all optional
-  const [inspiration,      setInspiration]      = useState('');
-  const [biggestChallenge, setBiggestChallenge] = useState('');
-  const [aiRole,           setAiRole]           = useState('');
-  const [futurePlans,      setFuturePlans]      = useState('');
+  const [inspiration,      setInspiration]      = useState(existing?.inspiration      ?? '');
+  const [biggestChallenge, setBiggestChallenge] = useState(existing?.biggestChallenge ?? '');
+  const [aiRole,           setAiRole]           = useState(existing?.aiRole           ?? '');
+  const [futurePlans,      setFuturePlans]      = useState(existing?.futurePlans      ?? '');
 
   // Section D — required (apt optional)
-  const [recipientName,  setRecipientName]  = useState('');
-  const [streetAddress,  setStreetAddress]  = useState('');
-  const [apt,            setApt]            = useState('');
-  const [city,           setCity]           = useState('');
-  const [shippingState,  setShippingState]  = useState('');
-  const [postalCode,     setPostalCode]     = useState('');
-  const [country,        setCountry]        = useState('');
+  const [recipientName,  setRecipientName]  = useState(existing?.recipientName ?? '');
+  const [streetAddress,  setStreetAddress]  = useState(existing?.streetAddress ?? '');
+  const [apt,            setApt]            = useState(existing?.apt           ?? '');
+  const [city,           setCity]           = useState(existing?.city          ?? '');
+  const [shippingState,  setShippingState]  = useState(existing?.shippingState ?? '');
+  const [postalCode,     setPostalCode]     = useState(existing?.postalCode    ?? '');
+  const [country,        setCountry]        = useState(existing?.country       ?? '');
 
   // Required: all Section A + videoUrl + all Section D except apt
   const canSubmit =
@@ -313,11 +356,15 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               marginBottom: '1.5rem',
               fontFamily: mono,
             }}>
-              📬 SUBMISSION RECEIVED
+              {isEditing ? '✅ SUBMISSION UPDATED' : '📬 SUBMISSION RECEIVED'}
             </div>
 
             <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#f1f5f9', margin: '0 0 .8rem' }}>
-              {paymentRequired ? 'Almost done — one step left' : 'Your project is submitted!'}
+              {paymentRequired
+                ? 'Almost done — one step left'
+                : isEditing
+                  ? 'Your submission has been updated!'
+                  : 'Your project is submitted!'}
             </h1>
 
             {paymentRequired ? (
@@ -329,7 +376,9 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               </p>
             ) : (
               <p style={{ fontSize: '.95rem', color: '#94a3b8', lineHeight: 1.8, margin: '0 0 2rem' }}>
-                A confirmation email has been sent to<br />
+                {isEditing
+                  ? 'Your updated details have replaced your previous submission.'
+                  : 'A confirmation email has been sent to'}<br />
                 <strong style={{ color: '#e2e8f0' }}>{email}</strong>.<br />
                 Results will be announced on September 6, 2026.
               </p>
@@ -368,7 +417,7 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
                   'Our judges will review your submission',
                   'Results announced: September 6, 2026',
                   'Winners contacted regarding awards',
-                  'You may re-submit before Aug 30 if needed',
+                  'Return to /submit with your email anytime before Aug 30 to review or update your entry',
                 ].map((s, i) => (
                   <div key={s} style={{ display: 'flex', gap: '.8rem', marginBottom: '.5rem', fontSize: '.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
                     <span style={{ color: '#a78bfa', fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
@@ -419,12 +468,63 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
         {/* Title bar */}
         <div style={{ background: 'linear-gradient(135deg,#1e40af,#7c3aed)', padding: '1.2rem 2rem' }}>
           <div style={{ fontSize: '.68rem', letterSpacing: '.15em', color: 'rgba(255,255,255,.6)', fontFamily: mono, marginBottom: '.3rem' }}>
-            PROJECT SUBMISSION FORM
+            {isEditing ? 'YOUR SUBMISSION' : 'PROJECT SUBMISSION FORM'}
           </div>
           <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff' }}>
-            Submit your AI project · Deadline: August 30, 2026
+            {isEditing
+              ? 'Review or update your entry · Deadline: August 30, 2026'
+              : 'Submit your AI project · Deadline: August 30, 2026'}
           </div>
         </div>
+
+        {/* Existing-submission banner */}
+        {isEditing && existing && (
+          <div style={{
+            background: 'rgba(16,185,129,.07)',
+            border: '1px solid rgba(16,185,129,.28)',
+            borderTop: 'none',
+            padding: '1.2rem 2rem',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '.6rem',
+              marginBottom: '.6rem',
+            }}>
+              <span style={{ fontSize: '1.1rem' }}>✅</span>
+              <span style={{
+                fontSize: '.75rem',
+                letterSpacing: '.12em',
+                color: '#10b981',
+                fontFamily: mono,
+                fontWeight: 700,
+              }}>
+                SUBMISSION FOUND
+              </span>
+            </div>
+            <p style={{ margin: 0, fontSize: '.9rem', color: '#94a3b8', lineHeight: 1.7 }}>
+              We found your submission
+              {existing.projectTitle && (
+                <>
+                  {' '}— <strong style={{ color: '#e2e8f0' }}>{existing.projectTitle}</strong>
+                </>
+              )}
+              {formatDate(existing.createdAt) && (
+                <>, received on {formatDate(existing.createdAt)}</>
+              )}
+              . Payment status:{' '}
+              <strong style={{ color: existing.paymentStatus === 'paid' ? '#10b981' : '#f59e0b' }}>
+                {existing.paymentStatus === 'paid' ? 'Paid ✓' : 'Not yet paid'}
+              </strong>
+              .
+            </p>
+            <p style={{ margin: '.6rem 0 0', fontSize: '.85rem', color: '#64748b', lineHeight: 1.7 }}>
+              Your answers are pre-filled below. Edit anything you&apos;d like to change, then click{' '}
+              <strong style={{ color: '#94a3b8' }}>Save Changes</strong> — this replaces your previous
+              submission, so you never need to pay or re-enter everything again.
+            </p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
 
@@ -813,7 +913,9 @@ export default function SubmitForm({ email: initialEmail }: { email: string }) {
               marginBottom: '.8rem',
             }}
           >
-            {loading ? '⏳ Submitting...' : '🚀 Submit Project'}
+            {loading
+              ? (isEditing ? '⏳ Saving...' : '⏳ Submitting...')
+              : (isEditing ? '💾 Save Changes' : '🚀 Submit Project')}
           </button>
 
           {/* Hint when button is disabled */}

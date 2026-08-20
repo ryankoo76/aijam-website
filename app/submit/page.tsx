@@ -1,4 +1,8 @@
-import SubmitForm from '@/components/SubmitForm';
+import SubmitForm, { type ExistingSubmission } from '@/components/SubmitForm';
+import { supabaseAdmin } from '@/lib/supabase';
+
+// Always render fresh — this page shows participant-specific submission data.
+export const dynamic = 'force-dynamic';
 
 // ── Shared dark-theme card shell ──────────────────────────────────────────────
 function PageShell({ children }: { children: React.ReactNode }) {
@@ -67,6 +71,11 @@ function EmailEntryCard() {
           After you submit, you&apos;ll complete the $350 participation fee to finalize your entry.
         </p>
 
+        <p style={{ fontSize: '.85rem', color: '#64748b', lineHeight: 1.7, marginTop: 0, marginBottom: '1.5rem' }}>
+          <strong style={{ color: '#94a3b8' }}>Already submitted?</strong> Enter the same email and your
+          existing submission will load, ready to review or update — no extra payment needed.
+        </p>
+
         {/* Plain HTML GET form — no JS needed */}
         <form method="get" action="/submit">
           <label style={{
@@ -120,9 +129,74 @@ function EmailEntryCard() {
   );
 }
 
+// ── Load this email's most recent submission (if any) ────────────────────────
+async function loadExistingSubmission(email: string): Promise<ExistingSubmission | null> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('aijam_submissions')
+      .select('*')
+      .eq('email', email)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error('[submit page] existing submission lookup error:', JSON.stringify(error));
+      return null;
+    }
+    if (!data) {
+      console.log('[submit page] no existing submission for:', email);
+      return null;
+    }
+
+    const row = data as Record<string, unknown>;
+    // Some legacy rows used older column names — fall back across both.
+    const pick = (...keys: string[]): string => {
+      for (const k of keys) {
+        const v = row[k];
+        if (typeof v === 'string' && v.trim() !== '') return v;
+      }
+      return '';
+    };
+
+    console.log('[submit page] existing submission found for:', email, '— id:', pick('id'));
+
+    return {
+      id:               pick('id'),
+      category:         pick('category'),
+      projectTitle:     pick('project_title'),
+      teamMembers:      pick('team_members'),
+      abstract:         pick('abstract'),
+      keyFeatures:      pick('key_features'),
+      socialImpact:     pick('social_impact', 'impact'),
+      marketability:    pick('marketability', 'market'),
+      videoUrl:         pick('video_url'),
+      slidesLink:       pick('slides_link', 'slides_url', 'slide_url'),
+      inspiration:      pick('inspiration', 'story_inspiration'),
+      biggestChallenge: pick('biggest_challenge', 'story_challenge'),
+      aiRole:           pick('ai_role', 'story_ai_role'),
+      futurePlans:      pick('future_plans', 'story_future'),
+      recipientName:    pick('shipping_name'),
+      streetAddress:    pick('shipping_address'),
+      apt:              pick('shipping_apt'),
+      city:             pick('shipping_city'),
+      shippingState:    pick('shipping_state'),
+      postalCode:       pick('shipping_postal'),
+      country:          pick('shipping_country'),
+      paymentStatus:    pick('payment_status') || 'unpaid',
+      createdAt:        pick('created_at'),
+    };
+  } catch (err) {
+    console.error('[submit page] existing submission lookup threw:', err);
+    return null;
+  }
+}
+
 // ── Page entry point ──────────────────────────────────────────────────────────
 // Open submission: anyone can reach the form directly (submit first, pay later).
-export default function SubmitPage({
+// If this email already submitted, their answers are loaded back into the form
+// so they can review or update instead of starting from a blank page.
+export default async function SubmitPage({
   searchParams,
 }: {
   searchParams: { email?: string };
@@ -133,5 +207,7 @@ export default function SubmitPage({
     return <EmailEntryCard />;
   }
 
-  return <SubmitForm email={rawEmail} />;
+  const existing = await loadExistingSubmission(rawEmail);
+
+  return <SubmitForm email={rawEmail} existing={existing} />;
 }
