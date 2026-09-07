@@ -1,0 +1,444 @@
+<title>AI-JAM 2026 결과 페이지 기획</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --paper:#FAF9F6;
+    --surface:#FFFFFF;
+    --surface-2:#F2F1EC;
+    --ink:#16181D;
+    --ink-2:#4A4F5A;
+    --ink-3:#7A808C;
+    --line:#E3E1DA;
+    --line-strong:#CFCCC2;
+    --accent:#0E5C72;
+    --accent-soft:rgba(14,92,114,.09);
+    --brass:#9C6D14;
+    --brass-soft:rgba(156,109,20,.10);
+    --ready:#2C6B4A;
+    --ready-soft:rgba(44,107,74,.10);
+    --risk:#A6392A;
+    --risk-soft:rgba(166,57,42,.10);
+    --shadow:0 1px 2px rgba(20,22,26,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#14161A;--surface:#1B1E24;--surface-2:#22262E;
+      --ink:#ECEEF1;--ink-2:#A9AFBA;--ink-3:#787F8B;
+      --line:#2B303A;--line-strong:#3B424E;
+      --accent:#5FBBD6;--accent-soft:rgba(95,187,214,.13);
+      --brass:#D9A441;--brass-soft:rgba(217,164,65,.13);
+      --ready:#62B98A;--ready-soft:rgba(98,185,138,.13);
+      --risk:#E0786A;--risk-soft:rgba(224,120,106,.13);
+      --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#14161A;--surface:#1B1E24;--surface-2:#22262E;
+    --ink:#ECEEF1;--ink-2:#A9AFBA;--ink-3:#787F8B;
+    --line:#2B303A;--line-strong:#3B424E;
+    --accent:#5FBBD6;--accent-soft:rgba(95,187,214,.13);
+    --brass:#D9A441;--brass-soft:rgba(217,164,65,.13);
+    --ready:#62B98A;--ready-soft:rgba(98,185,138,.13);
+    --risk:#E0786A;--risk-soft:rgba(224,120,106,.13);
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo',sans-serif;
+    font-size:16px;line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 96px}
+
+  /* ── masthead ── */
+  .mast{border-bottom:1px solid var(--line);padding:56px 0 28px;margin-bottom:40px}
+  .eyebrow{
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px;
+  }
+  h1{
+    font-size:clamp(1.9rem,4.4vw,2.7rem);line-height:1.22;font-weight:700;
+    letter-spacing:-.02em;text-wrap:balance;margin:0 0 14px;
+  }
+  .lede{font-size:1.06rem;color:var(--ink-2);max-width:60ch;margin:0}
+
+  .facts{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);
+    margin-top:32px;
+  }
+  .fact{background:var(--surface);padding:14px 16px}
+  .fact dt{
+    font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-3);margin:0 0 4px;
+  }
+  .fact dd{margin:0;font-size:1.02rem;font-weight:600;font-variant-numeric:tabular-nums}
+  .fact dd small{display:block;font-weight:400;font-size:.82rem;color:var(--ink-3);letter-spacing:0}
+
+  /* ── sections ── */
+  section{margin:0 0 56px}
+  h2{
+    font-size:1.32rem;font-weight:700;letter-spacing:-.01em;margin:0 0 6px;
+    padding-bottom:10px;border-bottom:2px solid var(--ink);display:inline-block;
+  }
+  .sec-note{color:var(--ink-3);font-size:.92rem;margin:8px 0 24px}
+  h3{font-size:1.02rem;font-weight:600;margin:32px 0 10px}
+  p{margin:0 0 14px;max-width:68ch}
+  ul{margin:0 0 14px;padding-left:1.1em}
+  li{margin-bottom:6px;max-width:66ch}
+  strong{font-weight:600}
+  code{
+    font-family:'IBM Plex Mono',monospace;font-size:.86em;
+    background:var(--surface-2);padding:.1em .38em;border-radius:2px;
+  }
+
+  /* ── decision cards ── */
+  .decisions{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .dec{background:var(--surface);padding:18px}
+  .dec .k{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+  .dec .v{font-weight:600;font-size:.98rem;line-height:1.5;margin-bottom:6px}
+  .dec .why{font-size:.86rem;color:var(--ink-2);line-height:1.6}
+
+  /* ── tables ── */
+  .tw{overflow-x:auto;border:1px solid var(--line);background:var(--surface);margin-bottom:20px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink-3);font-weight:500;
+    background:var(--surface-2);white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:none}
+  .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+  .chip{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+    letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;white-space:nowrap;
+    border:1px solid currentColor;border-radius:2px;
+  }
+  .chip.ok{color:var(--ready);background:var(--ready-soft)}
+  .chip.no{color:var(--risk);background:var(--risk-soft)}
+  .chip.mid{color:var(--brass);background:var(--brass-soft)}
+
+  /* ── callout ── */
+  .callout{
+    border-left:3px solid var(--risk);background:var(--risk-soft);
+    padding:16px 18px;margin:0 0 20px;
+  }
+  .callout.brass{border-left-color:var(--brass);background:var(--brass-soft)}
+  .callout .ct{font-weight:600;margin-bottom:6px}
+  .callout p:last-child{margin-bottom:0}
+
+  /* ── numbered sequence (page order / timeline) ── */
+  .seq{list-style:none;padding:0;margin:0;counter-reset:s}
+  .seq > li{
+    counter-increment:s;position:relative;padding:16px 0 16px 58px;
+    border-bottom:1px solid var(--line);margin:0;max-width:none;
+  }
+  .seq > li:last-child{border-bottom:none}
+  .seq > li::before{
+    content:counter(s,decimal-leading-zero);position:absolute;left:0;top:17px;
+    font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--accent);
+    letter-spacing:.06em;
+  }
+  .seq .st{font-weight:600;margin-bottom:2px}
+  .seq .sd{font-size:.92rem;color:var(--ink-2);max-width:64ch}
+  .seq .src{
+    font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-3);
+    letter-spacing:.05em;margin-top:6px;
+  }
+
+  .day{
+    font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink-3);
+    border:1px solid var(--line-strong);padding:1px 6px;margin-left:8px;border-radius:2px;
+    white-space:nowrap;
+  }
+
+  .ask{border:1px solid var(--line);background:var(--surface);padding:20px 22px}
+  .ask ol{margin:0;padding-left:1.2em}
+  .ask li{margin-bottom:12px}
+  .ask li:last-child{margin-bottom:0}
+  .ask .q{font-weight:600}
+  .ask .opt{font-size:.9rem;color:var(--ink-2)}
+
+  a{color:var(--accent)}
+  a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">AI-JAM US · 기획서 · 2026-09-04</div>
+    <h1>2026 결과 발표 페이지,<br>이렇게 만듭니다</h1>
+    <p class="lede">aijam-us.com에 올릴 <strong>Results 2026</strong> — 통계 · 수상자 · 하이라이트 · 어워드 리스트를 한 페이지에. 홈페이지가 이미 “Results Online: September 6, 2026”을 공지하고 있으므로 <strong>D-2</strong> 안에 배포까지 끝내는 것이 이 기획의 전제입니다.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>발표 약속일</dt><dd>9월 6일 (일)<small>홈·이메일에 이미 공지됨</small></dd></div>
+      <div class="fact"><dt>제출 프로젝트</dt><dd>39편<small>등록 283명 중</small></dd></div>
+      <div class="fact"><dt>참가 국가</dt><dd>14개국<small>표기 정리 후 확정</small></dd></div>
+      <div class="fact"><dt>새 라우트</dt><dd>/results/2026<small>Next.js App Router</small></dd></div>
+    </dl>
+  </header>
+
+  <section>
+    <h2>확정된 방향</h2>
+    <p class="sec-note">앞선 4개 질문에 대한 Ryan의 선택 — 이 기획서 전체가 이 네 가지 위에 서 있습니다.</p>
+    <div class="decisions">
+      <div class="dec">
+        <div class="k">수상 결과</div>
+        <div class="v">Claude가 초안 → Ryan 확정</div>
+        <div class="why">DB의 39편 전문을 읽고 카테고리별 수상 초안 + Best AI Application 후보를 뽑아 드립니다.</div>
+      </div>
+      <div class="dec">
+        <div class="k">페이지 위치</div>
+        <div class="v">별도 라우트 <code>/results/2026</code></div>
+        <div class="why">공유·SNS 링크가 깔끔하고, 매년 <code>/results/2027</code>로 쌓입니다.</div>
+      </div>
+      <div class="dec">
+        <div class="k">공개 범위</div>
+        <div class="v">상위 수상만 웹 + 전체는 PDF</div>
+        <div class="why">2025년과 동일한 방식. 미성년 참가자 식별정보를 웹에 노출하지 않습니다.</div>
+      </div>
+      <div class="dec">
+        <div class="k">하이라이트 영상</div>
+        <div class="v">신규 제작 필요</div>
+        <div class="why">기존 소재 없음. 제출 영상 39편을 소재로 쓰는 안을 아래에 정리했습니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>지금 손에 있는 재료</h2>
+    <p class="sec-note">Supabase <code>aijam_submissions</code> · <code>aijam_registrations</code> 실측 (2026-09-04 기준).</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>재료</th><th class="num">수량</th><th>상태</th><th>메모</th></tr></thead>
+        <tbody>
+          <tr><td>등록자</td><td class="num">283</td><td><span class="chip ok">확보</span></td><td>이름·국가·학교·참가유형</td></tr>
+          <tr><td>제출 프로젝트</td><td class="num">39</td><td><span class="chip ok">확보</span></td><td>제목·초록·핵심기능·임팩트·시장성</td></tr>
+          <tr><td>30초 영상 URL</td><td class="num">39 / 39</td><td><span class="chip ok">전량</span></td><td>하이라이트 영상의 원재료</td></tr>
+          <tr><td>슬라이드 링크</td><td class="num">34 / 39</td><td><span class="chip mid">일부</span></td><td>5편 누락 — 갤러리에서 제외 또는 재요청</td></tr>
+          <tr><td>참가자 스토리</td><td class="num">39</td><td><span class="chip ok">확보</span></td><td>영감·최대 난관·AI의 역할·향후 계획 → 인터뷰 인용구로 바로 사용</td></tr>
+          <tr><td>결제 완료 제출</td><td class="num">16</td><td><span class="chip no">불일치</span></td><td>등록 테이블은 13건으로 집계 — 심사 자격 확정 전 대조 필요</td></tr>
+          <tr><td>수상자 명단</td><td class="num">0</td><td><span class="chip no">없음</span></td><td>Claude 초안 → Ryan 확정</td></tr>
+          <tr><td>2026 행사 사진</td><td class="num">0</td><td><span class="chip no">없음</span></td><td>100% 온라인 대회 — 현장 사진이 존재하지 않음</td></tr>
+          <tr><td>하이라이트 영상</td><td class="num">0</td><td><span class="chip no">없음</span></td><td>아래 제작안 참조</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>카테고리 분포 — 그대로 통계 섹션이 됩니다</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>카테고리</th><th class="num">제출</th><th>수상 배정 시 함의</th></tr></thead>
+        <tbody>
+          <tr><td>Healthcare</td><td class="num">12</td><td>최대 격전지 — Gold 1 + Silver 2 배정 근거</td></tr>
+          <tr><td>Social Good</td><td class="num">7</td><td>Gold 1</td></tr>
+          <tr><td>Environment</td><td class="num">6</td><td>Gold 1</td></tr>
+          <tr><td>Other</td><td class="num">6</td><td>재분류 필요 — 제목 기준 자동 정리</td></tr>
+          <tr><td>Education</td><td class="num">5</td><td>Gold 1</td></tr>
+          <tr><td>Finance · Transportation · Agriculture</td><td class="num">각 1</td><td>단독 카테고리 시상 대신 특별상으로 흡수</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>국가 분포</h3>
+    <p>Vietnam 8 · Indonesia 6 · India 5 · Malaysia 3 · United States 3 · Romania 2 · Egypt 2 · Korea 2 · Azerbaijan · Iran · Algeria · Taiwan · UAE · Rwanda 각 1 — <strong>14개국</strong>.</p>
+    <div class="callout">
+      <div class="ct">국가 표기가 지저분합니다 — 페이지에 그대로 쓰면 안 됩니다</div>
+      <p>같은 나라가 <code>Vietnam</code> / <code>VIETNAM</code> / <code>Viet Nam</code> / <code>Việt Nam</code> 4가지로, 한국이 <code>대한민국</code> / <code>South Korea</code> 2가지로 들어와 있고, <code>sff</code> · <code>cvcv</code> 같은 무의미 입력이 2건 섞여 있습니다. <strong>정규화 매핑 테이블을 먼저 만들고</strong> 그 결과로 “14 Countries”와 지도·국기 표시를 그립니다. 정리 전 <code>count(distinct)</code>는 23이 나와 실제와 다릅니다.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>먼저 정해야 할 숫자 문제</h2>
+    <p class="sec-note">이 페이지에서 가장 위험한 지점이라 따로 뺐습니다.</p>
+    <div class="callout brass">
+      <div class="ct">2025 페이지는 753편 · 참가자 1,020명 · 수상 527건을 말하고, 2026 실측은 39편입니다</div>
+      <p>두 숫자를 같은 사이트에 나란히 두면 “대회가 20분의 1로 줄었다”는 메시지가 자동으로 읽힙니다. 전년 대비 규모를 전면에 세우는 구성은 피하고, <strong>2026 페이지는 자기 숫자만 자기 프레임으로</strong> 말하게 합니다.</p>
+    </div>
+    <p>권장 프레임 — <strong>“규모”가 아니라 “도달과 밀도”</strong>:</p>
+    <ul>
+      <li><strong>14개국 · 4개 대륙</strong> — 39편이라는 절대 수보다 국가 다양성이 훨씬 강한 사실입니다.</li>
+      <li><strong>제출 전량이 영상 완주</strong> (39/39) — 중도 이탈 없는 완주율은 다른 대회가 잘 못 내는 숫자입니다.</li>
+      <li><strong>Healthcare 12편</strong> 등 주제 집중도 — “올해 학생들이 무엇을 문제로 봤는가”라는 읽을거리로 전환.</li>
+      <li>전년 비교가 필요하면 <em>누적</em>으로 서술 — “Since 2015 · 11th edition”.</li>
+    </ul>
+    <p>동시에 홈 화면의 <strong>“10,000+ 참가자 / 72+ 국가”</strong>도 이 페이지와 충돌하지 않게 “누적(cumulative since 2015)” 표기를 붙이는 것을 권합니다.</p>
+  </section>
+
+  <section>
+    <h2>페이지 구조</h2>
+    <p class="sec-note">위에서 아래로 읽는 순서 그대로입니다. 각 블록에 어떤 데이터가 들어가는지 함께 적었습니다.</p>
+    <ol class="seq">
+      <li>
+        <div class="st">히어로 — “2026 RESULTS ARE IN”</div>
+        <div class="sd">11th edition, 발표일, 한 문장 총평. 배경은 수상작 포스터 몽타주. 상단에 “Full Award List (PDF)” · “Watch the Highlight” 두 버튼.</div>
+        <div class="src">SOURCE 고정 카피 + PDF</div>
+      </li>
+      <li>
+        <div class="st">By the Numbers</div>
+        <div class="sd">14개국 · 39 프로젝트 · 283 등록 · 4개 대륙 · 8개 카테고리. 숫자 타일 4~5개 + 카테고리 분포 막대.</div>
+        <div class="src">SOURCE Supabase 집계 (정규화 후)</div>
+      </li>
+      <li>
+        <div class="st">Highlight Film</div>
+        <div class="sd">60~90초 결과 소개 영상 임베드. 영상이 늦어지면 이 블록은 “Coming soon” 대신 <em>아예 숨기고</em> 완성 시 추가 — 빈 자리는 페이지 신뢰를 깎습니다.</div>
+        <div class="src">SOURCE 신규 제작 (아래 참조)</div>
+      </li>
+      <li>
+        <div class="st">Top Winners — 카드 6~10장</div>
+        <div class="sd">Grand Prix / Gold / Silver / Bronze. 카드당: 메달, 상 등급, 프로젝트명, 팀명, 국가 국기, 한 줄 요약(초록에서 압축), 30초 영상 재생 버튼.</div>
+        <div class="src">SOURCE Claude 초안 → Ryan 확정</div>
+      </li>
+      <li>
+        <div class="st">Best AI Application</div>
+        <div class="sd">단독 피처 블록. “AI를 가장 잘 쓴 프로젝트” 1편을 크게 — 무엇을 만들었고 AI가 정확히 어느 지점을 해결했는지. 참가자가 직접 쓴 <code>ai_role</code> 답변을 인용구로 그대로 사용.</div>
+        <div class="src">SOURCE aijam_submissions.ai_role</div>
+      </li>
+      <li>
+        <div class="st">Special Awards</div>
+        <div class="sd">Best Social Impact · Best Storytelling · Youngest Innovator · Rising Country 등 3~4개. 소규모 대회에서 “수상 폭”을 넓히는 가장 정직한 방법입니다.</div>
+        <div class="src">SOURCE Claude 초안</div>
+      </li>
+      <li>
+        <div class="st">Project Gallery</div>
+        <div class="sd">수상 여부와 무관하게 전 제출작을 카드 그리드로. 카테고리 필터. 참가자가 자기 프로젝트를 찾아 SNS에 공유하는 지점 — <strong>재등록률을 만드는 실제 엔진</strong>입니다.</div>
+        <div class="src">SOURCE 39편 · 슬라이드 34편</div>
+      </li>
+      <li>
+        <div class="st">Voices of 2026</div>
+        <div class="sd">참가자 스토리 3~4개 인용. 2025 페이지의 가상 후기와 달리 <strong>실제 제출 답변</strong>을 쓰므로 훨씬 강합니다. 이름 표기는 First name + 국가까지만.</div>
+        <div class="src">SOURCE story_inspiration / biggest_challenge</div>
+      </li>
+      <li>
+        <div class="st">Award List (PDF) + 인증서 안내</div>
+        <div class="sd">전체 명단 PDF 다운로드, 인증서·메달 발송 일정, 문의 메일. 2025 페이지의 PDF 바 구조를 그대로 재사용.</div>
+        <div class="src">SOURCE 신규 PDF 생성</div>
+      </li>
+      <li>
+        <div class="st">Next: 2027 &amp; AXGO</div>
+        <div class="sd">사전 알림 신청 + AXGO Seoul International 연결. 결과 페이지는 1년 내내 유입이 있는 페이지이므로 여기서 다음 기수로 넘깁니다.</div>
+        <div class="src">SOURCE 기존 등록 폼 재사용</div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>시상 체계 초안</h2>
+    <p class="sec-note">39편 기준. 확정이 아니라 Ryan이 고치기 쉬우라고 만든 출발점입니다.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>상</th><th class="num">건수</th><th>선정 기준</th><th>웹 공개</th></tr></thead>
+        <tbody>
+          <tr><td>Grand Prix</td><td class="num">1</td><td>4개 심사축 종합 1위</td><td><span class="chip ok">전체</span></td></tr>
+          <tr><td>Gold Award</td><td class="num">4</td><td>주요 카테고리별 최고작 (Healthcare / Social Good / Environment / Education)</td><td><span class="chip ok">전체</span></td></tr>
+          <tr><td>Silver Award</td><td class="num">6</td><td>카테고리 차순위</td><td><span class="chip ok">전체</span></td></tr>
+          <tr><td>Bronze Award</td><td class="num">8</td><td>완성도 상위</td><td><span class="chip mid">이름+국가</span></td></tr>
+          <tr><td>특별상</td><td class="num">4</td><td>Best AI Application · Best Social Impact · Best Storytelling · Rising Country</td><td><span class="chip ok">전체</span></td></tr>
+          <tr><td>Honorable Mention</td><td class="num">나머지</td><td>완주한 전 제출작</td><td><span class="chip no">PDF만</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>심사축은 2025 페이지가 이미 공개한 <strong>Clarity · Novelty · Impact · Feasibility</strong> 4개를 그대로 씁니다 — 참가자들이 이 기준을 보고 준비했으므로 바꾸면 안 됩니다. 결과 페이지에도 이 4축을 다시 노출해 “무엇으로 뽑혔는지”를 보여줍니다.</p>
+    <div class="callout">
+      <div class="ct">먼저 답이 필요한 것: 수상 자격이 결제 완료자 한정인가?</div>
+      <p>제출 39편 중 결제 확인은 16건(등록 테이블 기준으로는 13건)입니다. 전원 수상이면 이 문제가 사라지고, 결제자 한정이면 <strong>수상 후보가 16편으로 줄어</strong> 위 배분표를 다시 짜야 합니다. 두 테이블의 결제 상태 불일치도 이 결정과 함께 정리합니다.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>하이라이트 영상 제작안</h2>
+    <p class="sec-note">현장 사진·영상이 없는 100% 온라인 대회라는 조건에서 출발합니다.</p>
+    <h3>A안 — 제출작 몽타주 <span class="day">권장 · 반나절</span></h3>
+    <p>수상작 30초 영상에서 3~5초씩 잘라 이어 붙이고, 프로젝트명·팀명·국가 자막을 얹은 <strong>60~90초 릴</strong>. 원재료가 39편 전량 확보돼 있어 오늘 바로 만들 수 있습니다. 유튜브 미등재(unlisted) 업로드 후 페이지에 임베드.</p>
+    <ul>
+      <li>필요한 것: 영상 사용 동의. 현재 제출 폼에 미디어 활용 동의 항목이 없으므로 <strong>수상자에게 발송하는 수상 통지 메일에 1문장 동의 요청</strong>을 넣는 방식으로 해결.</li>
+      <li>동의 회신이 안 온 팀은 영상 대신 슬라이드 1장 + 자막으로 대체.</li>
+    </ul>
+    <h3>B안 — AI 포스터 릴 <span class="day">동의 불필요 · 2~3시간</span></h3>
+    <p>2025년에 쓴 방식의 확장. 각 프로젝트 초록을 AI 이미지로 변환해 포스터 39장을 만들고, 카테고리별로 흘려보내는 모션 릴 + 내레이션 자막. 참가자 얼굴·원본 영상이 등장하지 않아 동의 이슈가 없고, 그대로 <strong>SNS 카드 39장</strong>으로도 재사용됩니다.</p>
+    <h3>결론</h3>
+    <p><strong>B안을 6일 공개분으로 먼저 내보내고, A안은 동의를 받아 다음 주에 교체</strong>하는 순서를 권합니다. 발표일을 영상 때문에 미루는 것이 가장 나쁜 선택입니다.</p>
+  </section>
+
+  <section>
+    <h2>기술 설계</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>항목</th><th>결정</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>라우트</td><td><code>app/results/2026/page.tsx</code></td><td>기존 SPA 탭(<code>display:block/none</code>)과 분리 — 개별 URL·OG 공유·SEO 확보</td></tr>
+          <tr><td>데이터 소스</td><td><code>data/results-2026.json</code> 정적 파일</td><td>결과는 확정 후 바뀌지 않음. Supabase 실시간 조회는 참가자 개인정보를 프런트로 흘릴 위험이 있어 <strong>피합니다</strong></td></tr>
+          <tr><td>생성 방식</td><td>Claude가 DB → JSON 변환 스크립트 작성</td><td>이름·국가·상 등급만 남기고 이메일·주소·학교는 애초에 JSON에 넣지 않음</td></tr>
+          <tr><td>렌더링</td><td>정적 (SSG)</td><td>발표일 트래픽 스파이크에 안전, Vercel 비용 0</td></tr>
+          <tr><td>네비게이션</td><td>탭 <code>Winner 2025</code> → <code>Results 2026</code>로 교체, 2025는 하위 링크로</td><td>발표 당일 방문자가 첫 화면에서 바로 찾게</td></tr>
+          <tr><td>홈 연동</td><td>히어로 배너를 “Results Online: Sep 6” → “2026 Results Are Live →”로 변경</td><td>6일 이후 현재 문구는 즉시 거짓말이 됨</td></tr>
+          <tr><td>OG 이미지</td><td>전용 <code>opengraph-image</code> 1장</td><td>카톡·링크드인 공유 시 첫인상</td></tr>
+          <tr><td>PDF</td><td><code>public/AIJAM_Award_List_2026.pdf</code></td><td>2025와 동일한 다운로드 바 재사용</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>디자인은 기존 <code>globals.css</code> 토큰(다크 그라운드 + 블루/앰버 액센트, Space Mono 라벨)을 그대로 상속합니다 — 결과 페이지만 다른 옷을 입으면 사이트가 흔들립니다.</p>
+  </section>
+
+  <section>
+    <h2>D-2 실행 순서</h2>
+    <p class="sec-note">9월 6일 공개까지 남은 작업을 순서대로. 앞 단계가 끝나야 뒤가 시작됩니다.</p>
+    <ol class="seq">
+      <li>
+        <div class="st">수상 자격 확정 <span class="day">9/4 · Ryan</span></div>
+        <div class="sd">전원 수상인가, 결제자 한정인가. 결제 상태 13 vs 16 불일치 정리.</div>
+      </li>
+      <li>
+        <div class="st">39편 정독 + 수상 초안 <span class="day">9/4 · Claude</span></div>
+        <div class="sd">4개 심사축으로 채점표를 만들고 Grand Prix~특별상 배분안을 표로 제출. 국가 표기 정규화도 이때 함께.</div>
+      </li>
+      <li>
+        <div class="st">수상자 확정 <span class="day">9/5 오전 · Ryan</span></div>
+        <div class="sd">초안 위에서 순위만 조정. 확정된 명단이 JSON과 PDF의 단일 원본이 됩니다.</div>
+      </li>
+      <li>
+        <div class="st">페이지 구현 + PDF 생성 <span class="day">9/5 · Claude</span></div>
+        <div class="sd"><code>/results/2026</code> 구현, JSON 주입, Award List PDF, OG 이미지, Nav·홈 배너 수정.</div>
+      </li>
+      <li>
+        <div class="st">하이라이트 영상 B안 <span class="day">9/5 · Claude</span></div>
+        <div class="sd">AI 포스터 릴 제작 → 유튜브 업로드 → 임베드. 늦어지면 이 블록만 빼고 배포.</div>
+      </li>
+      <li>
+        <div class="st">배포 + 수상 통지 메일 <span class="day">9/6 · Ryan</span></div>
+        <div class="sd">Vercel 배포 확인 후 283명 전원에게 결과 페이지 링크 발송. 수상자에게는 영상 사용 동의 1문장 포함.</div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>지금 Ryan의 답이 필요한 것</h2>
+    <p class="sec-note">이 셋만 정해지면 초안 작업을 바로 시작합니다.</p>
+    <div class="ask">
+      <ol>
+        <li>
+          <div class="q">수상 자격 — 결제 완료자만인가, 제출자 전원인가?</div>
+          <div class="opt">전원이면 39편이 후보, 결제자 한정이면 16편으로 좁혀 배분표를 다시 짭니다.</div>
+        </li>
+        <li>
+          <div class="q">홈의 “10,000+ 참가자 / 72+ 국가”를 누적 표기로 바꿀까요?</div>
+          <div class="opt">2026 실측(39편)과 나란히 놓였을 때 생기는 위화감을 없애는 최소 수정입니다.</div>
+        </li>
+        <li>
+          <div class="q">하이라이트 영상, B안(AI 포스터 릴)으로 6일에 먼저 나가도 될까요?</div>
+          <div class="opt">동의 절차 없이 오늘 착수 가능하고, A안(제출작 몽타주)은 다음 주 교체.</div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+</div>

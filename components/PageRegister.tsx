@@ -62,7 +62,7 @@ export default function PageRegister() {
         <div className="content-hero">
           <div className="eye">REGISTER FOR 2026</div>
           <h2 className="pg-h2">READY TO COMPETE?</h2>
-          <p className="pg-sub">11th AI-JAM US · Submission Deadline: August 30, 2026 · Results Online: September 6, 2026</p>
+          <p className="pg-sub">11th AI-JAM US · Submissions Open — enter anytime · Results Online: September 6, 2026</p>
         </div>
 
         <div className="reg-grid">
@@ -94,7 +94,7 @@ export default function PageRegister() {
               <div style={{display:'flex',flexDirection:'column',gap:'.5rem'}}>
                 <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--green)'}}>Registration</span><span style={{color:'var(--gray)'}}>Now Open</span></div>
                 <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--amber)'}}>Shadow Season</span><span style={{color:'var(--gray)'}}>Jan–Jun 2026</span></div>
-                <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--red)',fontWeight:700}}>⚠ Submission Deadline</span><span style={{color:'var(--red)',fontWeight:700}}>Aug 30, 2026</span></div>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0',borderBottom:'1px solid var(--border)'}}><span style={{color:'var(--green)',fontWeight:700}}>Project Submission</span><span style={{color:'var(--green)',fontWeight:700}}>Open Now</span></div>
                 <div style={{display:'flex',justifyContent:'space-between',fontSize:'1rem',padding:'.4rem 0'}}><span style={{color:'var(--blue2)'}}>Results Online</span><span style={{color:'var(--gray)'}}>Sep 6, 2026</span></div>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function PageRegister() {
 
           <div className="form-box">
             <div className="fh">REGISTER NOW</div>
-            <div className="fs">11th International AI Invention Challenge · Deadline: August 30, 2026 · Results: September 6, 2026<br />Participation fee details will be sent to your email after registration.</div>
+            <div className="fs">11th International AI Invention Challenge · Submissions Open — enter anytime · Results: September 6, 2026<br />Participation fee details will be sent to your email after registration.</div>
             <div className="fr">
               <div><label className="fl">First Name *</label><input type="text" className="fi" placeholder="Sarah" value={fn} onChange={e => setFn(e.target.value)} disabled={isLoading || status === 'success'} /></div>
               <div><label className="fl">Last Name</label><input type="text" className="fi" placeholder="Kim" value={ln} onChange={e => setLn(e.target.value)} disabled={isLoading || status === 'success'} /></div>
@@ -130,7 +130,7 @@ export default function PageRegister() {
             </div>
             <div className="fg"><label className="fl">School / University *</label><input type="text" className="fi" placeholder="Your school name" value={sc} onChange={e => setSc(e.target.value)} disabled={isLoading || status === 'success'} /></div>
             <div className="fck"><input type="checkbox" id="ch1" checked={ch1} onChange={e => setCh1(e.target.checked)} disabled={isLoading || status === 'success'} /><label htmlFor="ch1">I am a teacher — please send the Class Pack (90-min lesson plan + CPD credit)</label></div>
-            <div className="fck"><input type="checkbox" id="ch2" checked={ch2} onChange={e => setCh2(e.target.checked)} disabled={isLoading || status === 'success'} /><label htmlFor="ch2">I agree to the Terms and Conditions. Submission deadline is August 30, 2026.</label></div>
+            <div className="fck"><input type="checkbox" id="ch2" checked={ch2} onChange={e => setCh2(e.target.checked)} disabled={isLoading || status === 'success'} /><label htmlFor="ch2">I agree to the Terms and Conditions.</label></div>
 
             <button
               className="btn-sub"

@@ -124,6 +124,54 @@ function EmailEntryCard() {
             Continue →
           </button>
         </form>
+
+        {/* Offline / printable form */}
+        <div style={{
+          marginTop: '1.8rem',
+          paddingTop: '1.5rem',
+          borderTop: '1px solid rgba(255,255,255,.08)',
+        }}>
+          <div style={{
+            fontSize: '.7rem',
+            letterSpacing: '.15em',
+            color: '#475569',
+            fontFamily: "'Space Mono', monospace",
+            marginBottom: '.7rem',
+          }}>
+            PREFER TO PREPARE OFFLINE?
+          </div>
+          <p style={{ fontSize: '.85rem', color: '#64748b', lineHeight: 1.7, margin: '0 0 1rem' }}>
+            Download the official form to see every question in advance, draft your answers,
+            or collect them from your team before submitting online.
+          </p>
+          <a
+            href="/AIJAM_Submission_Form_2026.docx"
+            download
+            style={{
+              display: 'block',
+              width: '100%',
+              boxSizing: 'border-box',
+              padding: '.85rem 1rem',
+              background: 'transparent',
+              border: '1px solid rgba(255,255,255,.18)',
+              color: '#94a3b8',
+              textAlign: 'center',
+              textDecoration: 'none',
+              fontSize: '.9rem',
+              fontWeight: 600,
+              letterSpacing: '.04em',
+              fontFamily: "'Outfit', sans-serif",
+            }}
+          >
+            📄 Download Submission Form (Word)
+          </a>
+          <p style={{ fontSize: '.75rem', color: '#475569', lineHeight: 1.6, margin: '.8rem 0 0', textAlign: 'center' }}>
+            Can&apos;t use the online form? Email the completed document to{' '}
+            <a href="mailto:team@aijam.org" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+              team@aijam.org
+            </a>
+          </p>
+        </div>
       </div>
     </PageShell>
   );

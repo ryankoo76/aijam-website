@@ -218,7 +218,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
             {[
               'Check your email for payment receipt',
               'Start preparing your AI project submission',
-              'Submission deadline: August 30, 2026',
+              'Submit your project anytime — submissions are open',
               'Results announced: September 6, 2026',
             ].map((step, i) => (
               <div key={step} style={{ display: 'flex', gap: '.8rem', alignItems: 'flex-start', marginBottom: '.5rem', fontSize: '.88rem', color: '#94a3b8', lineHeight: 1.6 }}>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 const faqs: Record<string, string> = {
-  deadline: 'Submission deadline is August 30, 2026 (23:59 KST). Results announced online September 6, 2026.',
+  deadline: 'Submissions are open — you can submit your project anytime, and update it later using the same email. Results are announced online September 6, 2026.',
   submit: 'You need exactly 3 slides + a 30-second video. Download the Official Guidebook for step-by-step instructions!',
   slide: 'Slide 1 = The Problem · Slide 2 = Your AI Solution · Slide 3 = Impact & Vision',
   video: 'Max 30 seconds, any format, any language. Smartphone recording is completely fine!',

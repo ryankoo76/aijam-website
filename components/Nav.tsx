@@ -18,6 +18,7 @@ export default function Nav({ activePage, onSwitch }: NavProps) {
         <button className="nav-reg" onClick={() => onSwitch('register')}>Register 2026 →</button>
       </div>
       <div className="nav-tabs">
+        <button className="ntab" onClick={() => { window.location.href = '/'; }}>🏆 2026 Results</button>
         <button className={`ntab${activePage === 'home' ? ' active' : ''}`} onClick={() => onSwitch('home')}>🏠 Home</button>
         <button className={`ntab${activePage === 'about' ? ' active' : ''}`} onClick={() => onSwitch('about')}>About AI-JAM US</button>
         <button className={`ntab${activePage === 'asia' ? ' active' : ''}`} onClick={() => onSwitch('asia')}>AI-JAM ASIA Edition</button>

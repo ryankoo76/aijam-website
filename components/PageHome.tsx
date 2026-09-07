@@ -1,31 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 interface PageHomeProps {
   onSwitch: (page: string) => void;
 }
 
 export default function PageHome({ onSwitch }: PageHomeProps) {
-  const [countdown, setCountdown] = useState({ d: '--', h: '--', m: '--', s: '--' });
-
-  useEffect(() => {
-    function tick() {
-      const target = new Date('2026-08-30T23:59:59+09:00');
-      const now = new Date();
-      const diff = Math.max(0, target.getTime() - now.getTime());
-      setCountdown({
-        d: String(Math.floor(diff / 86400000)).padStart(2, '0'),
-        h: String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0'),
-        m: String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0'),
-        s: String(Math.floor((diff % 60000) / 1000)).padStart(2, '0'),
-      });
-    }
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
   return (
     <div id="page-home" className="page active">
       <div className="hero-wrap">
@@ -35,15 +14,12 @@ export default function PageHome({ onSwitch }: PageHomeProps) {
           <div className="h-eye"><span className="ldot"></span>AI-JAM US 2026 · 11TH EVENT · REGISTRATIONS OPEN</div>
           <h1 className="hero-h1">3 SLIDES.<br /><span className="bl">30 SECONDS.</span><br />GLOBAL STAGE.</h1>
           <p className="hero-tag">The international AI invention challenge since 2015.<br /><strong>Submit your AI idea. Compete with 25+ countries. Get recognized worldwide.</strong></p>
-          <div className="dl-bar">🔴&nbsp;<span>Submission Deadline: <strong>August 30, 2026</strong>&nbsp;·&nbsp;Results Online: <strong>September 6, 2026</strong></span></div>
-          <div className="cd-row">
-            <div className="cdb"><div className="cdn">{countdown.d}</div><div className="cdl">DAYS</div></div>
-            <div className="cdsep">:</div>
-            <div className="cdb"><div className="cdn">{countdown.h}</div><div className="cdl">HRS</div></div>
-            <div className="cdsep">:</div>
-            <div className="cdb"><div className="cdn">{countdown.m}</div><div className="cdl">MIN</div></div>
-            <div className="cdsep">:</div>
-            <div className="cdb"><div className="cdn">{countdown.s}</div><div className="cdl">SEC</div></div>
+          <div className="dl-bar">🟢&nbsp;<span><strong>Submissions Are Open</strong> — submit your project anytime&nbsp;·&nbsp;Results Online: <strong>September 6, 2026</strong></span></div>
+          <div style={{display:'flex',justifyContent:'center',margin:'1.6rem 0'}}>
+            <div style={{display:'inline-flex',alignItems:'center',gap:'.7rem',background:'rgba(16,185,129,.08)',border:'1px solid rgba(16,185,129,.35)',padding:'.9rem 1.8rem',fontFamily:"'Space Mono',monospace",fontSize:'.9rem',letterSpacing:'.08em',color:'#10b981',fontWeight:700}}>
+              <span style={{width:'9px',height:'9px',borderRadius:'50%',background:'#10b981',display:'inline-block'}}></span>
+              SUBMISSIONS OPEN — ENTER ANYTIME
+            </div>
           </div>
           <div className="hero-btns">
             <button className="btn-main" onClick={() => onSwitch('register')}>🚀 Register for 2026</button>
@@ -75,8 +51,8 @@ export default function PageHome({ onSwitch }: PageHomeProps) {
           <div className="hs-icon">🎬</div>
           <div className="hs-step">STEP 02</div>
           <div className="hs-t">Create & Submit</div>
-          <div className="hs-d">Prepare <strong style={{color:'var(--white)'}}>3 slides</strong> + a <strong style={{color:'var(--white)'}}>30-second video</strong> and upload by <strong style={{color:'var(--red)'}}>August 30, 2026.</strong></div>
-          <div className="hs-tag">DEADLINE: AUG 30</div>
+          <div className="hs-d">Prepare <strong style={{color:'var(--white)'}}>3 slides</strong> + a <strong style={{color:'var(--white)'}}>30-second video</strong> and upload it whenever you&apos;re ready — <strong style={{color:'var(--green)'}}>submissions are open now.</strong></div>
+          <div className="hs-tag">OPEN NOW</div>
         </div>
         <div className="hs-card">
           <div className="hs-icon">🌐</div>
@@ -89,7 +65,7 @@ export default function PageHome({ onSwitch }: PageHomeProps) {
 
       <div className="date-strip">
         <div className="ds-item"><div className="ds-l">REGISTRATION</div><div className="ds-d" style={{color:'var(--green)'}}>NOW OPEN</div><div className="ds-n">Participation details sent by email</div></div>
-        <div className="ds-item"><div className="ds-l">SUBMISSION DEADLINE</div><div className="ds-d" style={{color:'var(--red)'}}>AUG 30, 2026</div><div className="ds-n">23:59 KST · 100% Online</div></div>
+        <div className="ds-item"><div className="ds-l">PROJECT SUBMISSION</div><div className="ds-d" style={{color:'var(--green)'}}>OPEN NOW</div><div className="ds-n">Submit anytime · 100% Online</div></div>
         <div className="ds-item"><div className="ds-l">RESULTS ANNOUNCED</div><div className="ds-d" style={{color:'var(--amber)'}}>SEP 6, 2026</div><div className="ds-n">Online announcement only</div></div>
       </div>
 
@@ -181,7 +157,7 @@ export default function PageHome({ onSwitch }: PageHomeProps) {
           <div style={{textAlign:'center',marginBottom:'3rem'}}>
             <div className="eye">SHADOW SEASON 2026</div>
             <h2 className="pg-h2">PRACTICE BEFORE<br />THE FINALS.</h2>
-            <p className="pg-sub">Monthly mini-challenges from January to June. Build skills, earn digital badges, and prepare for the August 30 deadline.</p>
+            <p className="pg-sub">Monthly mini-challenges from January to June. Build skills, earn digital badges, and get your project submission-ready.</p>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1rem',marginBottom:'2rem'}}>
             <div style={{background:'var(--dark)',border:'1px solid rgba(245,158,11,.3)',padding:'1.4rem',position:'relative'}}>
@@ -193,7 +169,7 @@ export default function PageHome({ onSwitch }: PageHomeProps) {
             {[
               {month:'FEB 2026',title:'30-Second Pitch',desc:'Record a 30-second verbal explanation — the core skill for the final competition.'},
               {month:'MAR 2026',title:'Data Visualization',desc:"Present your project's impact through compelling statistics and numbers."},
-              {month:'JUN 2026',title:'Full Mock Submission',desc:'Complete 3-slide + 30-second practice with expert feedback before Aug 30.'},
+              {month:'JUN 2026',title:'Full Mock Submission',desc:'Complete 3-slide + 30-second practice with expert feedback before you submit.'},
             ].map(item => (
               <div key={item.month} style={{background:'var(--dark)',border:'1px solid var(--border)',padding:'1.4rem'}}>
                 <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.72rem',color:'var(--amber)',letterSpacing:'.12em',marginBottom:'.5rem'}}>{item.month}</div>
@@ -365,7 +341,7 @@ export default function PageHome({ onSwitch }: PageHomeProps) {
           <div style={{fontFamily:"'Space Mono',monospace",fontSize:'.78rem',color:'var(--blue2)',letterSpacing:'.22em',marginBottom:'1rem'}}>AI-JAM US 2026 · 11TH EVENT</div>
           <h2 style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'clamp(2.2rem,4.5vw,4rem)',letterSpacing:'.04em',lineHeight:1,marginBottom:'1rem'}}>2025 WAS ONLY<br /><span style={{background:'linear-gradient(135deg,var(--blue2),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>THE BEGINNING.</span></h2>
           <p style={{fontSize:'1rem',color:'var(--gray)',marginBottom:'1.5rem',lineHeight:1.8}}>In 2026, the stage belongs to you. 3 slides. 30 seconds. Global recognition. Join hundreds of visionary students from around the world.</p>
-          <div style={{display:'inline-flex',alignItems:'center',gap:'.6rem',background:'rgba(239,68,68,.07)',border:'1px solid rgba(239,68,68,.18)',padding:'.65rem 1.3rem',marginBottom:'1.8rem',fontSize:'1rem'}}>🔴&nbsp;<span>Final Deadline: <strong style={{color:'var(--red)'}}>August 30, 2026</strong> · Results: <strong style={{color:'var(--green)'}}>September 6, 2026</strong></span></div>
+          <div style={{display:'inline-flex',alignItems:'center',gap:'.6rem',background:'rgba(16,185,129,.07)',border:'1px solid rgba(16,185,129,.2)',padding:'.65rem 1.3rem',marginBottom:'1.8rem',fontSize:'1rem'}}>🟢&nbsp;<span><strong style={{color:'var(--green)'}}>Submissions Open</strong> — enter anytime · Results: <strong style={{color:'var(--green)'}}>September 6, 2026</strong></span></div>
           <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap'}}>
             <button className="btn-main" onClick={() => onSwitch('register')}>🚀 Register Now</button>
             <a className="btn-sec" href="/AIJAM_Guidebook_2026.pdf" download="AIJAM_Guidebook_2026.pdf" target="_blank" rel="noopener noreferrer">📥 Download Official Guidebook (PDF)</a>

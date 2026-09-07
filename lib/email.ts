@@ -10,6 +10,20 @@ console.log('[email] module init —', {
   fromEmail:        FROM,
 });
 
+// ─── Participant-specific links ──────────────────────────────────────────────
+// Pre-filling ?email= means one click lands the participant on their own form:
+// the submission page loads any existing entry back in, and the payment page
+// pre-fills their email — no re-typing, no "my project disappeared" confusion.
+const SITE = 'https://www.aijam-us.com';
+
+function submitUrl(email: string): string {
+  return `${SITE}/submit?email=${encodeURIComponent(email)}`;
+}
+
+function payUrl(email: string): string {
+  return `${SITE}/pay?email=${encodeURIComponent(email)}`;
+}
+
 // ─── Email 1: Participant confirmation ───────────────────────────────────────
 export async function sendRegistrationConfirmed({
   to,
@@ -81,6 +95,15 @@ export async function sendRegistrationConfirmed({
       📥 Download Official Guidebook (PDF)
     </a>
 
+    <div class="section-title">STEP 2 — SUBMIT YOUR PROJECT</div>
+    <p style="font-size:.88rem;color:#94a3b8;line-height:1.7;margin:0 0 .5rem">
+      Your submission form is ready whenever you are — it opens pre-filled with your email.
+      You can save your entry and come back to update it at any time.
+    </p>
+    <a class="dl-btn" style="background:linear-gradient(135deg,#1e40af,#7c3aed)" href="${submitUrl(to.trim().toLowerCase())}">
+      🖊 Open My Submission Form
+    </a>
+
     <div class="section-title">PARTICIPATION FEE</div>
     <div class="fee-box">
       Participation fee details will be sent within <strong style="color:#f1f5f9">24 hours</strong>.<br />
@@ -91,7 +114,7 @@ export async function sendRegistrationConfirmed({
     <div class="info-box">
       <div class="info-row"><span class="info-label">Registration</span><span class="info-val" style="color:#10b981">Now Open</span></div>
       <div class="info-row"><span class="info-label">Shadow Season</span><span class="info-val">Jan – Jun 2026</span></div>
-      <div class="info-row"><span class="info-label">Deadline</span><span class="info-val deadline">August 30, 2026 · 11:59 PM PT</span></div>
+      <div class="info-row"><span class="info-label">Submission</span><span class="info-val" style="color:#10b981">Open — submit anytime</span></div>
       <div class="info-row"><span class="info-label">Results</span><span class="info-val" style="color:#3b82f6">September 6, 2026</span></div>
     </div>
 
@@ -182,18 +205,22 @@ export async function sendPaymentConfirmation({
     <div class="info-box">
       <div class="step-row"><span class="step-num">1.</span><span>Download the Official Guidebook and review the submission format</span></div>
       <div class="step-row"><span class="step-num">2.</span><span>Prepare your 3-slide presentation and 30-second video</span></div>
-      <div class="step-row"><span class="step-num">3.</span><span>Submit your project before <strong style="color:#ef4444">August 30, 2026 · 11:59 PM PT</strong></span></div>
+      <div class="step-row"><span class="step-num">3.</span><span>Submit your project whenever it is ready — <strong style="color:#10b981">submissions are open</strong>, and you can update your entry later</span></div>
       <div class="step-row"><span class="step-num">4.</span><span>Results announced online: September 6, 2026</span></div>
     </div>
 
-    <a class="cta-btn" href="https://www.aijam-us.com/AIJAM_Guidebook_2026.pdf">
+    <a class="cta-btn" href="${submitUrl(to)}">
+      🖊 Open My Submission Form
+    </a>
+
+    <a class="cta-btn" style="background:linear-gradient(135deg,#1e40af,#0891b2);margin-top:-.8rem" href="https://www.aijam-us.com/AIJAM_Guidebook_2026.pdf">
       📥 Download Official Guidebook (PDF)
     </a>
 
     <div class="section-title">KEY DATES</div>
     <div class="info-box">
       <div class="info-row"><span class="info-label">Shadow Season</span><span class="info-val">Jan – Jun 2026</span></div>
-      <div class="info-row"><span class="info-label">Deadline</span><span class="info-val" style="color:#ef4444">August 30, 2026 · 11:59 PM PT</span></div>
+      <div class="info-row"><span class="info-label">Submission</span><span class="info-val" style="color:#10b981">Open — submit anytime</span></div>
       <div class="info-row"><span class="info-label">Results</span><span class="info-val" style="color:#3b82f6">September 6, 2026</span></div>
     </div>
 
@@ -288,12 +315,19 @@ export async function sendSubmissionConfirmation({
       <div class="step-row"><span class="step-num">1.</span><span>Your submission has been logged and will be reviewed by our judging panel</span></div>
       <div class="step-row"><span class="step-num">2.</span><span>Results will be announced on <strong style="color:#f1f5f9">September 6, 2026</strong></span></div>
       <div class="step-row"><span class="step-num">3.</span><span>Award winners will be contacted separately regarding certificates and prizes</span></div>
-      <div class="step-row"><span class="step-num">4.</span><span>You may re-submit before the deadline if you need to update your project</span></div>
+      <div class="step-row"><span class="step-num">4.</span><span>You can review or update your entry at any time — your answers load back in automatically</span></div>
     </div>
+
+    <a class="cta-btn" style="display:block;background:linear-gradient(135deg,#1e40af,#7c3aed);color:#fff;text-align:center;padding:1rem;text-decoration:none;font-weight:700;font-size:.95rem;letter-spacing:.06em;margin:1.8rem 0" href="${submitUrl(to)}">
+      🔎 Review or Update My Submission
+    </a>
+    <p style="font-size:.8rem;color:#64748b;line-height:1.7;margin:-1rem 0 0;text-align:center">
+      Opening this link loads your saved submission — no payment or re-entry required.
+    </p>
 
     <div class="section-title">KEY DATES</div>
     <div class="info-box">
-      <div class="info-row"><span class="info-label">Deadline</span><span class="info-val" style="color:#ef4444">August 30, 2026 · 11:59 PM PT</span></div>
+      <div class="info-row"><span class="info-label">Submission</span><span class="info-val" style="color:#10b981">Open — submit anytime</span></div>
       <div class="info-row"><span class="info-label">Results</span><span class="info-val" style="color:#3b82f6">September 6, 2026</span></div>
     </div>
 
@@ -446,7 +480,7 @@ export async function sendSequenceDay1({
 
     <div class="section-title">KEY DATES</div>
     <div class="info-box">
-      <div style="display:flex;gap:.5rem;margin:.35rem 0;font-size:.9rem"><span style="color:#64748b;min-width:90px">Deadline</span><span style="color:#ef4444;font-weight:600">August 30, 2026 · 11:59 PM PT</span></div>
+      <div style="display:flex;gap:.5rem;margin:.35rem 0;font-size:.9rem"><span style="color:#64748b;min-width:90px">Submission</span><span style="color:#10b981;font-weight:600">Open — submit anytime</span></div>
       <div style="display:flex;gap:.5rem;margin:.35rem 0;font-size:.9rem"><span style="color:#64748b;min-width:90px">Results</span><span style="color:#3b82f6;font-weight:600">September 6, 2026</span></div>
     </div>
 
@@ -520,7 +554,7 @@ export async function sendSequenceDay2({
       Ready to submit your project? The submission form is live. Here's everything you need to know.
     </p>
 
-    <a class="cta-btn" href="https://www.aijam-us.com/submit">
+    <a class="cta-btn" href="${submitUrl(to)}">
       🖊 Open the Submission Form
     </a>
 
@@ -537,7 +571,7 @@ export async function sendSequenceDay2({
     <div class="info-box" style="border-left-color:#10b981">
       <div class="tip-row"><span class="tip-num" style="color:#10b981">💡</span><span>Keep your abstract under 150 words — clarity beats length every time</span></div>
       <div class="tip-row"><span class="tip-num" style="color:#10b981">💡</span><span>Your 30-second video is the most important element — practice it 10 times</span></div>
-      <div class="tip-row"><span class="tip-num" style="color:#10b981">💡</span><span>You can re-submit as many times as you want before August 30 — don't wait for perfection</span></div>
+      <div class="tip-row"><span class="tip-num" style="color:#10b981">💡</span><span>You can update your submission as many times as you want — don't wait for perfection</span></div>
     </div>
 
     <p style="font-size:.85rem;color:#64748b;line-height:1.7;margin-top:1.5rem">
@@ -643,7 +677,7 @@ export async function sendSequenceDay3({
       <div class="cat-desc">Uses computer vision on dashboard cameras to detect pedestrians in low-visibility conditions and alert drivers 2 seconds earlier than standard sensors.</div>
     </div>
 
-    <a class="cta-btn" href="https://www.aijam-us.com/submit">
+    <a class="cta-btn" href="${submitUrl(to)}">
       Start Your Submission →
     </a>
 
@@ -718,13 +752,13 @@ export async function sendSequenceDay5({
   <div class="body">
     <p style="font-size:1.05rem;font-weight:700;color:#f1f5f9;margin:0 0 .5rem">Hi ${firstName}! ⏰ Deadline reminder</p>
     <p style="font-size:.95rem;color:#94a3b8;line-height:1.8;margin:0 0 1.5rem">
-      Don't let your hard work go to waste — the submission deadline is approaching. Make sure your project is in before it closes.
+      Don't let your hard work go to waste — submissions are open right now, and it only takes a few minutes to get your project in.
     </p>
 
     <div class="deadline-box">
       <div class="deadline-label">SUBMISSION DEADLINE</div>
-      <div class="deadline-date">August 30, 2026</div>
-      <div class="deadline-sub">11:59 PM Pacific Time · No extensions</div>
+      <div class="deadline-date" style="color:#10b981">Submissions Open</div>
+      <div class="deadline-sub">Submit anytime · Update your entry later</div>
     </div>
 
     <div class="section-title">SUBMISSION CHECKLIST</div>
@@ -736,12 +770,12 @@ export async function sendSequenceDay5({
       <div class="step-row"><span class="step-num">□</span><span>Shipping address for award delivery</span></div>
     </div>
 
-    <a class="cta-btn" href="https://www.aijam-us.com/submit">
+    <a class="cta-btn" href="${submitUrl(to)}">
       ✅ Submit My Project Now
     </a>
 
     <p style="font-size:.82rem;color:#64748b;line-height:1.7;margin-top:.5rem">
-      Already submitted? You can still re-submit to update your project before the deadline.<br />
+      Already submitted? You can still come back and update your project at any time.<br />
       Questions? Reply to this email or contact <a href="mailto:team@aijam.org" style="color:#3b82f6">team@aijam.org</a>
     </p>
   </div>
@@ -758,7 +792,7 @@ export async function sendSequenceDay5({
   const result = await resend.emails.send({
     from: FROM,
     to,
-    subject: '⏰ Deadline Reminder — Submit by August 30 · AI-JAM US 2026',
+    subject: '⏰ Your AI-JAM US 2026 entry is not finished yet',
     html,
   });
   if (result.error) console.error('[email] sendSequenceDay5 — Resend error:', JSON.stringify(result.error));
@@ -818,10 +852,10 @@ export async function sendSequenceDay7({
       <div class="step-row"><span class="step-num">✓</span><span>Unlock access to the project submission portal</span></div>
       <div class="step-row"><span class="step-num">✓</span><span>Compete for Gold, Silver, and Bronze awards + certificates</span></div>
       <div class="step-row"><span class="step-num">✓</span><span>Join innovators from 72+ countries on a global stage</span></div>
-      <div class="step-row"><span class="step-num">✓</span><span>Submission deadline: <strong style="color:#ef4444">August 30, 2026</strong></span></div>
+      <div class="step-row"><span class="step-num">✓</span><span>Submissions: <strong style="color:#10b981">open — no deadline date</strong></span></div>
     </div>
 
-    <a class="cta-btn" href="https://www.aijam-us.com/pay">
+    <a class="cta-btn" href="${payUrl(to)}">
       💳 Complete Payment Now
     </a>
 

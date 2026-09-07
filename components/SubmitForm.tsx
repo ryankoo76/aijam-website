@@ -417,7 +417,7 @@ export default function SubmitForm({
                   'Our judges will review your submission',
                   'Results announced: September 6, 2026',
                   'Winners contacted regarding awards',
-                  'Return to /submit with your email anytime before Aug 30 to review or update your entry',
+                  'Return to /submit with your email anytime to review or update your entry',
                 ].map((s, i) => (
                   <div key={s} style={{ display: 'flex', gap: '.8rem', marginBottom: '.5rem', fontSize: '.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
                     <span style={{ color: '#a78bfa', fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
@@ -472,8 +472,8 @@ export default function SubmitForm({
           </div>
           <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff' }}>
             {isEditing
-              ? 'Review or update your entry · Deadline: August 30, 2026'
-              : 'Submit your AI project · Deadline: August 30, 2026'}
+              ? 'Review or update your entry · Submissions are open'
+              : 'Submit your AI project · Submissions are open'}
           </div>
         </div>
 
@@ -961,8 +961,8 @@ export default function SubmitForm({
           </div>
 
           <div style={{ textAlign: 'center', fontSize: '.78rem', color: '#334155', marginBottom: '1.5rem' }}>
-            Submission deadline:{' '}
-            <span style={{ color: '#ef4444', fontWeight: 600 }}>August 30, 2026 · 11:59 PM PT</span>
+            <span style={{ color: '#10b981', fontWeight: 600 }}>Submissions are open</span>
+            {' '}— you can submit now and update your entry later.
           </div>
         </form>
 

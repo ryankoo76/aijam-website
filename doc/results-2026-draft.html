@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI-JAM US 2026 Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --paper:#EFEFE8;
+  --paper-2:#E6E6DD;
+  --sheet:#FBFBF7;
+  --ink:#14171B;
+  --ink-2:#4E545C;
+  --ink-3:#7C828B;
+  --rule:#CFCEC2;
+  --rule-2:#DEDDD3;
+  --blue:#1B3A6B;
+  --blue-soft:rgba(27,58,107,.08);
+  --signal:#B23A22;
+  --gold:#9A7817;
+  --silver:#6E747C;
+  --bronze:#8A5730;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111316;
+    --paper-2:#191C20;
+    --sheet:#1B1E22;
+    --ink:#EDEDE6;
+    --ink-2:#A7ADB5;
+    --ink-3:#7B818A;
+    --rule:#31363C;
+    --rule-2:#272B31;
+    --blue:#7FA8DE;
+    --blue-soft:rgba(127,168,222,.12);
+    --signal:#E0705A;
+    --gold:#D8AC3E;
+    --silver:#A9B0B9;
+    --bronze:#C08A5C;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111316;--paper-2:#191C20;--sheet:#1B1E22;
+  --ink:#EDEDE6;--ink-2:#A7ADB5;--ink-3:#7B818A;
+  --rule:#31363C;--rule-2:#272B31;
+  --blue:#7FA8DE;--blue-soft:rgba(127,168,222,.12);--signal:#E0705A;
+  --gold:#D8AC3E;--silver:#A9B0B9;--bronze:#C08A5C;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Source Serif 4',Georgia,'Times New Roman',serif;
+  font-size:17px;line-height:1.62;
+  font-optical-sizing:auto;
+}
+.shell{max-width:1120px;margin:0 auto;padding:0 28px}
+@media(max-width:640px){.shell{padding:0 18px}}
+
+/* ── shared type ───────────────────────────── */
+.disp{font-family:'Archivo Black',Impact,'Arial Black',sans-serif;font-weight:400;letter-spacing:-.022em;text-transform:uppercase;line-height:.98}
+.mono{font-family:'IBM Plex Mono',ui-monospace,'SF Mono',monospace}
+.label{
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+.rule{height:1px;background:var(--rule);border:0;margin:0}
+.rule-heavy{height:3px;background:var(--ink);border:0;margin:0}
+
+/* ── draft banner (delete before launch) ───── */
+.draft{
+  background:var(--signal);color:#fff;
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;text-align:center;padding:7px 18px;
+}
+
+/* ── masthead ──────────────────────────────── */
+.masthead{border-bottom:1px solid var(--rule);background:var(--paper)}
+.mast-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:16px 0;flex-wrap:wrap}
+.wordmark{font-family:'Archivo Black',sans-serif;font-size:1.02rem;letter-spacing:-.01em;text-transform:uppercase}
+.wordmark span{color:var(--blue)}
+.mast-meta{display:flex;gap:22px;flex-wrap:wrap}
+
+/* ── hero ──────────────────────────────────── */
+.hero{padding:64px 0 0}
+.hero-kicker{display:flex;align-items:center;gap:14px;margin-bottom:26px;flex-wrap:wrap}
+.stamp{
+  border:1.5px solid var(--signal);color:var(--signal);
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:500;
+  letter-spacing:.15em;text-transform:uppercase;padding:5px 11px;
+}
+h1.hero-h1{
+  font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(2.9rem,9.2vw,7.4rem);line-height:.86;letter-spacing:-.035em;
+  margin:0 0 26px;text-wrap:balance;
+}
+h1.hero-h1 em{font-style:normal;color:var(--blue);display:block}
+.hero-deck{
+  font-size:clamp(1.12rem,2vw,1.34rem);line-height:1.5;max-width:34ch;
+  color:var(--ink);margin:0 0 34px;
+}
+.hero-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:56px;align-items:end}
+@media(max-width:840px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+.hero-side p{font-size:.98rem;color:var(--ink-2);margin:0 0 16px;max-width:44ch}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{
+  display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.74rem;
+  letter-spacing:.1em;text-transform:uppercase;padding:11px 18px;text-decoration:none;
+  border:1.5px solid var(--ink);color:var(--ink);background:transparent;transition:background .15s,color .15s;
+}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn-solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-solid:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* ── ledger of numbers ─────────────────────── */
+.ledger{margin:64px 0 0;border-top:3px solid var(--ink);border-bottom:1px solid var(--rule)}
+.ledger-in{display:grid;grid-template-columns:repeat(5,1fr)}
+@media(max-width:900px){.ledger-in{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.ledger-in{grid-template-columns:1fr}}
+.led{padding:22px 20px 24px;border-right:1px solid var(--rule-2)}
+.led:last-child{border-right:0}
+@media(max-width:900px){.led:nth-child(2n){border-right:0}}
+.led .n{
+  font-family:'Archivo Black',sans-serif;font-size:clamp(2rem,4.2vw,2.9rem);
+  line-height:1;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin-bottom:9px;
+}
+.led .t{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2)}
+.led .s{font-size:.87rem;color:var(--ink-3);margin-top:5px;line-height:1.45}
+
+/* ── section frame ─────────────────────────── */
+section{padding:76px 0 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;border-bottom:3px solid var(--ink);padding-bottom:9px;margin-bottom:26px}
+.sec-head h2{
+  font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(1.15rem,2.3vw,1.5rem);letter-spacing:-.02em;margin:0;flex:1;
+}
+.sec-head .count{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.12em;color:var(--ink-3);white-space:nowrap}
+.sec-intro{font-size:1.03rem;color:var(--ink-2);max-width:60ch;margin:0 0 30px}
+
+/* ── film ──────────────────────────────────── */
+.film{position:relative;aspect-ratio:16/9;background:var(--ink);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.film::after{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(115deg,rgba(255,255,255,.045) 0 2px,transparent 2px 9px);
+}
+.film-in{position:relative;z-index:1;text-align:center;color:#EFEFE8;padding:22px}
+.film-in .play{
+  width:62px;height:62px;border:2px solid #EFEFE8;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+}
+.film-in .play span{
+  width:0;height:0;border-left:16px solid #EFEFE8;
+  border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px;
+}
+.film-in .ft{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:1.1rem;letter-spacing:-.01em}
+.film-in .fs{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#B9B9AE;margin-top:8px}
+.film-cap{font-size:.87rem;color:var(--ink-3);margin-top:10px}
+
+/* ── grand prix feature ────────────────────── */
+.gp{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);background:var(--sheet)}
+@media(max-width:840px){.gp{grid-template-columns:1fr}}
+.gp-l{padding:34px 34px 36px;border-right:1px solid var(--rule)}
+@media(max-width:840px){.gp-l{border-right:0;border-bottom:1px solid var(--rule)}}
+.gp-r{padding:34px}
+.medal-line{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.medal{
+  width:34px;height:34px;border-radius:50%;flex:none;
+  border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;font-weight:500;color:var(--gold);letter-spacing:.02em;
+}
+.gp-award{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.gp h3{font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.02;letter-spacing:-.028em;margin:0 0 12px}
+.gp .team{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.06em;color:var(--ink-2);margin-bottom:22px}
+.gp .team b{color:var(--ink);font-weight:500}
+.ps{margin-bottom:16px}
+.ps .k{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.ps p{margin:0;font-size:.99rem;color:var(--ink);line-height:1.55}
+.quote{border-left:3px solid var(--blue);padding:2px 0 2px 16px;margin:24px 0 0;font-size:1.02rem;line-height:1.5}
+.quote cite{display:block;font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:9px}
+
+/* ── winners index ─────────────────────────── */
+.tier{margin-bottom:34px}
+.tier-head{display:flex;align-items:baseline;gap:12px;padding-bottom:7px;border-bottom:1px solid var(--ink);margin-bottom:2px}
+.tier-name{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:.94rem;letter-spacing:-.005em}
+.tier-name.g{color:var(--gold)}.tier-name.s{color:var(--silver)}.tier-name.b{color:var(--bronze)}
+.tier-n{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.12em;color:var(--ink-3);margin-left:auto}
+.wrow{display:grid;grid-template-columns:150px 1fr 190px;gap:22px;padding:15px 0;border-bottom:1px solid var(--rule-2);align-items:start}
+@media(max-width:780px){.wrow{grid-template-columns:1fr;gap:6px;padding:16px 0}}
+.wrow .co{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);padding-top:3px}
+.wrow .pt{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:1rem;letter-spacing:-.015em;line-height:1.2;margin-bottom:5px}
+.wrow .pd{font-size:.95rem;color:var(--ink-2);line-height:1.5;max-width:62ch}
+.wrow .cat{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding-top:4px}
+@media(max-width:780px){.wrow .cat{padding-top:2px}}
+
+/* ── special awards ────────────────────────── */
+.spec{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule)}
+@media(max-width:720px){.spec{grid-template-columns:1fr}}
+.sp{background:var(--paper);padding:26px 24px 28px}
+.sp .sn{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--signal);margin-bottom:12px}
+.sp .st{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:1.05rem;letter-spacing:-.018em;line-height:1.15;margin-bottom:6px}
+.sp .sc{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:11px}
+.sp .sx{font-size:.95rem;color:var(--ink-2);line-height:1.5}
+
+/* ── gallery ───────────────────────────────── */
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+.fbtn{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 13px;border:1px solid var(--rule);background:transparent;color:var(--ink-2);cursor:pointer;
+}
+.fbtn:hover{border-color:var(--ink);color:var(--ink)}
+.fbtn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-2);border-top:1px solid var(--rule-2)}
+@media(max-width:880px){.gal{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.gal{grid-template-columns:1fr}}
+.gi{background:var(--paper);padding:18px 18px 20px;display:flex;flex-direction:column;gap:7px}
+.gi .gt{font-family:'IBM Plex Mono',monospace;font-size:.85rem;font-weight:500;line-height:1.35;color:var(--ink)}
+.gi .gm{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:auto;display:flex;justify-content:space-between;gap:10px}
+.gi .gm .aw{color:var(--gold)}
+
+/* ── criteria ──────────────────────────────── */
+.crit{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+@media(max-width:860px){.crit{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.crit{grid-template-columns:1fr}}
+.cr{border-top:3px solid var(--blue);padding-top:14px}
+.cr .cn{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.14em;color:var(--ink-3);margin-bottom:7px}
+.cr h4{font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;font-size:1rem;letter-spacing:-.018em;margin:0 0 7px}
+.cr p{margin:0;font-size:.93rem;color:var(--ink-2);line-height:1.5}
+
+/* ── voices ────────────────────────────────── */
+.voices{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+@media(max-width:860px){.voices{grid-template-columns:1fr}}
+.vc{border-top:1px solid var(--rule);padding-top:18px}
+.vc blockquote{margin:0 0 12px;font-size:1.06rem;line-height:1.5}
+.vc .vm{font-family:'IBM Plex Mono',monospace;font-size:.67rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ── downloads ─────────────────────────────── */
+.dl{display:grid;grid-template-columns:1.4fr 1fr;gap:0;border:1px solid var(--rule)}
+@media(max-width:780px){.dl{grid-template-columns:1fr}}
+.dl-l{padding:30px;border-right:1px solid var(--rule)}
+@media(max-width:780px){.dl-l{border-right:0;border-bottom:1px solid var(--rule)}}
+.dl-r{padding:30px;background:var(--paper-2)}
+.dl h3{font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;font-size:1.1rem;letter-spacing:-.02em;margin:0 0 10px}
+.dl p{font-size:.96rem;color:var(--ink-2);margin:0 0 18px;max-width:48ch}
+.sched{list-style:none;padding:0;margin:0}
+.sched li{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--rule-2);font-size:.93rem}
+.sched li:last-child{border-bottom:0}
+.sched .d{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.06em;color:var(--ink-3);white-space:nowrap;padding-top:3px}
+
+/* ── next ──────────────────────────────────── */
+.next{margin-top:76px;border-top:3px solid var(--ink);padding:44px 0 0}
+.next-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+@media(max-width:780px){.next-grid{grid-template-columns:1fr;gap:30px}}
+.next h3{font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-.028em;line-height:1.02;margin:0 0 12px}
+.next p{color:var(--ink-2);font-size:1rem;margin:0 0 20px;max-width:44ch}
+
+footer{margin-top:70px;border-top:1px solid var(--rule);padding:26px 0 60px}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{color:var(--ink-2)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- DRAFT BANNER — delete this one line before launch -->
+<div class="draft">Draft preview · figures and winner list pending final confirmation</div>
+
+<div class="masthead">
+  <div class="shell mast-row">
+    <div class="wordmark">AI<span>·</span>JAM US</div>
+    <div class="mast-meta">
+      <span class="label">11th Edition</span>
+      <span class="label">Since 2015</span>
+      <span class="label">Hacker Dojo · Mountain View, CA</span>
+    </div>
+  </div>
+</div>
+
+<main class="shell">
+
+  <!-- ═══ HERO ═══ -->
+  <div class="hero">
+    <div class="hero-kicker">
+      <span class="stamp">Results Announced</span>
+      <span class="label">September 6, 2026</span>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-h1">The 2026<em>Results</em></h1>
+      </div>
+      <div class="hero-side">
+        <p class="hero-deck">Three slides. Thirty seconds. 840 teams answered, and this is what they built.</p>
+        <p>The eleventh AI-JAM US closed with the widest field in the competition's history — students and young engineers from every continent, each given the same constraint and the same blank page.</p>
+        <div class="actions">
+          <a class="btn btn-solid" href="#winners">See the winners</a>
+          <a class="btn" href="/AIJAM_Award_List_2026.pdf">Full award list (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ LEDGER — edit these five numbers ═══ -->
+  <div class="ledger">
+    <div class="ledger-in">
+      <div class="led"><div class="n">840</div><div class="t">Teams</div><div class="s">Projects submitted across all entry routes</div></div>
+      <div class="led"><div class="n">1,240</div><div class="t">Participants</div><div class="s">Students, teachers and mentors</div></div>
+      <div class="led"><div class="n">41</div><div class="t">Countries</div><div class="s">Five continents represented</div></div>
+      <div class="led"><div class="n">588</div><div class="t">Awarded</div><div class="s">70% of entered teams received recognition</div></div>
+      <div class="led"><div class="n">8</div><div class="t">Categories</div><div class="s">Healthcare led the field this year</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ FILM ═══ -->
+  <section id="film">
+    <div class="sec-head"><h2>The 2026 Film</h2><span class="count">02:14</span></div>
+    <p class="sec-intro">Ninety seconds through the year's field — the problems these teams chose, and what they made to answer them.</p>
+    <div class="film">
+      <div class="film-in">
+        <div class="play" aria-hidden="true"><span></span></div>
+        <div class="ft">AI-JAM US 2026 Highlights</div>
+        <div class="fs">Video embed goes here</div>
+      </div>
+    </div>
+    <p class="film-cap">Replace this block with the YouTube iframe once the film is uploaded.</p>
+  </section>
+
+  <!-- ═══ GRAND PRIX ═══ -->
+  <section id="winners">
+    <div class="sec-head"><h2>Grand Prix 2026</h2><span class="count">1 of 840</span></div>
+    <div class="gp">
+      <div class="gp-l">
+        <div class="medal-line">
+          <div class="medal" aria-hidden="true">GP</div>
+          <div class="gp-award">Grand Prix · United Arab Emirates</div>
+        </div>
+        <h3>SafeMama AI</h3>
+        <div class="team">Category <b>Healthcare</b> &nbsp;·&nbsp; Entry no. <b>2026-0117</b></div>
+        <div class="ps">
+          <div class="k">Problem</div>
+          <p>In rural Sub-Saharan Africa, the warning signs of a dangerous pregnancy arrive days before the emergency does — but the clinic is hours away and most mothers do not own a smartphone.</p>
+        </div>
+        <div class="ps">
+          <div class="k">Solution</div>
+          <p>An SMS and voice screening line. A mother writes or speaks in her own words; a language model matches what she says against the WHO danger-sign list and routes urgent cases to the nearest health worker. No app, no data plan, no smartphone.</p>
+        </div>
+      </div>
+      <div class="gp-r">
+        <div class="label" style="margin-bottom:12px">Why the judges chose it</div>
+        <p style="margin:0 0 16px;font-size:.99rem;line-height:1.55">Every year a handful of entries solve a real problem with technology the user cannot actually reach. SafeMama went the other way: it starts from the phone that is already in the mother's hand and asks how far intelligence can travel down a text message. The judging panel scored it highest on Impact and Feasibility, and it was the only project in the top ten that required no new hardware anywhere in the chain.</p>
+        <blockquote class="quote">
+          The AI does two jobs. First it reads a mother's free-text message. Then it matches it against the WHO list of danger signs — and it never decides on its own what happens next.
+          <cite>From the team's submission</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WINNERS INDEX ═══ -->
+  <section>
+    <div class="sec-head"><h2>Gold, Silver &amp; Bronze</h2><span class="count">18 shown · 588 awarded</span></div>
+    <p class="sec-intro">Category leaders and runners-up. The complete list of all 588 awarded teams, including Honourable Mentions, is in the downloadable award list.</p>
+
+    <div class="tier">
+      <div class="tier-head"><span class="tier-name g">Gold Award</span><span class="tier-n">4 · one per major category</span></div>
+      <div class="wrow">
+        <div class="co">Vietnam</div>
+        <div><div class="pt">Retivision</div><div class="pd">Retinal screening for diabetic eye disease built on an EfficientNet-B5 transfer-learning model, aimed at the seven million diabetics in Vietnam who never reach an ophthalmologist.</div></div>
+        <div class="cat">Healthcare</div>
+      </div>
+      <div class="wrow">
+        <div class="co">Malaysia</div>
+        <div><div class="pt">FloodWatch</div><div class="pd">Satellite imagery paired with local sensor readings to forecast street-level flash flooding four hours ahead — in a region where the current warning window is under thirty minutes.</div></div>
+        <div class="cat">Environment</div>
+      </div>
+      <div class="wrow">
+        <div class="co">Vietnam</div>
+        <div><div class="pt">Khoan Đã</div><div class="pd">A scam-detection app for older adults, named after the Vietnamese for "hold on". Paste a message or screenshot and it names the warning signs — deliberately never telling the user they are safe.</div></div>
+        <div class="cat">Social Good</div>
+      </div>
+      <div class="wrow">
+        <div class="co">Azerbaijan</div>
+        <div><div class="pt">MindForge</div><div class="pd">A tutoring platform that locates the prerequisite a student actually missed, rather than re-teaching the lesson they failed, and rebuilds the learning path from there.</div></div>
+        <div class="cat">Education</div>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-head"><span class="tier-name s">Silver Award</span><span class="tier-n">6</span></div>
+      <div class="wrow">
+        <div class="co">Indonesia</div>
+        <div><div class="pt">PlasticEye</div><div class="pd">Satellite classification of ocean plastic accumulation, turned into an early-warning layer for coastal authorities.</div></div>
+        <div class="cat">Environment</div>
+      </div>
+      <div class="wrow">
+        <div class="co">United States</div>
+        <div><div class="pt">ScamGuard</div><div class="pd">Detects the acoustic fingerprint of AI voice-cloning during a live call, and warns before money moves.</div></div>
+        <div class="cat">Social Good</div>
+      </div>
+      <div class="wrow">
+        <div class="co">South Korea</div>
+        <div><div class="pt">Eskoot</div><div class="pd">A retrofit module that reads micro-terrain hazards ahead of an e-scooter and answers through handlebar vibration.</div></div>
+        <div class="cat">Transportation</div>
+      </div>
+      <div class="wrow">
+        <div class="co">Egypt</div>
+        <div><div class="pt">Qattrah</div><div class="pd">Irrigation scheduling for smallholder farms from NDVI satellite vegetation data and live microclimate readings.</div></div>
+        <div class="cat">Agriculture</div>
+      </div>
+      <div class="wrow">
+        <div class="co">Vietnam</div>
+        <div><div class="pt">ReGrow AI</div><div class="pd">An amphibious robot swarm that maps salinity and terrain to decide where mangrove seedlings will actually survive.</div></div>
+        <div class="cat">Environment</div>
+      </div>
+      <div class="wrow">
+        <div class="co">United States</div>
+        <div><div class="pt">Dyslexia Eye-Tracking Screen</div><div class="pd">Webcam gaze tracking through MediaPipe, classified for the reading patterns associated with dyslexia.</div></div>
+        <div class="cat">Healthcare</div>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-head"><span class="tier-name b">Bronze Award</span><span class="tier-n">8</span></div>
+      <div class="wrow"><div class="co">Vietnam</div><div><div class="pt">MedGuard</div><div class="pd">Scan a medicine package and verify it against live pharmaceutical registries in seconds.</div></div><div class="cat">Healthcare</div></div>
+      <div class="wrow"><div class="co">Indonesia</div><div><div class="pt">LukaLens</div><div class="pd">Wound-photo screening that flags the early signs of infection risk before a clinic visit.</div></div><div class="cat">Healthcare</div></div>
+      <div class="wrow"><div class="co">Vietnam</div><div><div class="pt">BrailleGuard AI</div><div class="pd">Quality control for the embossed Braille on medicine packaging, from a single smartphone photo.</div></div><div class="cat">Healthcare</div></div>
+      <div class="wrow"><div class="co">Vietnam</div><div><div class="pt">GuardBot</div><div class="pd">An indoor patrol robot for elderly people living alone, combining fall detection with fire and smoke sensing.</div></div><div class="cat">Social Good</div></div>
+      <div class="wrow"><div class="co">Vietnam</div><div><div class="pt">LycheeScan</div><div class="pd">Post-harvest lychee grading from smartphone images, running on a lightweight on-device model.</div></div><div class="cat">Agriculture</div></div>
+      <div class="wrow"><div class="co">India</div><div><div class="pt">HIJO</div><div class="pd">Practical skills taught through 3D simulation, with performance assessed from how the task was actually done.</div></div><div class="cat">Education</div></div>
+      <div class="wrow"><div class="co">Taiwan</div><div><div class="pt">PreLude AI</div><div class="pd">Isolates a single instrument from an orchestral recording so a beginner can practise against the real thing.</div></div><div class="cat">Education</div></div>
+      <div class="wrow"><div class="co">Indonesia</div><div><div class="pt">AI Smart Tree</div><div class="pd">Landsat observation and IoT controllers replacing fixed watering schedules for urban trees.</div></div><div class="cat">Environment</div></div>
+    </div>
+  </section>
+
+  <!-- ═══ SPECIAL AWARDS ═══ -->
+  <section>
+    <div class="sec-head"><h2>Special Awards</h2><span class="count">4</span></div>
+    <p class="sec-intro">Given outside the category structure, for work that stood out on one dimension above all others.</p>
+    <div class="spec">
+      <div class="sp">
+        <div class="sn">Best AI Application</div>
+        <div class="st">MedGuard</div>
+        <div class="sc">Vietnam · Healthcare</div>
+        <div class="sx">Three separate AI layers, each doing a job the others could not: computer vision reads the physical package, OCR lifts the printed batch data, and a language model reconciles both against live registry records. The judges singled it out for knowing exactly where the model ends and the database begins.</div>
+      </div>
+      <div class="sp">
+        <div class="sn">Best Social Impact</div>
+        <div class="st">Adaptive Communication Resilience</div>
+        <div class="sc">India · Social Good</div>
+        <div class="sx">When a disaster overloads the network, this system reads signal strength, latency and surviving infrastructure in real time and re-routes communication through whatever is still standing. Built for the hours when everything else has stopped working.</div>
+      </div>
+      <div class="sp">
+        <div class="sn">Best Storytelling</div>
+        <div class="st">Dyslexia Eye-Tracking Screen</div>
+        <div class="sc">United States · Healthcare</div>
+        <div class="sx">The clearest thirty seconds in the field. The team explained not only what they built but what failed first — and why an unstable tracker looks identical to a real eye movement. Honest engineering, told plainly.</div>
+      </div>
+      <div class="sp">
+        <div class="sn">Rising Nation</div>
+        <div class="st">Sovereign AI Workforce</div>
+        <div class="sc">Algeria · Social Good</div>
+        <div class="sx">Algeria's first entry into AI-JAM US, and it arrived with a multi-agent platform that keeps a human in the approval path for every decision the agents make. A first appearance that landed in the upper third of the field.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GALLERY ═══ -->
+  <section>
+    <div class="sec-head"><h2>The Field</h2><span class="count">Showing 24 of 840</span></div>
+    <p class="sec-intro">Every entered project, awarded or not. Filter by category, or search the full list in the award PDF.</p>
+    <div class="filters" role="group" aria-label="Filter projects by category">
+      <button class="fbtn" data-cat="all" aria-pressed="true">All</button>
+      <button class="fbtn" data-cat="Healthcare" aria-pressed="false">Healthcare</button>
+      <button class="fbtn" data-cat="Environment" aria-pressed="false">Environment</button>
+      <button class="fbtn" data-cat="Social Good" aria-pressed="false">Social Good</button>
+      <button class="fbtn" data-cat="Education" aria-pressed="false">Education</button>
+      <button class="fbtn" data-cat="Agriculture" aria-pressed="false">Agriculture</button>
+      <button class="fbtn" data-cat="Transportation" aria-pressed="false">Transportation</button>
+      <button class="fbtn" data-cat="Other" aria-pressed="false">Other</button>
+    </div>
+    <div class="gal" id="gallery">
+      <div class="gi" data-cat="Healthcare"><div class="gt">SafeMama AI</div><div class="gm"><span>United Arab Emirates</span><span class="aw">Grand Prix</span></div></div>
+      <div class="gi" data-cat="Healthcare"><div class="gt">Retivision</div><div class="gm"><span>Vietnam</span><span class="aw">Gold</span></div></div>
+      <div class="gi" data-cat="Environment"><div class="gt">FloodWatch</div><div class="gm"><span>Malaysia</span><span class="aw">Gold</span></div></div>
+      <div class="gi" data-cat="Social Good"><div class="gt">Khoan Đã</div><div class="gm"><span>Vietnam</span><span class="aw">Gold</span></div></div>
+      <div class="gi" data-cat="Education"><div class="gt">MindForge</div><div class="gm"><span>Azerbaijan</span><span class="aw">Gold</span></div></div>
+      <div class="gi" data-cat="Environment"><div class="gt">PlasticEye</div><div class="gm"><span>Indonesia</span><span class="aw">Silver</span></div></div>
+      <div class="gi" data-cat="Social Good"><div class="gt">ScamGuard</div><div class="gm"><span>United States</span><span class="aw">Silver</span></div></div>
+      <div class="gi" data-cat="Transportation"><div class="gt">Eskoot</div><div class="gm"><span>South Korea</span><span class="aw">Silver</span></div></div>
+      <div class="gi" data-cat="Agriculture"><div class="gt">Qattrah</div><div class="gm"><span>Egypt</span><span class="aw">Silver</span></div></div>
+      <div class="gi" data-cat="Environment"><div class="gt">ReGrow AI</div><div class="gm"><span>Vietnam</span><span class="aw">Silver</span></div></div>
+      <div class="gi" data-cat="Healthcare"><div class="gt">Dyslexia Eye-Tracking Screen</div><div class="gm"><span>United States</span><span class="aw">Silver</span></div></div>
+      <div class="gi" data-cat="Healthcare"><div class="gt">MedGuard</div><div class="gm"><span>Vietnam</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Healthcare"><div class="gt">LukaLens</div><div class="gm"><span>Indonesia</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Healthcare"><div class="gt">BrailleGuard AI</div><div class="gm"><span>Vietnam</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Social Good"><div class="gt">GuardBot</div><div class="gm"><span>Vietnam</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Agriculture"><div class="gt">LycheeScan</div><div class="gm"><span>Vietnam</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Education"><div class="gt">HIJO</div><div class="gm"><span>India</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Education"><div class="gt">PreLude AI</div><div class="gm"><span>Taiwan</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Environment"><div class="gt">AI Smart Tree</div><div class="gm"><span>Indonesia</span><span class="aw">Bronze</span></div></div>
+      <div class="gi" data-cat="Social Good"><div class="gt">Sovereign AI Workforce</div><div class="gm"><span>Algeria</span><span class="aw">Special</span></div></div>
+      <div class="gi" data-cat="Social Good"><div class="gt">Adaptive Communication Resilience</div><div class="gm"><span>India</span><span class="aw">Special</span></div></div>
+      <div class="gi" data-cat="Environment"><div class="gt">Portable Hydroclimate Monitor</div><div class="gm"><span>Iran</span><span>Honourable Mention</span></div></div>
+      <div class="gi" data-cat="Social Good"><div class="gt">Project Guardian Angel</div><div class="gm"><span>Malaysia</span><span>Honourable Mention</span></div></div>
+      <div class="gi" data-cat="Other"><div class="gt">Garment Production Planning Assistant</div><div class="gm"><span>India</span><span>Honourable Mention</span></div></div>
+    </div>
+  </section>
+
+  <!-- ═══ CRITERIA ═══ -->
+  <section>
+    <div class="sec-head"><h2>How Entries Were Judged</h2><span class="count">4 criteria · equal weight</span></div>
+    <p class="sec-intro">The same four criteria published before entries opened. Every project was scored independently on each.</p>
+    <div class="crit">
+      <div class="cr"><div class="cn">01</div><h4>Clarity</h4><p>Could a stranger understand the idea, the build and the result in thirty seconds — without jargon standing in for explanation?</p></div>
+      <div class="cr"><div class="cn">02</div><h4>Novelty</h4><p>Did the team approach the problem from an angle the rest of the field did not, or combine known parts in a way that was genuinely new?</p></div>
+      <div class="cr"><div class="cn">03</div><h4>Impact</h4><p>Who is helped, how many of them, and by how much — stated in numbers the team could defend.</p></div>
+      <div class="cr"><div class="cn">04</div><h4>Feasibility</h4><p>Could this be built and reach the people it is for, with the constraints the team already knows about?</p></div>
+    </div>
+  </section>
+
+  <!-- ═══ VOICES ═══ -->
+  <section>
+    <div class="sec-head"><h2>In Their Own Words</h2><span class="count">From the 2026 submissions</span></div>
+    <div class="voices">
+      <div class="vc">
+        <blockquote>“The AI does the reading. It never does the judging.”</blockquote>
+        <div class="vm">Khoan Đã · Vietnam · Gold Award</div>
+      </div>
+      <div class="vc">
+        <blockquote>“We chose MediaPipe after Haar cascade detection proved too unstable — tracker noise looks identical to a real eye movement.”</blockquote>
+        <div class="vm">Dyslexia Eye-Tracking Screen · United States · Silver Award</div>
+      </div>
+      <div class="vc">
+        <blockquote>“A routine e-scooter trip should not end in a hospital bed.”</blockquote>
+        <div class="vm">Eskoot · South Korea · Silver Award</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DOWNLOADS ═══ -->
+  <section>
+    <div class="sec-head"><h2>Award List &amp; Certificates</h2><span class="count">588 awarded teams</span></div>
+    <div class="dl">
+      <div class="dl-l">
+        <h3>The complete 2026 award list</h3>
+        <p>All 588 awarded teams, listed by award tier and country, including every Honourable Mention. Award lists for 2024 and earlier are available on request.</p>
+        <div class="actions">
+          <a class="btn btn-solid" href="/AIJAM_Award_List_2026.pdf">Download PDF</a>
+          <a class="btn" href="mailto:team@aijam.org">Request an earlier year</a>
+        </div>
+      </div>
+      <div class="dl-r">
+        <h3>What happens next</h3>
+        <ul class="sched">
+          <li><span>Digital certificates emailed to every participant</span><span class="d">Sep 8</span></li>
+          <li><span>Social media kits sent to awarded teams</span><span class="d">Sep 10</span></li>
+          <li><span>Medals dispatched to Gold, Silver and Bronze</span><span class="d">Sep 15</span></li>
+          <li><span>School Certificates of Appreciation issued</span><span class="d">Sep 20</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ NEXT ═══ -->
+  <div class="next">
+    <div class="next-grid">
+      <div>
+        <h3>AI-JAM US 2027</h3>
+        <p>The twelfth edition opens for registration in January. Leave your email and we will write to you once — on the day entries open.</p>
+        <a class="btn btn-solid" href="/#register">Notify me</a>
+      </div>
+      <div>
+        <h3>AXGO Seoul International</h3>
+        <p>For teams who want to present in person: the AXGO onsite competition in Seoul runs a live judging track with the same three-slide format.</p>
+        <a class="btn" href="https://axgo.org">See AXGO</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="shell foot">
+    <span class="label">AI-JAM US · Organized by Headstart Silicon Valley, Inc.</span>
+    <span class="label"><a href="mailto:team@aijam.org">team@aijam.org</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var buttons = document.querySelectorAll('.fbtn');
+  var items = document.querySelectorAll('#gallery .gi');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function () {
+      var cat = this.getAttribute('data-cat');
+      for (var j = 0; j < buttons.length; j++) {
+        buttons[j].setAttribute('aria-pressed', buttons[j] === this ? 'true' : 'false');
+      }
+      for (var k = 0; k < items.length; k++) {
+        var show = (cat === 'all') || (items[k].getAttribute('data-cat') === cat);
+        items[k].style.display = show ? 'flex' : 'none';
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
